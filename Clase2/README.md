@@ -1,6 +1,6 @@
 # Clase 2
 
-### [Grabacion](https://drive.google.com/file/d/1yP3_YifC2FqBswCCLy4IJMzmpfHlG-HJ/view?usp=sharing)
+### [Grabación](https://drive.google.com/file/d/1yP3_YifC2FqBswCCLy4IJMzmpfHlG-HJ/view?usp=sharing)
 -------------
 ## Ejemplo del laboratorio (*Windows*)
 
@@ -76,7 +76,7 @@ evaluar(0+0-0*0/1);
 
 ![](https://i.imgur.com/7uhZMWP.png)
 
-## Tutor
+-------------
 | Carne     | Nombre                     |
 | --------- | -------------------------- |
 | 201504220 | José Andres Rodas Arrecis  |
