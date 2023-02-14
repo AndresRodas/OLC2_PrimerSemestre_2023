@@ -1,0 +1,197 @@
+Terminals unused in grammar
+
+    ID
+
+
+Grammar
+
+    0 $accept: s END
+
+    1 s: e z
+
+    2 e: e SUMA e
+    3  | e MENOS e
+    4  | e '*' e
+    5  | e '/' e
+    6  | NUMERO
+
+    7 z: ';'
+    8  | %empty
+
+
+Terminals, with rules where they appear
+
+    END (0) 0
+    '*' (42) 4
+    '/' (47) 5
+    ';' (59) 7
+    error (256)
+    NUMERO <std::string> (258) 6
+    ID <std::string> (259)
+    SUMA (260) 2
+    MENOS (261) 3
+
+
+Nonterminals, with rules where they appear
+
+    $accept (10)
+        on left: 0
+    s <std::string> (11)
+        on left: 1
+        on right: 0
+    e <double> (12)
+        on left: 2 3 4 5 6
+        on right: 1 2 3 4 5
+    z (13)
+        on left: 7 8
+        on right: 1
+
+
+State 0
+
+    0 $accept: . s END
+
+    NUMERO  shift, and go to state 1
+
+    s  go to state 2
+    e  go to state 3
+
+
+State 1
+
+    6 e: NUMERO .
+
+    $default  reduce using rule 6 (e)
+
+
+State 2
+
+    0 $accept: s . END
+
+    END  shift, and go to state 4
+
+
+State 3
+
+    1 s: e . z
+    2 e: e . SUMA e
+    3  | e . MENOS e
+    4  | e . '*' e
+    5  | e . '/' e
+
+    SUMA   shift, and go to state 5
+    MENOS  shift, and go to state 6
+    ';'    shift, and go to state 7
+    '*'    shift, and go to state 8
+    '/'    shift, and go to state 9
+
+    $default  reduce using rule 8 (z)
+
+    z  go to state 10
+
+
+State 4
+
+    0 $accept: s END .
+
+    $default  accept
+
+
+State 5
+
+    2 e: e SUMA . e
+
+    NUMERO  shift, and go to state 1
+
+    e  go to state 11
+
+
+State 6
+
+    3 e: e MENOS . e
+
+    NUMERO  shift, and go to state 1
+
+    e  go to state 12
+
+
+State 7
+
+    7 z: ';' .
+
+    $default  reduce using rule 7 (z)
+
+
+State 8
+
+    4 e: e '*' . e
+
+    NUMERO  shift, and go to state 1
+
+    e  go to state 13
+
+
+State 9
+
+    5 e: e '/' . e
+
+    NUMERO  shift, and go to state 1
+
+    e  go to state 14
+
+
+State 10
+
+    1 s: e z .
+
+    $default  reduce using rule 1 (s)
+
+
+State 11
+
+    2 e: e . SUMA e
+    2  | e SUMA e .
+    3  | e . MENOS e
+    4  | e . '*' e
+    5  | e . '/' e
+
+    '*'  shift, and go to state 8
+    '/'  shift, and go to state 9
+
+    $default  reduce using rule 2 (e)
+
+
+State 12
+
+    2 e: e . SUMA e
+    3  | e . MENOS e
+    3  | e MENOS e .
+    4  | e . '*' e
+    5  | e . '/' e
+
+    '*'  shift, and go to state 8
+    '/'  shift, and go to state 9
+
+    $default  reduce using rule 3 (e)
+
+
+State 13
+
+    2 e: e . SUMA e
+    3  | e . MENOS e
+    4  | e . '*' e
+    4  | e '*' e .
+    5  | e . '/' e
+
+    $default  reduce using rule 4 (e)
+
+
+State 14
+
+    2 e: e . SUMA e
+    3  | e . MENOS e
+    4  | e . '*' e
+    5  | e . '/' e
+    5  | e '/' e .
+
+    $default  reduce using rule 5 (e)
