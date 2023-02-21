@@ -1,6 +1,7 @@
 #include "parserctx.hpp"
-#include "parser.hpp"
-#include "lex.yy.c"
+#include "Parser/location.hh"
+#include "Parser/parser.hpp"
+#include "Parser/lex.yy.c"
 
 namespace OCL2Calc {
 ParserCtx::ParserCtx()
@@ -29,6 +30,5 @@ std::string ParserCtx::Analizar(std::string entrada){
     this->Parser->parse();
     return "";
 }
-
 
 }

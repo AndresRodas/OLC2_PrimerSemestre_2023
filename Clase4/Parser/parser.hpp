@@ -45,19 +45,28 @@
 #ifndef YY_YY_PARSER_HPP_INCLUDED
 # define YY_YY_PARSER_HPP_INCLUDED
 // "%code requires" blocks.
-#line 37 "parser.y"
+#line 33 "parser.y"
 
-    /* código  que se inserta al inicioo por lo regular son cabeceras*/
-    #include<iostream> 
-    #include<string> 
+    /* cabeceras iniciales */
+    #include <iostream> 
+    #include <string> 
+    #include <vector>
     #include "parserctx.hpp"
 
-    /*
-    Se pueden definir estructuras y tipos para los no terminales
-    */
+    /* expresiones */
+    #include "../Clase4/Expression/primitive.hpp"
+    #include "../Clase4/Expression/operation.hpp"
+    #include "../Clase4/Environment/type.h"
+    #include "../Clase4/Interfaces/expression.hpp"
+
+    /* instrucciones */
+    #include "../Clase4/Interfaces/instruction.hpp"
+    #include "../Clase4/Instruction/print.hpp"
+    #include "../Clase4/Instruction/list_instruction.hpp"
+    #include "../Clase4/Instruction/func_main.hpp"
 
 
-#line 61 "parser.hpp"
+#line 70 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -186,7 +195,7 @@
 #endif
 
 namespace yy {
-#line 190 "parser.hpp"
+#line 199 "parser.hpp"
 
 
 
@@ -377,13 +386,38 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
-      // e
-      char dummy1[sizeof (double)];
+      // EXP
+      // PRIMITIVE
+      char dummy1[sizeof (expression*)];
+
+      // START
+      // MAIN
+      char dummy2[sizeof (func_main*)];
+
+      // INSTRUCTION
+      // PRINT
+      char dummy3[sizeof (instruction*)];
+
+      // LIST_INST
+      char dummy4[sizeof (list_instruction*)];
 
       // NUMERO
       // ID
-      // s
-      char dummy2[sizeof (std::string)];
+      // STRING
+      // SUMA
+      // MENOS
+      // POR
+      // DIV
+      // PRINTF
+      // VOID
+      // INT
+      // PARA
+      // PARC
+      // RMAIN
+      // LLAVA
+      // LLAVC
+      // TYPES
+      char dummy5[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -434,8 +468,19 @@ namespace yy {
     YYUNDEF = 257,                 // "invalid token"
     NUMERO = 258,                  // NUMERO
     ID = 259,                      // ID
-    SUMA = 260,                    // SUMA
-    MENOS = 261                    // MENOS
+    STRING = 260,                  // STRING
+    SUMA = 261,                    // SUMA
+    MENOS = 262,                   // MENOS
+    POR = 263,                     // POR
+    DIV = 264,                     // DIV
+    PRINTF = 265,                  // PRINTF
+    VOID = 266,                    // VOID
+    INT = 267,                     // INT
+    PARA = 268,                    // PARA
+    PARC = 269,                    // PARC
+    RMAIN = 270,                   // RMAIN
+    LLAVA = 271,                   // LLAVA
+    LLAVC = 272                    // LLAVC
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -452,22 +497,36 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 10, ///< Number of tokens.
+        YYNTOKENS = 19, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
         S_NUMERO = 3,                            // NUMERO
         S_ID = 4,                                // ID
-        S_SUMA = 5,                              // SUMA
-        S_MENOS = 6,                             // MENOS
-        S_7_ = 7,                                // ';'
-        S_8_ = 8,                                // '*'
-        S_9_ = 9,                                // '/'
-        S_YYACCEPT = 10,                         // $accept
-        S_s = 11,                                // s
-        S_e = 12,                                // e
-        S_z = 13                                 // z
+        S_STRING = 5,                            // STRING
+        S_SUMA = 6,                              // SUMA
+        S_MENOS = 7,                             // MENOS
+        S_POR = 8,                               // POR
+        S_DIV = 9,                               // DIV
+        S_PRINTF = 10,                           // PRINTF
+        S_VOID = 11,                             // VOID
+        S_INT = 12,                              // INT
+        S_PARA = 13,                             // PARA
+        S_PARC = 14,                             // PARC
+        S_RMAIN = 15,                            // RMAIN
+        S_LLAVA = 16,                            // LLAVA
+        S_LLAVC = 17,                            // LLAVC
+        S_18_ = 18,                              // ';'
+        S_YYACCEPT = 19,                         // $accept
+        S_START = 20,                            // START
+        S_MAIN = 21,                             // MAIN
+        S_LIST_INST = 22,                        // LIST_INST
+        S_INSTRUCTION = 23,                      // INSTRUCTION
+        S_PRINT = 24,                            // PRINT
+        S_TYPES = 25,                            // TYPES
+        S_EXP = 26,                              // EXP
+        S_PRIMITIVE = 27                         // PRIMITIVE
       };
     };
 
@@ -504,13 +563,41 @@ namespace yy {
       {
         switch (this->kind ())
     {
-      case symbol_kind::S_e: // e
-        value.move< double > (std::move (that.value));
+      case symbol_kind::S_EXP: // EXP
+      case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+        value.move< expression* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_START: // START
+      case symbol_kind::S_MAIN: // MAIN
+        value.move< func_main* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_INSTRUCTION: // INSTRUCTION
+      case symbol_kind::S_PRINT: // PRINT
+        value.move< instruction* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_LIST_INST: // LIST_INST
+        value.move< list_instruction* > (std::move (that.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_s: // s
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_SUMA: // SUMA
+      case symbol_kind::S_MENOS: // MENOS
+      case symbol_kind::S_POR: // POR
+      case symbol_kind::S_DIV: // DIV
+      case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_INT: // INT
+      case symbol_kind::S_PARA: // PARA
+      case symbol_kind::S_PARC: // PARC
+      case symbol_kind::S_RMAIN: // RMAIN
+      case symbol_kind::S_LLAVA: // LLAVA
+      case symbol_kind::S_LLAVC: // LLAVC
+      case symbol_kind::S_TYPES: // TYPES
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -538,13 +625,55 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, double&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, expression*&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const double& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const expression*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, func_main*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const func_main*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, instruction*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const instruction*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, list_instruction*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const list_instruction*& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -587,13 +716,41 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
-      case symbol_kind::S_e: // e
-        value.template destroy< double > ();
+      case symbol_kind::S_EXP: // EXP
+      case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+        value.template destroy< expression* > ();
+        break;
+
+      case symbol_kind::S_START: // START
+      case symbol_kind::S_MAIN: // MAIN
+        value.template destroy< func_main* > ();
+        break;
+
+      case symbol_kind::S_INSTRUCTION: // INSTRUCTION
+      case symbol_kind::S_PRINT: // PRINT
+        value.template destroy< instruction* > ();
+        break;
+
+      case symbol_kind::S_LIST_INST: // LIST_INST
+        value.template destroy< list_instruction* > ();
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_s: // s
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_SUMA: // SUMA
+      case symbol_kind::S_MENOS: // MENOS
+      case symbol_kind::S_POR: // POR
+      case symbol_kind::S_DIV: // DIV
+      case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_INT: // INT
+      case symbol_kind::S_PARA: // PARA
+      case symbol_kind::S_PARC: // PARC
+      case symbol_kind::S_RMAIN: // RMAIN
+      case symbol_kind::S_LLAVA: // LLAVA
+      case symbol_kind::S_LLAVC: // LLAVC
+      case symbol_kind::S_TYPES: // TYPES
         value.template destroy< std::string > ();
         break;
 
@@ -825,31 +982,196 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_SUMA (location_type l)
+      make_STRING (std::string v, location_type l)
       {
-        return symbol_type (token::SUMA, std::move (l));
+        return symbol_type (token::STRING, std::move (v), std::move (l));
       }
 #else
       static
       symbol_type
-      make_SUMA (const location_type& l)
+      make_STRING (const std::string& v, const location_type& l)
       {
-        return symbol_type (token::SUMA, l);
+        return symbol_type (token::STRING, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_MENOS (location_type l)
+      make_SUMA (std::string v, location_type l)
       {
-        return symbol_type (token::MENOS, std::move (l));
+        return symbol_type (token::SUMA, std::move (v), std::move (l));
       }
 #else
       static
       symbol_type
-      make_MENOS (const location_type& l)
+      make_SUMA (const std::string& v, const location_type& l)
       {
-        return symbol_type (token::MENOS, l);
+        return symbol_type (token::SUMA, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MENOS (std::string v, location_type l)
+      {
+        return symbol_type (token::MENOS, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MENOS (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::MENOS, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_POR (std::string v, location_type l)
+      {
+        return symbol_type (token::POR, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_POR (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::POR, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DIV (std::string v, location_type l)
+      {
+        return symbol_type (token::DIV, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_DIV (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::DIV, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PRINTF (std::string v, location_type l)
+      {
+        return symbol_type (token::PRINTF, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PRINTF (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::PRINTF, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_VOID (std::string v, location_type l)
+      {
+        return symbol_type (token::VOID, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_VOID (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::VOID, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_INT (std::string v, location_type l)
+      {
+        return symbol_type (token::INT, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_INT (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::INT, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PARA (std::string v, location_type l)
+      {
+        return symbol_type (token::PARA, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PARA (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::PARA, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_PARC (std::string v, location_type l)
+      {
+        return symbol_type (token::PARC, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_PARC (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::PARC, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RMAIN (std::string v, location_type l)
+      {
+        return symbol_type (token::RMAIN, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RMAIN (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RMAIN, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LLAVA (std::string v, location_type l)
+      {
+        return symbol_type (token::LLAVA, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LLAVA (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::LLAVA, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LLAVC (std::string v, location_type l)
+      {
+        return symbol_type (token::LLAVC, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LLAVC (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::LLAVC, v, l);
       }
 #endif
 
@@ -1182,9 +1504,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 12,     ///< Last index in yytable_.
-      yynnts_ = 4,  ///< Number of nonterminal symbols.
-      yyfinal_ = 4 ///< Termination state number.
+      yylast_ = 32,     ///< Last index in yytable_.
+      yynnts_ = 9,  ///< Number of nonterminal symbols.
+      yyfinal_ = 6 ///< Termination state number.
     };
 
 
@@ -1209,8 +1531,8 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     8,     2,     2,     2,     2,     9,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     7,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    18,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -1231,10 +1553,11 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17
     };
     // Last valid token kind.
-    const int code_max = 261;
+    const int code_max = 272;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1253,13 +1576,41 @@ switch (yykind)
   {
     switch (this->kind ())
     {
-      case symbol_kind::S_e: // e
-        value.copy< double > (YY_MOVE (that.value));
+      case symbol_kind::S_EXP: // EXP
+      case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+        value.copy< expression* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_START: // START
+      case symbol_kind::S_MAIN: // MAIN
+        value.copy< func_main* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_INSTRUCTION: // INSTRUCTION
+      case symbol_kind::S_PRINT: // PRINT
+        value.copy< instruction* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_LIST_INST: // LIST_INST
+        value.copy< list_instruction* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_s: // s
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_SUMA: // SUMA
+      case symbol_kind::S_MENOS: // MENOS
+      case symbol_kind::S_POR: // POR
+      case symbol_kind::S_DIV: // DIV
+      case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_INT: // INT
+      case symbol_kind::S_PARA: // PARA
+      case symbol_kind::S_PARC: // PARC
+      case symbol_kind::S_RMAIN: // RMAIN
+      case symbol_kind::S_LLAVA: // LLAVA
+      case symbol_kind::S_LLAVC: // LLAVC
+      case symbol_kind::S_TYPES: // TYPES
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1292,13 +1643,41 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
-      case symbol_kind::S_e: // e
-        value.move< double > (YY_MOVE (s.value));
+      case symbol_kind::S_EXP: // EXP
+      case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+        value.move< expression* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_START: // START
+      case symbol_kind::S_MAIN: // MAIN
+        value.move< func_main* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_INSTRUCTION: // INSTRUCTION
+      case symbol_kind::S_PRINT: // PRINT
+        value.move< instruction* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_LIST_INST: // LIST_INST
+        value.move< list_instruction* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
       case symbol_kind::S_ID: // ID
-      case symbol_kind::S_s: // s
+      case symbol_kind::S_STRING: // STRING
+      case symbol_kind::S_SUMA: // SUMA
+      case symbol_kind::S_MENOS: // MENOS
+      case symbol_kind::S_POR: // POR
+      case symbol_kind::S_DIV: // DIV
+      case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_VOID: // VOID
+      case symbol_kind::S_INT: // INT
+      case symbol_kind::S_PARA: // PARA
+      case symbol_kind::S_PARC: // PARC
+      case symbol_kind::S_RMAIN: // RMAIN
+      case symbol_kind::S_LLAVA: // LLAVA
+      case symbol_kind::S_LLAVC: // LLAVC
+      case symbol_kind::S_TYPES: // TYPES
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1364,7 +1743,7 @@ switch (yykind)
   }
 
 } // yy
-#line 1368 "parser.hpp"
+#line 1747 "parser.hpp"
 
 
 

@@ -1,5 +1,7 @@
 #ifndef PARSERCTX_HPP
 #define PARSERCTX_HPP
+#include "Instruction/func_main.hpp"
+#include "Interfaces/expression.hpp"
 #include <string>
 
 namespace yy {
@@ -11,24 +13,17 @@ namespace OCL2Calc {
 class ParserCtx
 {
 public:
-    // constructor
-    ParserCtx();
-    // destructor
-    ~ParserCtx();
-
-
-// atributos del analizador
     void* lexer;
     yy::location* loc;
     yy::Parser* Parser;
-// funcion de analisis
-    std::string Analizar(std::string entrada);
     std::string Salida;
+    instruction *Main;
+
+    ParserCtx();
+    ~ParserCtx();
+    std::string Analizar(std::string entrada);
 };
 
 }
-
-
-
 
 #endif // PARSERCTX_HPP

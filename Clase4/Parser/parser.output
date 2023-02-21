@@ -1,0 +1,411 @@
+Terminals unused in grammar
+
+    ID
+
+
+Grammar
+
+    0 $accept: START END
+
+    1 START: MAIN
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC
+
+    3 LIST_INST: LIST_INST INSTRUCTION
+    4          | INSTRUCTION
+
+    5 INSTRUCTION: PRINT ';'
+
+    6 PRINT: PRINTF PARA EXP PARC
+
+    7 TYPES: VOID
+    8      | INT
+
+    9 EXP: EXP SUMA EXP
+   10    | EXP MENOS EXP
+   11    | EXP POR EXP
+   12    | EXP DIV EXP
+   13    | PARA EXP PARC
+   14    | PRIMITIVE
+
+   15 PRIMITIVE: NUMERO
+   16          | STRING
+
+
+Terminals, with rules where they appear
+
+    END (0) 0
+    ';' (59) 5
+    error (256)
+    NUMERO <std::string> (258) 15
+    ID <std::string> (259)
+    STRING <std::string> (260) 16
+    SUMA <std::string> (261) 9
+    MENOS <std::string> (262) 10
+    POR <std::string> (263) 11
+    DIV <std::string> (264) 12
+    PRINTF <std::string> (265) 6
+    VOID <std::string> (266) 7
+    INT <std::string> (267) 8
+    PARA <std::string> (268) 2 6 13
+    PARC <std::string> (269) 2 6 13
+    RMAIN <std::string> (270) 2
+    LLAVA <std::string> (271) 2
+    LLAVC <std::string> (272) 2
+
+
+Nonterminals, with rules where they appear
+
+    $accept (19)
+        on left: 0
+    START <func_main*> (20)
+        on left: 1
+        on right: 0
+    MAIN <func_main*> (21)
+        on left: 2
+        on right: 1
+    LIST_INST <list_instruction*> (22)
+        on left: 3 4
+        on right: 2 3
+    INSTRUCTION <instruction*> (23)
+        on left: 5
+        on right: 3 4
+    PRINT <instruction*> (24)
+        on left: 6
+        on right: 5
+    TYPES <std::string> (25)
+        on left: 7 8
+        on right: 2
+    EXP <expression*> (26)
+        on left: 9 10 11 12 13 14
+        on right: 6 9 10 11 12 13
+    PRIMITIVE <expression*> (27)
+        on left: 15 16
+        on right: 14
+
+
+State 0
+
+    0 $accept: . START END
+
+    VOID  shift, and go to state 1
+    INT   shift, and go to state 2
+
+    START  go to state 3
+    MAIN   go to state 4
+    TYPES  go to state 5
+
+
+State 1
+
+    7 TYPES: VOID .
+
+    $default  reduce using rule 7 (TYPES)
+
+
+State 2
+
+    8 TYPES: INT .
+
+    $default  reduce using rule 8 (TYPES)
+
+
+State 3
+
+    0 $accept: START . END
+
+    END  shift, and go to state 6
+
+
+State 4
+
+    1 START: MAIN .
+
+    $default  reduce using rule 1 (START)
+
+
+State 5
+
+    2 MAIN: TYPES . RMAIN PARA PARC LLAVA LIST_INST LLAVC
+
+    RMAIN  shift, and go to state 7
+
+
+State 6
+
+    0 $accept: START END .
+
+    $default  accept
+
+
+State 7
+
+    2 MAIN: TYPES RMAIN . PARA PARC LLAVA LIST_INST LLAVC
+
+    PARA  shift, and go to state 8
+
+
+State 8
+
+    2 MAIN: TYPES RMAIN PARA . PARC LLAVA LIST_INST LLAVC
+
+    PARC  shift, and go to state 9
+
+
+State 9
+
+    2 MAIN: TYPES RMAIN PARA PARC . LLAVA LIST_INST LLAVC
+
+    LLAVA  shift, and go to state 10
+
+
+State 10
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA . LIST_INST LLAVC
+
+    PRINTF  shift, and go to state 11
+
+    LIST_INST    go to state 12
+    INSTRUCTION  go to state 13
+    PRINT        go to state 14
+
+
+State 11
+
+    6 PRINT: PRINTF . PARA EXP PARC
+
+    PARA  shift, and go to state 15
+
+
+State 12
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST . LLAVC
+    3 LIST_INST: LIST_INST . INSTRUCTION
+
+    PRINTF  shift, and go to state 11
+    LLAVC   shift, and go to state 16
+
+    INSTRUCTION  go to state 17
+    PRINT        go to state 14
+
+
+State 13
+
+    4 LIST_INST: INSTRUCTION .
+
+    $default  reduce using rule 4 (LIST_INST)
+
+
+State 14
+
+    5 INSTRUCTION: PRINT . ';'
+
+    ';'  shift, and go to state 18
+
+
+State 15
+
+    6 PRINT: PRINTF PARA . EXP PARC
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 22
+    PRIMITIVE  go to state 23
+
+
+State 16
+
+    2 MAIN: TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC .
+
+    $default  reduce using rule 2 (MAIN)
+
+
+State 17
+
+    3 LIST_INST: LIST_INST INSTRUCTION .
+
+    $default  reduce using rule 3 (LIST_INST)
+
+
+State 18
+
+    5 INSTRUCTION: PRINT ';' .
+
+    $default  reduce using rule 5 (INSTRUCTION)
+
+
+State 19
+
+   15 PRIMITIVE: NUMERO .
+
+    $default  reduce using rule 15 (PRIMITIVE)
+
+
+State 20
+
+   16 PRIMITIVE: STRING .
+
+    $default  reduce using rule 16 (PRIMITIVE)
+
+
+State 21
+
+   13 EXP: PARA . EXP PARC
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 24
+    PRIMITIVE  go to state 23
+
+
+State 22
+
+    6 PRINT: PRINTF PARA EXP . PARC
+    9 EXP: EXP . SUMA EXP
+   10    | EXP . MENOS EXP
+   11    | EXP . POR EXP
+   12    | EXP . DIV EXP
+
+    SUMA   shift, and go to state 25
+    MENOS  shift, and go to state 26
+    POR    shift, and go to state 27
+    DIV    shift, and go to state 28
+    PARC   shift, and go to state 29
+
+
+State 23
+
+   14 EXP: PRIMITIVE .
+
+    $default  reduce using rule 14 (EXP)
+
+
+State 24
+
+    9 EXP: EXP . SUMA EXP
+   10    | EXP . MENOS EXP
+   11    | EXP . POR EXP
+   12    | EXP . DIV EXP
+   13    | PARA EXP . PARC
+
+    SUMA   shift, and go to state 25
+    MENOS  shift, and go to state 26
+    POR    shift, and go to state 27
+    DIV    shift, and go to state 28
+    PARC   shift, and go to state 30
+
+
+State 25
+
+    9 EXP: EXP SUMA . EXP
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 31
+    PRIMITIVE  go to state 23
+
+
+State 26
+
+   10 EXP: EXP MENOS . EXP
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 32
+    PRIMITIVE  go to state 23
+
+
+State 27
+
+   11 EXP: EXP POR . EXP
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 33
+    PRIMITIVE  go to state 23
+
+
+State 28
+
+   12 EXP: EXP DIV . EXP
+
+    NUMERO  shift, and go to state 19
+    STRING  shift, and go to state 20
+    PARA    shift, and go to state 21
+
+    EXP        go to state 34
+    PRIMITIVE  go to state 23
+
+
+State 29
+
+    6 PRINT: PRINTF PARA EXP PARC .
+
+    $default  reduce using rule 6 (PRINT)
+
+
+State 30
+
+   13 EXP: PARA EXP PARC .
+
+    $default  reduce using rule 13 (EXP)
+
+
+State 31
+
+    9 EXP: EXP . SUMA EXP
+    9    | EXP SUMA EXP .
+   10    | EXP . MENOS EXP
+   11    | EXP . POR EXP
+   12    | EXP . DIV EXP
+
+    POR  shift, and go to state 27
+    DIV  shift, and go to state 28
+
+    $default  reduce using rule 9 (EXP)
+
+
+State 32
+
+    9 EXP: EXP . SUMA EXP
+   10    | EXP . MENOS EXP
+   10    | EXP MENOS EXP .
+   11    | EXP . POR EXP
+   12    | EXP . DIV EXP
+
+    POR  shift, and go to state 27
+    DIV  shift, and go to state 28
+
+    $default  reduce using rule 10 (EXP)
+
+
+State 33
+
+    9 EXP: EXP . SUMA EXP
+   10    | EXP . MENOS EXP
+   11    | EXP . POR EXP
+   11    | EXP POR EXP .
+   12    | EXP . DIV EXP
+
+    $default  reduce using rule 11 (EXP)
+
+
+State 34
+
+    9 EXP: EXP . SUMA EXP
+   10    | EXP . MENOS EXP
+   11    | EXP . POR EXP
+   12    | EXP . DIV EXP
+   12    | EXP DIV EXP .
+
+    $default  reduce using rule 12 (EXP)

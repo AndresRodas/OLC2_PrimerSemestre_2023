@@ -38,7 +38,6 @@ LETRAS [a-zA-ZñÑ]
 NUMERO {DIGITO}+
 ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 
-
 %%
 
 %{
@@ -62,17 +61,29 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 
 "+"     return Parser::symbol_type( token::SUMA, loc );
 "-"     return Parser::symbol_type( token::MENOS, loc );
+"*"     return Parser::symbol_type( token::POR, loc );
+"/"     return Parser::symbol_type( token::DIV, loc );
 
     /* defincion clásica / para caracteres especiales */
 ";"     return Parser::symbol_type( token_type(';'), loc );
-"*"     return Parser::symbol_type( token_type('*'), loc );
-"/"     return Parser::symbol_type( token_type('/'), loc );
+
+
+"("     return Parser::symbol_type( token::PARA, loc );
+")"     return Parser::symbol_type( token::PARC, loc );
+"{"     return Parser::symbol_type( token::LLAVA, loc );
+"}"     return Parser::symbol_type( token::LLAVC, loc );
 
 
     /* TOKENS  */
+"printf"    return Parser::symbol_type( token::PRINTF, loc );
+"void"    return Parser::symbol_type( token::VOID, loc );
+"int"    return Parser::symbol_type( token::INT, loc );
+"main"    return Parser::symbol_type( token::RMAIN, loc );
 
 {ID}  return Parser::make_ID(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);
+\"(\\.|[^"\\])*\" return Parser::make_STRING (yytext, loc);
+
 .  {std::cerr<<loc <<": "<<"error token no esperado"<<  std::endl; }
 
     /*si no se usa yyterminate() se agrega lo siguiente*/
