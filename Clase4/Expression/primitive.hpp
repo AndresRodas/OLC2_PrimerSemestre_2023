@@ -8,10 +8,11 @@ public:
     int Line;
     int Col;
     TipoDato Tipo;
-    std::string StrVal;
-    int NumVal;
+    std::string strVal;
+    int numVal;
+    bool boolVal;
 
-    primitive(int,int,TipoDato,std::string,int);
+    primitive(int, int, TipoDato, std::string, int, bool);
     symbol ejecutar(environment *env, ast *tree) override;
 };
 

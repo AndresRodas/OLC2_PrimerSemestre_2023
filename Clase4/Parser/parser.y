@@ -39,6 +39,8 @@
 
     /* expresiones */
     #include "../Clase4/Expression/primitive.hpp"
+    #include "../Clase4/Expression/access.hpp"
+    #include "../Clase4/Expression/array_access.hpp"
     #include "../Clase4/Expression/operation.hpp"
     #include "../Clase4/Environment/type.h"
     #include "../Clase4/Interfaces/expression.hpp"
@@ -48,6 +50,8 @@
     #include "../Clase4/Instruction/print.hpp"
     #include "../Clase4/Instruction/list_instruction.hpp"
     #include "../Clase4/Instruction/func_main.hpp"
+    #include "../Clase4/Instruction/func_if.hpp"
+    #include "../Clase4/Instruction/declaration.hpp"
 
 }
 
@@ -58,10 +62,14 @@
 %token END 0;
 
 /*tokens*/
-%token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF VOID INT PARA PARC RMAIN LLAVA LLAVC
-%token ';'
+%token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF RIF RELSE
+%token <std::string> VOID INT TSTRING BOOLEAN PARA PARC RMAIN LLAVA LLAVC RTRUE RFALSE CORA CORC
+%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG
+%token ';' '='
 
 /* precedencia de operadores */
+%left IG DIF
+%left MEN MEN_IG MAY MAY_IG
 %left SUMA MENOS
 %left POR DIV
 
@@ -72,12 +80,19 @@
 /* definicion de no terminales */
 %type<expression*> PRIMITIVE;
 %type<expression*> EXP;
+%type<expression*> BOOL;
+%type<expression*> LIST_ARR;
 %type<func_main*> START;
 %type<list_instruction*> LIST_INST;
+%type<list_instruction*> ELSEIF_LIST;
+%type<list_instruction*> ELSE;
 %type<func_main*> MAIN;
 %type<instruction*> INSTRUCTION;
 %type<instruction*> PRINT;
-%type<std::string> TYPES;
+%type<instruction*> DECLARATION;
+%type<instruction*> IF;
+%type<instruction*> ELSEIF;
+%type<TipoDato> TYPES;
 
 /* printer */
 %printer { yyoutput << $$; } <*>;
@@ -95,7 +110,7 @@ START : MAIN
     }
 ;
 
-MAIN : TYPES RMAIN PARA PARC LLAVA LIST_INST LLAVC 
+MAIN : VOID RMAIN PARA PARC LLAVA LIST_INST LLAVC 
 {
     $$ = new func_main(0, 0, $1, $6);
 }
@@ -114,29 +129,85 @@ LIST_INST : LIST_INST INSTRUCTION
 ;
 
 INSTRUCTION : PRINT ';' { $$ = $1; }
+            | DECLARATION ';' { $$ = $1; }
+            | IF { $$ = $1; } 
 ;
 
 PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); }
 ;
 
-TYPES : VOID { $$ = "void"; }
-    | INT { $$ = "int"; }
+DECLARATION : TYPES ID '=' EXP { $$ = new declaration(0,0,$1,$2,$4); }
+;
+
+IF : RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE 
+    {
+        $$ = new func_if(0,0,$2,$4,$6,$7);
+    }
+;
+
+ELSEIF_LIST : ELSEIF_LIST ELSEIF 
+        { 
+            $1->newInst($2);
+            $$ = $1;
+        }  
+        | ELSEIF 
+        {
+            $$ = new list_instruction();
+            $$->newInst($1);
+        }
+;
+
+ELSEIF : RELSE RIF EXP LLAVA LIST_INST LLAVC 
+        {
+            $$ = new func_if(0,0,$3,$5, nullptr, nullptr);
+        }
+;
+
+ELSE : RELSE LLAVA LIST_INST LLAVC { $$ = $3; }
+    | %empty { }
+;
+
+TYPES : INT { $$ = INTEGER; }
+    | TSTRING { $$ = STRING; }
+    | BOOLEAN { $$ = BOOL; }
 ;
 
 EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP MENOS EXP { $$ = new operation(0, 0, $1, $3, "-"); }
     | EXP POR EXP { $$ = new operation(0, 0, $1, $3, "*"); }
     | EXP DIV EXP { $$ = new operation(0, 0, $1, $3, "/"); }
+    | EXP MEN EXP { $$ = new operation(0, 0, $1, $3, "<"); }
+    | EXP MAY EXP { $$ = new operation(0, 0, $1, $3, ">"); }
+    | EXP MEN_IG EXP { $$ = new operation(0, 0, $1, $3, "<="); }
+    | EXP MAY_IG EXP { $$ = new operation(0, 0, $1, $3, ">="); }
+    | EXP DIF EXP { $$ = new operation(0, 0, $1, $3, "!="); }
+    | EXP IG EXP { $$ = new operation(0, 0, $1, $3, "=="); }
     | PARA EXP PARC { $$ = $2; }
     | PRIMITIVE { $$ = $1; }
 ;
 
-PRIMITIVE : NUMERO { $$ = new primitive(0,0,INTEGER, "", std::stod($1)); }
+PRIMITIVE : NUMERO
+        {
+            int num = stoi($1);
+            $$ = new primitive(0,0,INTEGER,"",num,false);
+        }
         | STRING 
         { 
-            std::string cadena = $1.erase(0,1);
-            $$ = new primitive(0,0,STRING, cadena.erase(cadena.length()-1,1), 0);
+            std::string str1 = $1.erase(0,1);
+            std::string str2 = str1.erase(str1.length()-1,1);
+            $$ = new primitive(0,0,STRING,str2,0,false);
         }
+        | BOOL { $$ = $1; }
+        | LIST_ARR { $$ = $1; }
+;
+
+BOOL : RTRUE { $$ = new primitive(0,0,BOOL,"",0,true); }
+    | RFALSE { $$ = new primitive(0,0,BOOL,"",0,false); }
+;
+
+LIST_ARR : LIST_ARR CORA EXP CORC { $$ = new array_access(0,0,$1,$3); }
+        | ID {
+            $$ = new access(0,0,$1); }  
 ;
 
 %%

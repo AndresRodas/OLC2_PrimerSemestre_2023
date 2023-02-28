@@ -12,8 +12,12 @@ SOURCES += \
     Environment/ast.cpp \
     Environment/environment.cpp \
     Environment/symbol.cpp \
+    Expression/access.cpp \
+    Expression/array_access.cpp \
     Expression/operation.cpp \
     Expression/primitive.cpp \
+    Instruction/declaration.cpp \
+    Instruction/func_if.cpp \
     Instruction/func_main.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
@@ -31,8 +35,12 @@ HEADERS += \
     Environment/environment.hpp \
     Environment/symbol.hpp \
     Environment/type.h \
+    Expression/access.hpp \
+    Expression/array_access.hpp \
     Expression/operation.hpp \
     Expression/primitive.hpp \
+    Instruction/declaration.hpp \
+    Instruction/func_if.hpp \
     Instruction/func_main.hpp \
     Instruction/list_instruction.hpp \
     Instruction/print.hpp \

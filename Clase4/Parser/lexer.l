@@ -58,27 +58,42 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
     /* defincion moderna
         token::ID ID sin caracteres especiales
     */
+    /* defincion clásica / para caracteres especiales */
 
 "+"     return Parser::symbol_type( token::SUMA, loc );
 "-"     return Parser::symbol_type( token::MENOS, loc );
 "*"     return Parser::symbol_type( token::POR, loc );
 "/"     return Parser::symbol_type( token::DIV, loc );
 
-    /* defincion clásica / para caracteres especiales */
-";"     return Parser::symbol_type( token_type(';'), loc );
+">"     return Parser::symbol_type( token::MAY, loc );
+"<"     return Parser::symbol_type( token::MEN, loc );
+">="     return Parser::symbol_type( token::MAY_IG, loc );
+"<="     return Parser::symbol_type( token::MEN_IG, loc );
+"!="     return Parser::symbol_type( token::DIF, loc );
+"=="     return Parser::symbol_type( token::IG, loc );
 
+";"     return Parser::symbol_type( token_type(';'), loc );
+"="     return Parser::symbol_type( token_type('='), loc );
 
 "("     return Parser::symbol_type( token::PARA, loc );
 ")"     return Parser::symbol_type( token::PARC, loc );
 "{"     return Parser::symbol_type( token::LLAVA, loc );
 "}"     return Parser::symbol_type( token::LLAVC, loc );
+"["     return Parser::symbol_type( token::CORA, loc );
+"]"     return Parser::symbol_type( token::CORC, loc );
 
 
     /* TOKENS  */
 "printf"    return Parser::symbol_type( token::PRINTF, loc );
 "void"    return Parser::symbol_type( token::VOID, loc );
 "int"    return Parser::symbol_type( token::INT, loc );
+"string"    return Parser::symbol_type( token::TSTRING, loc );
+"boolean"    return Parser::symbol_type( token::BOOLEAN, loc );
 "main"    return Parser::symbol_type( token::RMAIN, loc );
+"true"    return Parser::symbol_type( token::RTRUE, loc );
+"false"    return Parser::symbol_type( token::RFALSE, loc );
+"if"    return Parser::symbol_type( token::RIF, loc );
+"else"    return Parser::symbol_type( token::RELSE, loc );
 
 {ID}  return Parser::make_ID(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);

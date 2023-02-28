@@ -55,6 +55,8 @@
 
     /* expresiones */
     #include "../Clase4/Expression/primitive.hpp"
+    #include "../Clase4/Expression/access.hpp"
+    #include "../Clase4/Expression/array_access.hpp"
     #include "../Clase4/Expression/operation.hpp"
     #include "../Clase4/Environment/type.h"
     #include "../Clase4/Interfaces/expression.hpp"
@@ -64,9 +66,11 @@
     #include "../Clase4/Instruction/print.hpp"
     #include "../Clase4/Instruction/list_instruction.hpp"
     #include "../Clase4/Instruction/func_main.hpp"
+    #include "../Clase4/Instruction/func_if.hpp"
+    #include "../Clase4/Instruction/declaration.hpp"
 
 
-#line 70 "parser.hpp"
+#line 74 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -195,7 +199,7 @@
 #endif
 
 namespace yy {
-#line 199 "parser.hpp"
+#line 203 "parser.hpp"
 
 
 
@@ -386,20 +390,30 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // TYPES
+      char dummy1[sizeof (TipoDato)];
+
       // EXP
       // PRIMITIVE
-      char dummy1[sizeof (expression*)];
+      // BOOL
+      // LIST_ARR
+      char dummy2[sizeof (expression*)];
 
       // START
       // MAIN
-      char dummy2[sizeof (func_main*)];
+      char dummy3[sizeof (func_main*)];
 
       // INSTRUCTION
       // PRINT
-      char dummy3[sizeof (instruction*)];
+      // DECLARATION
+      // IF
+      // ELSEIF
+      char dummy4[sizeof (instruction*)];
 
       // LIST_INST
-      char dummy4[sizeof (list_instruction*)];
+      // ELSEIF_LIST
+      // ELSE
+      char dummy5[sizeof (list_instruction*)];
 
       // NUMERO
       // ID
@@ -409,15 +423,28 @@ namespace yy {
       // POR
       // DIV
       // PRINTF
+      // RIF
+      // RELSE
       // VOID
       // INT
+      // TSTRING
+      // BOOLEAN
       // PARA
       // PARC
       // RMAIN
       // LLAVA
       // LLAVC
-      // TYPES
-      char dummy5[sizeof (std::string)];
+      // RTRUE
+      // RFALSE
+      // CORA
+      // CORC
+      // MAY
+      // MEN
+      // MAY_IG
+      // MEN_IG
+      // DIF
+      // IG
+      char dummy6[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -474,13 +501,27 @@ namespace yy {
     POR = 263,                     // POR
     DIV = 264,                     // DIV
     PRINTF = 265,                  // PRINTF
-    VOID = 266,                    // VOID
-    INT = 267,                     // INT
-    PARA = 268,                    // PARA
-    PARC = 269,                    // PARC
-    RMAIN = 270,                   // RMAIN
-    LLAVA = 271,                   // LLAVA
-    LLAVC = 272                    // LLAVC
+    RIF = 266,                     // RIF
+    RELSE = 267,                   // RELSE
+    VOID = 268,                    // VOID
+    INT = 269,                     // INT
+    TSTRING = 270,                 // TSTRING
+    BOOLEAN = 271,                 // BOOLEAN
+    PARA = 272,                    // PARA
+    PARC = 273,                    // PARC
+    RMAIN = 274,                   // RMAIN
+    LLAVA = 275,                   // LLAVA
+    LLAVC = 276,                   // LLAVC
+    RTRUE = 277,                   // RTRUE
+    RFALSE = 278,                  // RFALSE
+    CORA = 279,                    // CORA
+    CORC = 280,                    // CORC
+    MAY = 281,                     // MAY
+    MEN = 282,                     // MEN
+    MAY_IG = 283,                  // MAY_IG
+    MEN_IG = 284,                  // MEN_IG
+    DIF = 285,                     // DIF
+    IG = 286                       // IG
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -497,7 +538,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 19, ///< Number of tokens.
+        YYNTOKENS = 34, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -510,23 +551,45 @@ namespace yy {
         S_POR = 8,                               // POR
         S_DIV = 9,                               // DIV
         S_PRINTF = 10,                           // PRINTF
-        S_VOID = 11,                             // VOID
-        S_INT = 12,                              // INT
-        S_PARA = 13,                             // PARA
-        S_PARC = 14,                             // PARC
-        S_RMAIN = 15,                            // RMAIN
-        S_LLAVA = 16,                            // LLAVA
-        S_LLAVC = 17,                            // LLAVC
-        S_18_ = 18,                              // ';'
-        S_YYACCEPT = 19,                         // $accept
-        S_START = 20,                            // START
-        S_MAIN = 21,                             // MAIN
-        S_LIST_INST = 22,                        // LIST_INST
-        S_INSTRUCTION = 23,                      // INSTRUCTION
-        S_PRINT = 24,                            // PRINT
-        S_TYPES = 25,                            // TYPES
-        S_EXP = 26,                              // EXP
-        S_PRIMITIVE = 27                         // PRIMITIVE
+        S_RIF = 11,                              // RIF
+        S_RELSE = 12,                            // RELSE
+        S_VOID = 13,                             // VOID
+        S_INT = 14,                              // INT
+        S_TSTRING = 15,                          // TSTRING
+        S_BOOLEAN = 16,                          // BOOLEAN
+        S_PARA = 17,                             // PARA
+        S_PARC = 18,                             // PARC
+        S_RMAIN = 19,                            // RMAIN
+        S_LLAVA = 20,                            // LLAVA
+        S_LLAVC = 21,                            // LLAVC
+        S_RTRUE = 22,                            // RTRUE
+        S_RFALSE = 23,                           // RFALSE
+        S_CORA = 24,                             // CORA
+        S_CORC = 25,                             // CORC
+        S_MAY = 26,                              // MAY
+        S_MEN = 27,                              // MEN
+        S_MAY_IG = 28,                           // MAY_IG
+        S_MEN_IG = 29,                           // MEN_IG
+        S_DIF = 30,                              // DIF
+        S_IG = 31,                               // IG
+        S_32_ = 32,                              // ';'
+        S_33_ = 33,                              // '='
+        S_YYACCEPT = 34,                         // $accept
+        S_START = 35,                            // START
+        S_MAIN = 36,                             // MAIN
+        S_LIST_INST = 37,                        // LIST_INST
+        S_INSTRUCTION = 38,                      // INSTRUCTION
+        S_PRINT = 39,                            // PRINT
+        S_DECLARATION = 40,                      // DECLARATION
+        S_IF = 41,                               // IF
+        S_ELSEIF_LIST = 42,                      // ELSEIF_LIST
+        S_ELSEIF = 43,                           // ELSEIF
+        S_ELSE = 44,                             // ELSE
+        S_TYPES = 45,                            // TYPES
+        S_EXP = 46,                              // EXP
+        S_PRIMITIVE = 47,                        // PRIMITIVE
+        S_BOOL = 48,                             // BOOL
+        S_LIST_ARR = 49                          // LIST_ARR
       };
     };
 
@@ -563,8 +626,14 @@ namespace yy {
       {
         switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.move< TipoDato > (std::move (that.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_BOOL: // BOOL
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.move< expression* > (std::move (that.value));
         break;
 
@@ -575,10 +644,15 @@ namespace yy {
 
       case symbol_kind::S_INSTRUCTION: // INSTRUCTION
       case symbol_kind::S_PRINT: // PRINT
+      case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELSEIF: // ELSEIF
         value.move< instruction* > (std::move (that.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (std::move (that.value));
         break;
 
@@ -590,14 +664,27 @@ namespace yy {
       case symbol_kind::S_POR: // POR
       case symbol_kind::S_DIV: // DIV
       case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_RIF: // RIF
+      case symbol_kind::S_RELSE: // RELSE
       case symbol_kind::S_VOID: // VOID
       case symbol_kind::S_INT: // INT
+      case symbol_kind::S_TSTRING: // TSTRING
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_PARA: // PARA
       case symbol_kind::S_PARC: // PARC
       case symbol_kind::S_RMAIN: // RMAIN
       case symbol_kind::S_LLAVA: // LLAVA
       case symbol_kind::S_LLAVC: // LLAVC
-      case symbol_kind::S_TYPES: // TYPES
+      case symbol_kind::S_RTRUE: // RTRUE
+      case symbol_kind::S_RFALSE: // RFALSE
+      case symbol_kind::S_CORA: // CORA
+      case symbol_kind::S_CORC: // CORC
+      case symbol_kind::S_MAY: // MAY
+      case symbol_kind::S_MEN: // MEN
+      case symbol_kind::S_MAY_IG: // MAY_IG
+      case symbol_kind::S_MEN_IG: // MEN_IG
+      case symbol_kind::S_DIF: // DIF
+      case symbol_kind::S_IG: // IG
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -620,6 +707,20 @@ namespace yy {
 #else
       basic_symbol (typename Base::kind_type t, const location_type& l)
         : Base (t)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, TipoDato&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const TipoDato& v, const location_type& l)
+        : Base (t)
+        , value (v)
         , location (l)
       {}
 #endif
@@ -716,8 +817,14 @@ namespace yy {
         // Value type destructor.
 switch (yykind)
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.template destroy< TipoDato > ();
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_BOOL: // BOOL
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.template destroy< expression* > ();
         break;
 
@@ -728,10 +835,15 @@ switch (yykind)
 
       case symbol_kind::S_INSTRUCTION: // INSTRUCTION
       case symbol_kind::S_PRINT: // PRINT
+      case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELSEIF: // ELSEIF
         value.template destroy< instruction* > ();
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.template destroy< list_instruction* > ();
         break;
 
@@ -743,14 +855,27 @@ switch (yykind)
       case symbol_kind::S_POR: // POR
       case symbol_kind::S_DIV: // DIV
       case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_RIF: // RIF
+      case symbol_kind::S_RELSE: // RELSE
       case symbol_kind::S_VOID: // VOID
       case symbol_kind::S_INT: // INT
+      case symbol_kind::S_TSTRING: // TSTRING
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_PARA: // PARA
       case symbol_kind::S_PARC: // PARC
       case symbol_kind::S_RMAIN: // RMAIN
       case symbol_kind::S_LLAVA: // LLAVA
       case symbol_kind::S_LLAVC: // LLAVC
-      case symbol_kind::S_TYPES: // TYPES
+      case symbol_kind::S_RTRUE: // RTRUE
+      case symbol_kind::S_RFALSE: // RFALSE
+      case symbol_kind::S_CORA: // CORA
+      case symbol_kind::S_CORC: // CORC
+      case symbol_kind::S_MAY: // MAY
+      case symbol_kind::S_MEN: // MEN
+      case symbol_kind::S_MAY_IG: // MAY_IG
+      case symbol_kind::S_MEN_IG: // MEN_IG
+      case symbol_kind::S_DIF: // DIF
+      case symbol_kind::S_IG: // IG
         value.template destroy< std::string > ();
         break;
 
@@ -1072,6 +1197,36 @@ switch (yykind)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_RIF (std::string v, location_type l)
+      {
+        return symbol_type (token::RIF, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RIF (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RIF, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RELSE (std::string v, location_type l)
+      {
+        return symbol_type (token::RELSE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RELSE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RELSE, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_VOID (std::string v, location_type l)
       {
         return symbol_type (token::VOID, std::move (v), std::move (l));
@@ -1097,6 +1252,36 @@ switch (yykind)
       make_INT (const std::string& v, const location_type& l)
       {
         return symbol_type (token::INT, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TSTRING (std::string v, location_type l)
+      {
+        return symbol_type (token::TSTRING, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_TSTRING (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::TSTRING, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_BOOLEAN (std::string v, location_type l)
+      {
+        return symbol_type (token::BOOLEAN, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_BOOLEAN (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::BOOLEAN, v, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1174,6 +1359,156 @@ switch (yykind)
         return symbol_type (token::LLAVC, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RTRUE (std::string v, location_type l)
+      {
+        return symbol_type (token::RTRUE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RTRUE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RTRUE, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RFALSE (std::string v, location_type l)
+      {
+        return symbol_type (token::RFALSE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RFALSE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RFALSE, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CORA (std::string v, location_type l)
+      {
+        return symbol_type (token::CORA, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_CORA (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::CORA, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CORC (std::string v, location_type l)
+      {
+        return symbol_type (token::CORC, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_CORC (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::CORC, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MAY (std::string v, location_type l)
+      {
+        return symbol_type (token::MAY, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MAY (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::MAY, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MEN (std::string v, location_type l)
+      {
+        return symbol_type (token::MEN, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MEN (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::MEN, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MAY_IG (std::string v, location_type l)
+      {
+        return symbol_type (token::MAY_IG, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MAY_IG (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::MAY_IG, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_MEN_IG (std::string v, location_type l)
+      {
+        return symbol_type (token::MEN_IG, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_MEN_IG (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::MEN_IG, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_DIF (std::string v, location_type l)
+      {
+        return symbol_type (token::DIF, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_DIF (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::DIF, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_IG (std::string v, location_type l)
+      {
+        return symbol_type (token::IG, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_IG (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::IG, v, l);
+      }
+#endif
 
 
     class context
@@ -1244,7 +1579,7 @@ switch (yykind)
     // Tables.
     // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
     // STATE-NUM.
-    static const signed char yypact_[];
+    static const short yypact_[];
 
     // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
     // Performed when YYTABLE does not specify something else to do.  Zero
@@ -1504,9 +1839,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 32,     ///< Last index in yytable_.
-      yynnts_ = 9,  ///< Number of nonterminal symbols.
-      yyfinal_ = 6 ///< Termination state number.
+      yylast_ = 178,     ///< Last index in yytable_.
+      yynnts_ = 16,  ///< Number of nonterminal symbols.
+      yyfinal_ = 5 ///< Termination state number.
     };
 
 
@@ -1532,8 +1867,8 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    18,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    32,
+       2,    33,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -1554,10 +1889,11 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    31
     };
     // Last valid token kind.
-    const int code_max = 272;
+    const int code_max = 286;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1576,8 +1912,14 @@ switch (yykind)
   {
     switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.copy< TipoDato > (YY_MOVE (that.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_BOOL: // BOOL
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.copy< expression* > (YY_MOVE (that.value));
         break;
 
@@ -1588,10 +1930,15 @@ switch (yykind)
 
       case symbol_kind::S_INSTRUCTION: // INSTRUCTION
       case symbol_kind::S_PRINT: // PRINT
+      case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELSEIF: // ELSEIF
         value.copy< instruction* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.copy< list_instruction* > (YY_MOVE (that.value));
         break;
 
@@ -1603,14 +1950,27 @@ switch (yykind)
       case symbol_kind::S_POR: // POR
       case symbol_kind::S_DIV: // DIV
       case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_RIF: // RIF
+      case symbol_kind::S_RELSE: // RELSE
       case symbol_kind::S_VOID: // VOID
       case symbol_kind::S_INT: // INT
+      case symbol_kind::S_TSTRING: // TSTRING
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_PARA: // PARA
       case symbol_kind::S_PARC: // PARC
       case symbol_kind::S_RMAIN: // RMAIN
       case symbol_kind::S_LLAVA: // LLAVA
       case symbol_kind::S_LLAVC: // LLAVC
-      case symbol_kind::S_TYPES: // TYPES
+      case symbol_kind::S_RTRUE: // RTRUE
+      case symbol_kind::S_RFALSE: // RFALSE
+      case symbol_kind::S_CORA: // CORA
+      case symbol_kind::S_CORC: // CORC
+      case symbol_kind::S_MAY: // MAY
+      case symbol_kind::S_MEN: // MEN
+      case symbol_kind::S_MAY_IG: // MAY_IG
+      case symbol_kind::S_MEN_IG: // MEN_IG
+      case symbol_kind::S_DIF: // DIF
+      case symbol_kind::S_IG: // IG
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -1643,8 +2003,14 @@ switch (yykind)
     super_type::move (s);
     switch (this->kind ())
     {
+      case symbol_kind::S_TYPES: // TYPES
+        value.move< TipoDato > (YY_MOVE (s.value));
+        break;
+
       case symbol_kind::S_EXP: // EXP
       case symbol_kind::S_PRIMITIVE: // PRIMITIVE
+      case symbol_kind::S_BOOL: // BOOL
+      case symbol_kind::S_LIST_ARR: // LIST_ARR
         value.move< expression* > (YY_MOVE (s.value));
         break;
 
@@ -1655,10 +2021,15 @@ switch (yykind)
 
       case symbol_kind::S_INSTRUCTION: // INSTRUCTION
       case symbol_kind::S_PRINT: // PRINT
+      case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_IF: // IF
+      case symbol_kind::S_ELSEIF: // ELSEIF
         value.move< instruction* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
+      case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
+      case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (YY_MOVE (s.value));
         break;
 
@@ -1670,14 +2041,27 @@ switch (yykind)
       case symbol_kind::S_POR: // POR
       case symbol_kind::S_DIV: // DIV
       case symbol_kind::S_PRINTF: // PRINTF
+      case symbol_kind::S_RIF: // RIF
+      case symbol_kind::S_RELSE: // RELSE
       case symbol_kind::S_VOID: // VOID
       case symbol_kind::S_INT: // INT
+      case symbol_kind::S_TSTRING: // TSTRING
+      case symbol_kind::S_BOOLEAN: // BOOLEAN
       case symbol_kind::S_PARA: // PARA
       case symbol_kind::S_PARC: // PARC
       case symbol_kind::S_RMAIN: // RMAIN
       case symbol_kind::S_LLAVA: // LLAVA
       case symbol_kind::S_LLAVC: // LLAVC
-      case symbol_kind::S_TYPES: // TYPES
+      case symbol_kind::S_RTRUE: // RTRUE
+      case symbol_kind::S_RFALSE: // RFALSE
+      case symbol_kind::S_CORA: // CORA
+      case symbol_kind::S_CORC: // CORC
+      case symbol_kind::S_MAY: // MAY
+      case symbol_kind::S_MEN: // MEN
+      case symbol_kind::S_MAY_IG: // MAY_IG
+      case symbol_kind::S_MEN_IG: // MEN_IG
+      case symbol_kind::S_DIF: // DIF
+      case symbol_kind::S_IG: // IG
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -1743,7 +2127,7 @@ switch (yykind)
   }
 
 } // yy
-#line 1747 "parser.hpp"
+#line 2131 "parser.hpp"
 
 
 
