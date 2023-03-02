@@ -444,6 +444,8 @@ namespace yy {
       // MEN_IG
       // DIF
       // IG
+      // AND
+      // OR
       char dummy6[sizeof (std::string)];
     };
 
@@ -521,7 +523,9 @@ namespace yy {
     MAY_IG = 283,                  // MAY_IG
     MEN_IG = 284,                  // MEN_IG
     DIF = 285,                     // DIF
-    IG = 286                       // IG
+    IG = 286,                      // IG
+    AND = 287,                     // AND
+    OR = 288                       // OR
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -538,7 +542,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 34, ///< Number of tokens.
+        YYNTOKENS = 36, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -572,24 +576,26 @@ namespace yy {
         S_MEN_IG = 29,                           // MEN_IG
         S_DIF = 30,                              // DIF
         S_IG = 31,                               // IG
-        S_32_ = 32,                              // ';'
-        S_33_ = 33,                              // '='
-        S_YYACCEPT = 34,                         // $accept
-        S_START = 35,                            // START
-        S_MAIN = 36,                             // MAIN
-        S_LIST_INST = 37,                        // LIST_INST
-        S_INSTRUCTION = 38,                      // INSTRUCTION
-        S_PRINT = 39,                            // PRINT
-        S_DECLARATION = 40,                      // DECLARATION
-        S_IF = 41,                               // IF
-        S_ELSEIF_LIST = 42,                      // ELSEIF_LIST
-        S_ELSEIF = 43,                           // ELSEIF
-        S_ELSE = 44,                             // ELSE
-        S_TYPES = 45,                            // TYPES
-        S_EXP = 46,                              // EXP
-        S_PRIMITIVE = 47,                        // PRIMITIVE
-        S_BOOL = 48,                             // BOOL
-        S_LIST_ARR = 49                          // LIST_ARR
+        S_AND = 32,                              // AND
+        S_OR = 33,                               // OR
+        S_34_ = 34,                              // ';'
+        S_35_ = 35,                              // '='
+        S_YYACCEPT = 36,                         // $accept
+        S_START = 37,                            // START
+        S_MAIN = 38,                             // MAIN
+        S_LIST_INST = 39,                        // LIST_INST
+        S_INSTRUCTION = 40,                      // INSTRUCTION
+        S_PRINT = 41,                            // PRINT
+        S_DECLARATION = 42,                      // DECLARATION
+        S_IF = 43,                               // IF
+        S_ELSEIF_LIST = 44,                      // ELSEIF_LIST
+        S_ELSEIF = 45,                           // ELSEIF
+        S_ELSE = 46,                             // ELSE
+        S_TYPES = 47,                            // TYPES
+        S_EXP = 48,                              // EXP
+        S_PRIMITIVE = 49,                        // PRIMITIVE
+        S_BOOL = 50,                             // BOOL
+        S_LIST_ARR = 51                          // LIST_ARR
       };
     };
 
@@ -685,6 +691,8 @@ namespace yy {
       case symbol_kind::S_MEN_IG: // MEN_IG
       case symbol_kind::S_DIF: // DIF
       case symbol_kind::S_IG: // IG
+      case symbol_kind::S_AND: // AND
+      case symbol_kind::S_OR: // OR
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -876,6 +884,8 @@ switch (yykind)
       case symbol_kind::S_MEN_IG: // MEN_IG
       case symbol_kind::S_DIF: // DIF
       case symbol_kind::S_IG: // IG
+      case symbol_kind::S_AND: // AND
+      case symbol_kind::S_OR: // OR
         value.template destroy< std::string > ();
         break;
 
@@ -1509,6 +1519,36 @@ switch (yykind)
         return symbol_type (token::IG, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_AND (std::string v, location_type l)
+      {
+        return symbol_type (token::AND, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_AND (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::AND, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_OR (std::string v, location_type l)
+      {
+        return symbol_type (token::OR, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_OR (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::OR, v, l);
+      }
+#endif
 
 
     class context
@@ -1839,7 +1879,7 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 178,     ///< Last index in yytable_.
+      yylast_ = 194,     ///< Last index in yytable_.
       yynnts_ = 16,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
@@ -1867,8 +1907,8 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    32,
-       2,    33,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    34,
+       2,    35,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -1890,10 +1930,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31
+      25,    26,    27,    28,    29,    30,    31,    32,    33
     };
     // Last valid token kind.
-    const int code_max = 286;
+    const int code_max = 288;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1971,6 +2011,8 @@ switch (yykind)
       case symbol_kind::S_MEN_IG: // MEN_IG
       case symbol_kind::S_DIF: // DIF
       case symbol_kind::S_IG: // IG
+      case symbol_kind::S_AND: // AND
+      case symbol_kind::S_OR: // OR
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2062,6 +2104,8 @@ switch (yykind)
       case symbol_kind::S_MEN_IG: // MEN_IG
       case symbol_kind::S_DIF: // DIF
       case symbol_kind::S_IG: // IG
+      case symbol_kind::S_AND: // AND
+      case symbol_kind::S_OR: // OR
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2127,7 +2171,7 @@ switch (yykind)
   }
 
 } // yy
-#line 2131 "parser.hpp"
+#line 2175 "parser.hpp"
 
 
 

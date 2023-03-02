@@ -111,7 +111,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para menor qué";
         }
     }
     else if(Operator == ">")
@@ -126,7 +126,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para mayor qué";
         }
     }
     else if(Operator == "<=")
@@ -141,7 +141,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para menor o igual";
         }
     }
     else if(Operator == ">=")
@@ -156,7 +156,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para mayor o igual";
         }
     }
     else if(Operator == "!=")
@@ -185,7 +185,7 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para diferencia";
         }
     }
     else if(Operator == "==")
@@ -214,7 +214,37 @@ symbol operation::ejecutar(environment *env, ast *tree)
         else
         {
             //se reporta un error
-            tree->ErrorOut += "Error: tipo incorrecto para multiplicación";
+            tree->ErrorOut += "Error: tipo incorrecto para igualación";
+        }
+    }
+    else if(Operator == "&&")
+    {
+        if(Dominante == BOOL)
+        {
+            bool *val1 = (bool *)op1.Value;
+            bool *val2 = (bool *)op2.Value;
+            bool result = *val1 && *val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+        }
+        else
+        {
+            //se reporta un error
+            tree->ErrorOut += "Error: tipo incorrecto para operación lógica";
+        }
+    }
+    else if(Operator == "||")
+    {
+        if(Dominante == BOOL)
+        {
+            bool *val1 = (bool *)op1.Value;
+            bool *val2 = (bool *)op2.Value;
+            bool result = *val1 || *val2;
+            sym = symbol(Line,Col,"",BOOL,&result);
+        }
+        else
+        {
+            //se reporta un error
+            tree->ErrorOut += "Error: tipo incorrecto para operacion lógica";
         }
     }
     return sym;

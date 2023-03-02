@@ -64,10 +64,11 @@
 /*tokens*/
 %token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF RIF RELSE
 %token <std::string> VOID INT TSTRING BOOLEAN PARA PARC RMAIN LLAVA LLAVC RTRUE RFALSE CORA CORC
-%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG
+%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR
 %token ';' '='
 
 /* precedencia de operadores */
+%left AND OR
 %left IG DIF
 %left MEN MEN_IG MAY MAY_IG
 %left SUMA MENOS
@@ -143,6 +144,10 @@ IF : RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
     {
         $$ = new func_if(0,0,$2,$4,$6,$7);
     }
+    | RIF EXP LLAVA LIST_INST LLAVC ELSE 
+    {
+        $$ = new func_if(0,0,$2,$4,nullptr,$6);
+    }
 ;
 
 ELSEIF_LIST : ELSEIF_LIST ELSEIF 
@@ -182,6 +187,8 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP MAY_IG EXP { $$ = new operation(0, 0, $1, $3, ">="); }
     | EXP DIF EXP { $$ = new operation(0, 0, $1, $3, "!="); }
     | EXP IG EXP { $$ = new operation(0, 0, $1, $3, "=="); }
+    | EXP AND EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
+    | EXP OR EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | PARA EXP PARC { $$ = $2; }
     | PRIMITIVE { $$ = $1; }
 ;

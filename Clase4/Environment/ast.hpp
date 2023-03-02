@@ -8,6 +8,8 @@ public:
     std::string ConsoleOut;
     std::string ErrorOut;
     std::string GraphOut;
+    bool ElseIfFlag;
+    bool IfReturn;
     ast();
 };
 
