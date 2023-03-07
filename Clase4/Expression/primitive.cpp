@@ -25,6 +25,5 @@ symbol primitive::ejecutar(environment *env, ast* tree)
     default:
         break;
     }
-    //std::cout << "retornando: " + std::to_string(*static_cast<int*>(Value) )+ "\n";
     return sym;
 }

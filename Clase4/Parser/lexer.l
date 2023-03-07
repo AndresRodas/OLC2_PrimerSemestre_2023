@@ -77,6 +77,8 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 
 ";"     return Parser::symbol_type( token_type(';'), loc );
 "="     return Parser::symbol_type( token_type('='), loc );
+"."     return Parser::symbol_type( token_type('.'), loc );
+","     return Parser::symbol_type( token_type(','), loc );
 
 "("     return Parser::symbol_type( token::PARA, loc );
 ")"     return Parser::symbol_type( token::PARC, loc );
@@ -97,6 +99,7 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 "false"    return Parser::symbol_type( token::RFALSE, loc );
 "if"    return Parser::symbol_type( token::RIF, loc );
 "else"    return Parser::symbol_type( token::RELSE, loc );
+"struct"    return Parser::symbol_type( token::STRUCT, loc );
 
 {ID}  return Parser::make_ID(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);

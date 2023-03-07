@@ -12,9 +12,9 @@ func_if::func_if(int line, int col, expression *condition, instruction *block, i
 
 void func_if::ejecutar(environment *env, ast *tree)
 {
-
     symbol sym = Condition->ejecutar(env, tree);
-
+    //creando entorno if
+    environment *IfEnv = new environment(env, "IF");
     if(sym.Tipo == BOOL)
     {
         //si se cumple el if
@@ -22,7 +22,7 @@ void func_if::ejecutar(environment *env, ast *tree)
         if(*val)
         {
             //ejecuta el bloque
-            Block->ejecutar(env, tree);
+            Block->ejecutar(IfEnv, tree);
             //valida si es else if
             if(tree->ElseIfFlag)
             {
@@ -37,7 +37,7 @@ void func_if::ejecutar(environment *env, ast *tree)
             //flag de else if
             tree->ElseIfFlag = true;
             tree->IfReturn = false;
-            ElseIfBlock->ejecutar(env, tree);
+            ElseIfBlock->ejecutar(IfEnv, tree);
             //validación return
             if(tree->IfReturn)
             {
@@ -47,7 +47,7 @@ void func_if::ejecutar(environment *env, ast *tree)
         //si aun no se cumple y existe else
         if(ElseBlock != nullptr)
         {
-            ElseBlock->ejecutar(env, tree);
+            ElseBlock->ejecutar(IfEnv, tree);
         }
 
     }

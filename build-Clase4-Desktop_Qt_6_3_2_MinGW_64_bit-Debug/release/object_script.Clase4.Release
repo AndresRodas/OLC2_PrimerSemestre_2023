@@ -3,8 +3,13 @@ release/environment.o
 release/symbol.o
 release/access.o
 release/array_access.o
+release/list_expression.o
+release/map_struct_dec.o
 release/operation.o
 release/primitive.o
+release/struct_access.o
+release/create_struct.o
+release/dec_struct.o
 release/declaration.o
 release/func_if.o
 release/func_main.o

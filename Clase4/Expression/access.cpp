@@ -9,6 +9,6 @@ access::access(int line, int col, std::string id)
 
 symbol access::ejecutar(environment *env, ast *tree)
 {
-    symbol sym = env->GetVariable(Id, tree);
+    symbol sym = env->GetVariable(Id, env, tree);
     return sym;
 }

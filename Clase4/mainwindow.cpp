@@ -23,7 +23,7 @@ void MainWindow::on_pushButton_2_clicked()
 {
     QMessageBox *msg = new QMessageBox();
     //creando entorno global
-    environment *GlobalEnv = new environment();
+    environment *GlobalEnv = new environment(nullptr, "Global");
     //creando ast
     ast *Root = new ast();
     //ejecuta el analizador

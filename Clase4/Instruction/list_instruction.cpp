@@ -7,7 +7,8 @@ list_instruction::list_instruction()
 
 void list_instruction::ejecutar(environment *env, ast *tree)
 {
-    for (int i = 0; i < this->ListInst.size(); i ++){
+    for (int i = 0; i < this->ListInst.size(); i ++)
+    {
         this->ListInst[i]->ejecutar(env, tree);
         //validación return
         if(tree->IfReturn)

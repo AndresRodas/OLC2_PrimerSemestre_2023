@@ -1,8 +1,9 @@
 #include "environment.hpp"
 
-environment::environment()
+environment::environment(environment *anterior, std::string id)
 {
-
+    Anterior = anterior;
+    Id = id;
 }
 
 void environment::SaveVariable(symbol sym, std::string id, ast *tree)
@@ -18,23 +19,77 @@ void environment::SaveVariable(symbol sym, std::string id, ast *tree)
     }
 }
 
-symbol environment::GetVariable(std::string id, ast *tree)
+void environment::SaveStruct(map<std::string, TipoDato> tabla, std::string id, ast *tree)
 {
-    symbol sym (0,0,"",NULO,nullptr);
-    //return sym;
-    if (Tabla.find(id) == Tabla.end())
+    if (TablaStructs.find(id) == TablaStructs.end())
     {
-        //se reporta un error
-        tree->ErrorOut += "No existe la variable "+id;
+        TablaStructs[id] = tabla;
     }
     else
     {
-        symbol tempSym (Tabla[id].Line,
-                        Tabla[id].Col,
-                        Tabla[id].Id,
-                        Tabla[id].Tipo,
-                        Tabla[id].Value);
-        sym = tempSym;
+        //se reporta un error
+        tree->ErrorOut += "Ya existe el struct "+id;
     }
+}
+
+symbol environment::GetVariable(std::string id, environment *env, ast *tree)
+{
+    symbol sym (0,0,"",NULO,nullptr);
+    environment tmpEnv = *env;
+
+    for( ; ;)
+    {
+        if (tmpEnv.Tabla.find(id) == tmpEnv.Tabla.end())
+        {
+            if(tmpEnv.Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                tmpEnv = *tmpEnv.Anterior;
+            }
+        }
+        else
+        {
+            symbol tempSym (tmpEnv.Tabla[id].Line,
+                            tmpEnv.Tabla[id].Col,
+                            tmpEnv.Tabla[id].Id,
+                            tmpEnv.Tabla[id].Tipo,
+                            tmpEnv.Tabla[id].Value);
+            sym = tempSym;
+            break;
+        }
+
+    }
+
     return sym;
+}
+
+map<std::string, TipoDato> environment::GetStruct(std::string id, environment *env, ast *tree)
+{
+    map<std::string, TipoDato> sym_struct;
+    environment tmpEnv = *env;
+
+    for( ; ;)
+    {
+        if (tmpEnv.TablaStructs.find(id) == tmpEnv.TablaStructs.end())
+        {
+            if(tmpEnv.Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                tmpEnv = *tmpEnv.Anterior;
+            }
+        }
+        else
+        {
+            sym_struct = tmpEnv.TablaStructs[id];
+            break;
+        }
+
+    }
+    return sym_struct;
 }

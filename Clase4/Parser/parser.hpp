@@ -57,10 +57,13 @@
     #include "../Clase4/Expression/primitive.hpp"
     #include "../Clase4/Expression/access.hpp"
     #include "../Clase4/Expression/array_access.hpp"
+    #include "../Clase4/Expression/struct_access.hpp"
     #include "../Clase4/Expression/operation.hpp"
     #include "../Clase4/Environment/type.h"
     #include "../Clase4/Interfaces/expression.hpp"
-
+    #include "../Clase4/Expression/map_struct_dec.hpp"
+    #include "../Clase4/Expression/list_expression.hpp"
+    
     /* instrucciones */
     #include "../Clase4/Interfaces/instruction.hpp"
     #include "../Clase4/Instruction/print.hpp"
@@ -68,9 +71,10 @@
     #include "../Clase4/Instruction/func_main.hpp"
     #include "../Clase4/Instruction/func_if.hpp"
     #include "../Clase4/Instruction/declaration.hpp"
+    #include "../Clase4/Instruction/dec_struct.hpp"
+    #include "../Clase4/Instruction/create_struct.hpp"
 
-
-#line 74 "parser.hpp"
+#line 78 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -199,7 +203,7 @@
 #endif
 
 namespace yy {
-#line 203 "parser.hpp"
+#line 207 "parser.hpp"
 
 
 
@@ -408,12 +412,20 @@ namespace yy {
       // DECLARATION
       // IF
       // ELSEIF
+      // STRUCT_DECLARATION
+      // STRUCT_CREATION
       char dummy4[sizeof (instruction*)];
+
+      // EXP_LIST
+      char dummy5[sizeof (list_expression*)];
 
       // LIST_INST
       // ELSEIF_LIST
       // ELSE
-      char dummy5[sizeof (list_instruction*)];
+      char dummy6[sizeof (list_instruction*)];
+
+      // DEC_LIST
+      char dummy7[sizeof (map_struct_dec*)];
 
       // NUMERO
       // ID
@@ -446,7 +458,8 @@ namespace yy {
       // IG
       // AND
       // OR
-      char dummy6[sizeof (std::string)];
+      // STRUCT
+      char dummy8[sizeof (std::string)];
     };
 
     /// The size of the largest semantic type.
@@ -525,7 +538,8 @@ namespace yy {
     DIF = 285,                     // DIF
     IG = 286,                      // IG
     AND = 287,                     // AND
-    OR = 288                       // OR
+    OR = 288,                      // OR
+    STRUCT = 289                   // STRUCT
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -542,7 +556,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 36, ///< Number of tokens.
+        YYNTOKENS = 39, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -578,24 +592,31 @@ namespace yy {
         S_IG = 31,                               // IG
         S_AND = 32,                              // AND
         S_OR = 33,                               // OR
-        S_34_ = 34,                              // ';'
-        S_35_ = 35,                              // '='
-        S_YYACCEPT = 36,                         // $accept
-        S_START = 37,                            // START
-        S_MAIN = 38,                             // MAIN
-        S_LIST_INST = 39,                        // LIST_INST
-        S_INSTRUCTION = 40,                      // INSTRUCTION
-        S_PRINT = 41,                            // PRINT
-        S_DECLARATION = 42,                      // DECLARATION
-        S_IF = 43,                               // IF
-        S_ELSEIF_LIST = 44,                      // ELSEIF_LIST
-        S_ELSEIF = 45,                           // ELSEIF
-        S_ELSE = 46,                             // ELSE
-        S_TYPES = 47,                            // TYPES
-        S_EXP = 48,                              // EXP
-        S_PRIMITIVE = 49,                        // PRIMITIVE
-        S_BOOL = 50,                             // BOOL
-        S_LIST_ARR = 51                          // LIST_ARR
+        S_STRUCT = 34,                           // STRUCT
+        S_35_ = 35,                              // ';'
+        S_36_ = 36,                              // '='
+        S_37_ = 37,                              // '.'
+        S_38_ = 38,                              // ','
+        S_YYACCEPT = 39,                         // $accept
+        S_START = 40,                            // START
+        S_MAIN = 41,                             // MAIN
+        S_LIST_INST = 42,                        // LIST_INST
+        S_INSTRUCTION = 43,                      // INSTRUCTION
+        S_PRINT = 44,                            // PRINT
+        S_DECLARATION = 45,                      // DECLARATION
+        S_IF = 46,                               // IF
+        S_ELSEIF_LIST = 47,                      // ELSEIF_LIST
+        S_ELSEIF = 48,                           // ELSEIF
+        S_ELSE = 49,                             // ELSE
+        S_STRUCT_DECLARATION = 50,               // STRUCT_DECLARATION
+        S_DEC_LIST = 51,                         // DEC_LIST
+        S_STRUCT_CREATION = 52,                  // STRUCT_CREATION
+        S_EXP_LIST = 53,                         // EXP_LIST
+        S_TYPES = 54,                            // TYPES
+        S_EXP = 55,                              // EXP
+        S_PRIMITIVE = 56,                        // PRIMITIVE
+        S_BOOL = 57,                             // BOOL
+        S_LIST_ARR = 58                          // LIST_ARR
       };
     };
 
@@ -653,13 +674,23 @@ namespace yy {
       case symbol_kind::S_DECLARATION: // DECLARATION
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.move< instruction* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_EXP_LIST: // EXP_LIST
+        value.move< list_expression* > (std::move (that.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
       case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (std::move (that.value));
+        break;
+
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
+        value.move< map_struct_dec* > (std::move (that.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
@@ -693,6 +724,7 @@ namespace yy {
       case symbol_kind::S_IG: // IG
       case symbol_kind::S_AND: // AND
       case symbol_kind::S_OR: // OR
+      case symbol_kind::S_STRUCT: // STRUCT
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -776,6 +808,20 @@ namespace yy {
 #endif
 
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, list_expression*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const list_expression*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, list_instruction*&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -783,6 +829,20 @@ namespace yy {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const list_instruction*& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, map_struct_dec*&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const map_struct_dec*& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -846,13 +906,23 @@ switch (yykind)
       case symbol_kind::S_DECLARATION: // DECLARATION
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.template destroy< instruction* > ();
+        break;
+
+      case symbol_kind::S_EXP_LIST: // EXP_LIST
+        value.template destroy< list_expression* > ();
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
       case symbol_kind::S_ELSE: // ELSE
         value.template destroy< list_instruction* > ();
+        break;
+
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
+        value.template destroy< map_struct_dec* > ();
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
@@ -886,6 +956,7 @@ switch (yykind)
       case symbol_kind::S_IG: // IG
       case symbol_kind::S_AND: // AND
       case symbol_kind::S_OR: // OR
+      case symbol_kind::S_STRUCT: // STRUCT
         value.template destroy< std::string > ();
         break;
 
@@ -896,11 +967,14 @@ switch (yykind)
         Base::clear ();
       }
 
+#if YYDEBUG || 0
       /// The user-facing name of this symbol.
-      std::string name () const YY_NOEXCEPT
+      const char *name () const YY_NOEXCEPT
       {
         return Parser::symbol_name (this->kind ());
       }
+#endif // #if YYDEBUG || 0
+
 
       /// Backward compatibility (Bison 3.6).
       symbol_kind_type type_get () const YY_NOEXCEPT;
@@ -1034,9 +1108,12 @@ switch (yykind)
     /// Report a syntax error.
     void error (const syntax_error& err);
 
+#if YYDEBUG || 0
     /// The user-facing name of the symbol whose (internal) number is
     /// YYSYMBOL.  No bounds checking.
-    static std::string symbol_name (symbol_kind_type yysymbol);
+    static const char *symbol_name (symbol_kind_type yysymbol);
+#endif // #if YYDEBUG || 0
+
 
     // Implementation of make_symbol for each symbol type.
 #if 201103L <= YY_CPLUSPLUS
@@ -1549,25 +1626,22 @@ switch (yykind)
         return symbol_type (token::OR, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_STRUCT (std::string v, location_type l)
+      {
+        return symbol_type (token::STRUCT, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_STRUCT (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::STRUCT, v, l);
+      }
+#endif
 
-
-    class context
-    {
-    public:
-      context (const Parser& yyparser, const symbol_type& yyla);
-      const symbol_type& lookahead () const { return yyla_; }
-      symbol_kind_type token () const { return yyla_.kind (); }
-      const location_type& location () const { return yyla_.location; }
-
-      /// Put in YYARG at most YYARGN of the expected tokens, and return the
-      /// number of tokens stored in YYARG.  If YYARG is null, return the
-      /// number of expected tokens (guaranteed to be less than YYNTOKENS).
-      int expected_tokens (symbol_kind_type yyarg[], int yyargn) const;
-
-    private:
-      const Parser& yyparser_;
-      const symbol_type& yyla_;
-    };
 
   private:
 #if YY_CPLUSPLUS < 201103L
@@ -1581,13 +1655,6 @@ switch (yykind)
     /// Stored state numbers (used for stacks).
     typedef signed char state_type;
 
-    /// The arguments of the error message.
-    int yy_syntax_error_arguments_ (const context& yyctx,
-                                    symbol_kind_type yyarg[], int yyargn) const;
-
-    /// Generate an error message.
-    /// \param yyctx     the context in which the error occurred.
-    virtual std::string yysyntax_error_ (const context& yyctx) const;
     /// Compute post-reduction state.
     /// \param yystate   the current state
     /// \param yysym     the nonterminal to push on the stack
@@ -1609,11 +1676,10 @@ switch (yykind)
     /// are valid, yet not members of the token_type enum.
     static symbol_kind_type yytranslate_ (int t);
 
-    /// Convert the symbol name \a n to a form suitable for a diagnostic.
-    static std::string yytnamerr_ (const char *yystr);
-
+#if YYDEBUG || 0
     /// For a symbol, its name in clear.
     static const char* const yytname_[];
+#endif // #if YYDEBUG || 0
 
 
     // Tables.
@@ -1652,7 +1718,7 @@ switch (yykind)
 
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r) const;
     /// Print the state stack on the debug stream.
@@ -1879,8 +1945,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 194,     ///< Last index in yytable_.
-      yynnts_ = 16,  ///< Number of nonterminal symbols.
+      yylast_ = 248,     ///< Last index in yytable_.
+      yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -1906,9 +1972,9 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    34,
-       2,    35,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    38,     2,    37,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    35,
+       2,    36,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -1930,10 +1996,10 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34
     };
     // Last valid token kind.
-    const int code_max = 288;
+    const int code_max = 289;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -1973,13 +2039,23 @@ switch (yykind)
       case symbol_kind::S_DECLARATION: // DECLARATION
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.copy< instruction* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_EXP_LIST: // EXP_LIST
+        value.copy< list_expression* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
       case symbol_kind::S_ELSE: // ELSE
         value.copy< list_instruction* > (YY_MOVE (that.value));
+        break;
+
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
+        value.copy< map_struct_dec* > (YY_MOVE (that.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
@@ -2013,6 +2089,7 @@ switch (yykind)
       case symbol_kind::S_IG: // IG
       case symbol_kind::S_AND: // AND
       case symbol_kind::S_OR: // OR
+      case symbol_kind::S_STRUCT: // STRUCT
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2066,13 +2143,23 @@ switch (yykind)
       case symbol_kind::S_DECLARATION: // DECLARATION
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
+      case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
         value.move< instruction* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_EXP_LIST: // EXP_LIST
+        value.move< list_expression* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_LIST_INST: // LIST_INST
       case symbol_kind::S_ELSEIF_LIST: // ELSEIF_LIST
       case symbol_kind::S_ELSE: // ELSE
         value.move< list_instruction* > (YY_MOVE (s.value));
+        break;
+
+      case symbol_kind::S_DEC_LIST: // DEC_LIST
+        value.move< map_struct_dec* > (YY_MOVE (s.value));
         break;
 
       case symbol_kind::S_NUMERO: // NUMERO
@@ -2106,6 +2193,7 @@ switch (yykind)
       case symbol_kind::S_IG: // IG
       case symbol_kind::S_AND: // AND
       case symbol_kind::S_OR: // OR
+      case symbol_kind::S_STRUCT: // STRUCT
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2171,7 +2259,7 @@ switch (yykind)
   }
 
 } // yy
-#line 2175 "parser.hpp"
+#line 2263 "parser.hpp"
 
 
 
