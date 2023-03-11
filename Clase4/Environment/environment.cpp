@@ -32,6 +32,20 @@ void environment::SaveStruct(map<std::string, TipoDato> tabla, std::string id, a
     }
 }
 
+void environment::SaveFunc(func_symbol funcSym, std::string id, ast *tree)
+{
+    if (TablaFunctions.find(id) == TablaFunctions.end())
+    {
+        std::cout << "guardando: "<<id;
+        TablaFunctions[id] = funcSym;
+    }
+    else
+    {
+        //se reporta un error
+        tree->ErrorOut += "Error: ya existe la funcion "+id;
+    }
+}
+
 symbol environment::GetVariable(std::string id, environment *env, ast *tree)
 {
     symbol sym (0,0,"",NULO,nullptr);
@@ -93,3 +107,33 @@ map<std::string, TipoDato> environment::GetStruct(std::string id, environment *e
     }
     return sym_struct;
 }
+
+
+func_symbol environment::GetFunc(std::string id, environment *env, ast *tree)
+{
+    func_symbol sym_func;
+    environment tmpEnv = *env;
+
+    for( ; ;)
+    {
+        if (tmpEnv.TablaFunctions.find(id) == tmpEnv.TablaFunctions.end())
+        {
+            if(tmpEnv.Anterior == nullptr)
+            {
+                break;
+            }
+            else
+            {
+                tmpEnv = *tmpEnv.Anterior;
+            }
+        }
+        else
+        {
+            sym_func = tmpEnv.TablaFunctions[id];
+            break;
+        }
+
+    }
+    return sym_func;
+}
+

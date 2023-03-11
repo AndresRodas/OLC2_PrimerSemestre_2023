@@ -11,19 +11,24 @@ CONFIG += c++17
 SOURCES += \
     Environment/ast.cpp \
     Environment/environment.cpp \
+    Environment/func_symbol.cpp \
     Environment/symbol.cpp \
     Expression/access.cpp \
     Expression/array_access.cpp \
+    Expression/call_exp.cpp \
     Expression/list_expression.cpp \
     Expression/map_struct_dec.cpp \
     Expression/operation.cpp \
     Expression/primitive.cpp \
     Expression/struct_access.cpp \
+    Instruction/call_inst.cpp \
     Instruction/create_struct.cpp \
     Instruction/dec_struct.cpp \
     Instruction/declaration.cpp \
     Instruction/func_if.cpp \
     Instruction/func_main.cpp \
+    Instruction/function.cpp \
+    Instruction/inst_return.cpp \
     Instruction/list_instruction.cpp \
     Instruction/print.cpp \
     Interfaces/expression.cpp \
@@ -38,20 +43,25 @@ SOURCES += \
 HEADERS += \
     Environment/ast.hpp \
     Environment/environment.hpp \
+    Environment/func_symbol.hpp \
     Environment/symbol.hpp \
     Environment/type.h \
     Expression/access.hpp \
     Expression/array_access.hpp \
+    Expression/call_exp.hpp \
     Expression/list_expression.hpp \
     Expression/map_struct_dec.hpp \
     Expression/operation.hpp \
     Expression/primitive.hpp \
     Expression/struct_access.hpp \
+    Instruction/call_inst.hpp \
     Instruction/create_struct.hpp \
     Instruction/dec_struct.hpp \
     Instruction/declaration.hpp \
     Instruction/func_if.hpp \
     Instruction/func_main.hpp \
+    Instruction/function.hpp \
+    Instruction/inst_return.hpp \
     Instruction/list_instruction.hpp \
     Instruction/print.hpp \
     Interfaces/expression.hpp \

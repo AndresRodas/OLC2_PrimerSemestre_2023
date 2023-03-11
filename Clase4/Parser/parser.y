@@ -47,7 +47,8 @@
     #include "../Clase4/Interfaces/expression.hpp"
     #include "../Clase4/Expression/map_struct_dec.hpp"
     #include "../Clase4/Expression/list_expression.hpp"
-    
+    #include "../Clase4/Expression/call_exp.hpp"
+
     /* instrucciones */
     #include "../Clase4/Interfaces/instruction.hpp"
     #include "../Clase4/Instruction/print.hpp"
@@ -57,6 +58,9 @@
     #include "../Clase4/Instruction/declaration.hpp"
     #include "../Clase4/Instruction/dec_struct.hpp"
     #include "../Clase4/Instruction/create_struct.hpp"
+    #include "../Clase4/Instruction/function.hpp"
+    #include "../Clase4/Instruction/call_inst.hpp"
+    #include "../Clase4/Instruction/inst_return.hpp"
 }
 
 /* enlace con la función del retorno de simbolos */
@@ -68,7 +72,7 @@
 /*tokens*/
 %token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF RIF RELSE
 %token <std::string> VOID INT TSTRING BOOLEAN PARA PARC RMAIN LLAVA LLAVC RTRUE RFALSE CORA CORC
-%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT
+%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT RRETURN
 %token ';' '=' '.' ','
 
 /* precedencia de operadores */
@@ -87,10 +91,12 @@
 %type<expression*> EXP;
 %type<expression*> BOOL;
 %type<expression*> LIST_ARR;
+%type<expression*> CALL_EXP;
 %type<func_main*> START;
 %type<list_instruction*> LIST_INST;
 %type<list_instruction*> ELSEIF_LIST;
 %type<list_instruction*> ELSE;
+%type<list_instruction*> LIST_FUNC;
 %type<list_expression*> EXP_LIST;
 %type<func_main*> MAIN;
 %type<instruction*> INSTRUCTION;
@@ -100,8 +106,12 @@
 %type<instruction*> ELSEIF;
 %type<instruction*> STRUCT_DECLARATION;
 %type<instruction*> STRUCT_CREATION;
+%type<instruction*> FUNCTION;
+%type<instruction*> CALL_INST;
+%type<instruction*> RETURN;
 %type<TipoDato> TYPES;
 %type<map_struct_dec*> DEC_LIST; 
+%type<map_struct_dec*> FUNC_LIST; 
 
 /* printer */
 %printer { yyoutput << $$; } <*>;
@@ -114,9 +124,51 @@
 START : MAIN
     {
         ctx.Main = $1;
+        ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $1;
     }
+    | LIST_FUNC MAIN
+    {
+        ctx.Main = $2;
+        ctx.Functions = $1;
+        ctx.Salida = "!Ejecución realizada con éxito!";
+        $$ = $2;
+    }
+;
+
+LIST_FUNC : LIST_FUNC FUNCTION 
+        { 
+            $1->newInst($2);
+            $$ = $1;
+        }  
+        | FUNCTION 
+        {
+            $$ = new list_instruction();
+            $$->newInst($1);
+        }
+;
+
+FUNCTION : TYPES ID PARA FUNC_LIST PARC LLAVA LIST_INST LLAVC
+        {
+            $$ = new function(0,0,$1,$2,$4,$7);
+        }
+        | TYPES ID PARA PARC LLAVA LIST_INST LLAVC
+        {
+            $$ = new function(0,0,$1,$2,nullptr,$6);
+        }
+;
+
+FUNC_LIST : FUNC_LIST ',' TYPES ID 
+        {
+            $1->newMap($4,$3);
+            $$ = $1;
+        }
+        | TYPES ID 
+        {   
+            $$ = new map_struct_dec();
+            $$->newMap($2, $1);
+        }
 ;
 
 MAIN : VOID RMAIN PARA PARC LLAVA LIST_INST LLAVC 
@@ -142,6 +194,12 @@ INSTRUCTION : PRINT ';' { $$ = $1; }
             | IF { $$ = $1; } 
             | STRUCT_DECLARATION { $$ = $1; }
             | STRUCT_CREATION { $$ = $1; }
+            | CALL_INST { $$ = $1; }
+            | RETURN ';' { $$ = $1; }
+;
+
+RETURN : RRETURN EXP { $$ = new inst_return(0,0,$2); }
+    | RRETURN { $$ = new inst_return(0,0,nullptr); }
 ;
 
 PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); }
@@ -203,7 +261,7 @@ STRUCT_CREATION : STRUCT ID ID '=' LLAVA EXP_LIST LLAVC
                 }
 ;
 
-EXP_LIST : EXP_LIST ',' EXP 
+EXP_LIST : EXP_LIST ',' EXP
         {
             $1->newExp($3);
             $$ = $1;
@@ -218,6 +276,7 @@ EXP_LIST : EXP_LIST ',' EXP
 TYPES : INT { $$ = INTEGER; }
     | TSTRING { $$ = STRING; }
     | BOOLEAN { $$ = BOOL; }
+    | VOID { $$ = NULO; }
 ;
 
 EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
@@ -233,6 +292,7 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP AND EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
     | EXP OR EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | PARA EXP PARC { $$ = $2; }
+    | CALL_EXP { $$ = $1; }
     | PRIMITIVE { $$ = $1; }
 ;
 
@@ -258,6 +318,14 @@ BOOL : RTRUE { $$ = new primitive(0,0,BOOL,"",0,true); }
 LIST_ARR : LIST_ARR CORA EXP CORC { $$ = new array_access(0,0,$1,$3); }
         | LIST_ARR '.' ID { $$ = new struct_access(0,0,$1,$3); }
         | ID {$$ = new access(0,0,$1); }  
+;
+
+CALL_EXP : ID PARA EXP_LIST PARC { $$ = new call_exp(0,0,$1,$3); }
+        | ID PARA PARC { $$ = new call_exp(0,0,$1,nullptr); }
+;
+
+CALL_INST : ID PARA EXP_LIST PARC ';' { $$ = new call_inst(0,0,$1,$3);}
+        | ID PARA PARC ';' { $$ = new call_inst(0,0,$1,nullptr); }
 ;
 
 %%

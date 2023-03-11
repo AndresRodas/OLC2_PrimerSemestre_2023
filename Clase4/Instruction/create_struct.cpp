@@ -21,7 +21,8 @@ void create_struct::ejecutar(environment *env, ast *tree)
         //comparando tipos en iteraciones
         int cont = 0;
         map<std::string, TipoDato>::iterator i;
-        for(i = sym_struct.begin(); i != sym_struct.end(); ++i){
+        for(i = sym_struct.begin(); i != sym_struct.end(); ++i)
+        {
             symbol sym = ExpList->ListExp[cont]->ejecutar(env, tree);
             if(sym.Tipo == i->second){
                 //se asigna el valor

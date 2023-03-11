@@ -2,5 +2,5 @@
 
 ast::ast()
 {
-
+    ListReturn = QVector<symbol>();
 }
