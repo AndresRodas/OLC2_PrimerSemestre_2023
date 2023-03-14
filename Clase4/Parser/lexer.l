@@ -101,6 +101,7 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 "else"    return Parser::symbol_type( token::RELSE, loc );
 "struct"    return Parser::symbol_type( token::STRUCT, loc );
 "return"    return Parser::symbol_type( token::RRETURN, loc );
+"array"    return Parser::symbol_type( token::ARRAY, loc );
 
 {ID}  return Parser::make_ID(yytext, loc);
 {NUMERO} return Parser::make_NUMERO(yytext, loc);

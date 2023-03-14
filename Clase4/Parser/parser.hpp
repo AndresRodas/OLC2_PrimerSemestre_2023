@@ -64,7 +64,8 @@
     #include "../Clase4/Expression/map_struct_dec.hpp"
     #include "../Clase4/Expression/list_expression.hpp"
     #include "../Clase4/Expression/call_exp.hpp"
-
+    #include "../Clase4/Expression/array_exp.hpp"
+    
     /* instrucciones */
     #include "../Clase4/Interfaces/instruction.hpp"
     #include "../Clase4/Instruction/print.hpp"
@@ -78,7 +79,7 @@
     #include "../Clase4/Instruction/call_inst.hpp"
     #include "../Clase4/Instruction/inst_return.hpp"
 
-#line 82 "parser.hpp"
+#line 83 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -207,7 +208,7 @@
 #endif
 
 namespace yy {
-#line 211 "parser.hpp"
+#line 212 "parser.hpp"
 
 
 
@@ -470,6 +471,7 @@ namespace yy {
       // OR
       // STRUCT
       // RRETURN
+      // ARRAY
       char dummy8[sizeof (std::string)];
     };
 
@@ -551,7 +553,8 @@ namespace yy {
     AND = 287,                     // AND
     OR = 288,                      // OR
     STRUCT = 289,                  // STRUCT
-    RRETURN = 290                  // RRETURN
+    RRETURN = 290,                 // RRETURN
+    ARRAY = 291                    // ARRAY
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -568,7 +571,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 40, ///< Number of tokens.
+        YYNTOKENS = 41, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -606,36 +609,37 @@ namespace yy {
         S_OR = 33,                               // OR
         S_STRUCT = 34,                           // STRUCT
         S_RRETURN = 35,                          // RRETURN
-        S_36_ = 36,                              // ';'
-        S_37_ = 37,                              // '='
-        S_38_ = 38,                              // '.'
-        S_39_ = 39,                              // ','
-        S_YYACCEPT = 40,                         // $accept
-        S_START = 41,                            // START
-        S_LIST_FUNC = 42,                        // LIST_FUNC
-        S_FUNCTION = 43,                         // FUNCTION
-        S_FUNC_LIST = 44,                        // FUNC_LIST
-        S_MAIN = 45,                             // MAIN
-        S_LIST_INST = 46,                        // LIST_INST
-        S_INSTRUCTION = 47,                      // INSTRUCTION
-        S_RETURN = 48,                           // RETURN
-        S_PRINT = 49,                            // PRINT
-        S_DECLARATION = 50,                      // DECLARATION
-        S_IF = 51,                               // IF
-        S_ELSEIF_LIST = 52,                      // ELSEIF_LIST
-        S_ELSEIF = 53,                           // ELSEIF
-        S_ELSE = 54,                             // ELSE
-        S_STRUCT_DECLARATION = 55,               // STRUCT_DECLARATION
-        S_DEC_LIST = 56,                         // DEC_LIST
-        S_STRUCT_CREATION = 57,                  // STRUCT_CREATION
-        S_EXP_LIST = 58,                         // EXP_LIST
-        S_TYPES = 59,                            // TYPES
-        S_EXP = 60,                              // EXP
-        S_PRIMITIVE = 61,                        // PRIMITIVE
-        S_BOOL = 62,                             // BOOL
-        S_LIST_ARR = 63,                         // LIST_ARR
-        S_CALL_EXP = 64,                         // CALL_EXP
-        S_CALL_INST = 65                         // CALL_INST
+        S_ARRAY = 36,                            // ARRAY
+        S_37_ = 37,                              // ';'
+        S_38_ = 38,                              // '='
+        S_39_ = 39,                              // '.'
+        S_40_ = 40,                              // ','
+        S_YYACCEPT = 41,                         // $accept
+        S_START = 42,                            // START
+        S_LIST_FUNC = 43,                        // LIST_FUNC
+        S_FUNCTION = 44,                         // FUNCTION
+        S_FUNC_LIST = 45,                        // FUNC_LIST
+        S_MAIN = 46,                             // MAIN
+        S_LIST_INST = 47,                        // LIST_INST
+        S_INSTRUCTION = 48,                      // INSTRUCTION
+        S_RETURN = 49,                           // RETURN
+        S_PRINT = 50,                            // PRINT
+        S_DECLARATION = 51,                      // DECLARATION
+        S_IF = 52,                               // IF
+        S_ELSEIF_LIST = 53,                      // ELSEIF_LIST
+        S_ELSEIF = 54,                           // ELSEIF
+        S_ELSE = 55,                             // ELSE
+        S_STRUCT_DECLARATION = 56,               // STRUCT_DECLARATION
+        S_DEC_LIST = 57,                         // DEC_LIST
+        S_STRUCT_CREATION = 58,                  // STRUCT_CREATION
+        S_EXP_LIST = 59,                         // EXP_LIST
+        S_TYPES = 60,                            // TYPES
+        S_EXP = 61,                              // EXP
+        S_PRIMITIVE = 62,                        // PRIMITIVE
+        S_BOOL = 63,                             // BOOL
+        S_LIST_ARR = 64,                         // LIST_ARR
+        S_CALL_EXP = 65,                         // CALL_EXP
+        S_CALL_INST = 66                         // CALL_INST
       };
     };
 
@@ -751,6 +755,7 @@ namespace yy {
       case symbol_kind::S_OR: // OR
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
+      case symbol_kind::S_ARRAY: // ARRAY
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -990,6 +995,7 @@ switch (yykind)
       case symbol_kind::S_OR: // OR
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
+      case symbol_kind::S_ARRAY: // ARRAY
         value.template destroy< std::string > ();
         break;
 
@@ -1689,6 +1695,21 @@ switch (yykind)
         return symbol_type (token::RRETURN, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_ARRAY (std::string v, location_type l)
+      {
+        return symbol_type (token::ARRAY, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_ARRAY (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::ARRAY, v, l);
+      }
+#endif
 
 
   private:
@@ -1993,9 +2014,9 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 328,     ///< Last index in yytable_.
+      yylast_ = 370,     ///< Last index in yytable_.
       yynnts_ = 26,  ///< Number of nonterminal symbols.
-      yyfinal_ = 11 ///< Termination state number.
+      yyfinal_ = 12 ///< Termination state number.
     };
 
 
@@ -2020,9 +2041,9 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    39,     2,    38,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    36,
-       2,    37,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    40,     2,    39,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    37,
+       2,    38,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -2045,10 +2066,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35
+      35,    36
     };
     // Last valid token kind.
-    const int code_max = 290;
+    const int code_max = 291;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2146,6 +2167,7 @@ switch (yykind)
       case symbol_kind::S_OR: // OR
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
+      case symbol_kind::S_ARRAY: // ARRAY
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2257,6 +2279,7 @@ switch (yykind)
       case symbol_kind::S_OR: // OR
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
+      case symbol_kind::S_ARRAY: // ARRAY
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2322,7 +2345,7 @@ switch (yykind)
   }
 
 } // yy
-#line 2326 "parser.hpp"
+#line 2349 "parser.hpp"
 
 
 

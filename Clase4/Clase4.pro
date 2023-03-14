@@ -15,6 +15,7 @@ SOURCES += \
     Environment/symbol.cpp \
     Expression/access.cpp \
     Expression/array_access.cpp \
+    Expression/array_exp.cpp \
     Expression/call_exp.cpp \
     Expression/list_expression.cpp \
     Expression/map_struct_dec.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     Environment/type.h \
     Expression/access.hpp \
     Expression/array_access.hpp \
+    Expression/array_exp.hpp \
     Expression/call_exp.hpp \
     Expression/list_expression.hpp \
     Expression/map_struct_dec.hpp \

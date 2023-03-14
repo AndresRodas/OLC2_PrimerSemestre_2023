@@ -48,7 +48,8 @@
     #include "../Clase4/Expression/map_struct_dec.hpp"
     #include "../Clase4/Expression/list_expression.hpp"
     #include "../Clase4/Expression/call_exp.hpp"
-
+    #include "../Clase4/Expression/array_exp.hpp"
+    
     /* instrucciones */
     #include "../Clase4/Interfaces/instruction.hpp"
     #include "../Clase4/Instruction/print.hpp"
@@ -72,7 +73,7 @@
 /*tokens*/
 %token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF RIF RELSE
 %token <std::string> VOID INT TSTRING BOOLEAN PARA PARC RMAIN LLAVA LLAVC RTRUE RFALSE CORA CORC
-%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT RRETURN
+%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT RRETURN ARRAY
 %token ';' '=' '.' ','
 
 /* precedencia de operadores */
@@ -277,6 +278,7 @@ TYPES : INT { $$ = INTEGER; }
     | TSTRING { $$ = STRING; }
     | BOOLEAN { $$ = BOOL; }
     | VOID { $$ = NULO; }
+    | ARRAY { $$ = ARRAY; }
 ;
 
 EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
@@ -292,6 +294,7 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP AND EXP { $$ = new operation(0, 0, $1, $3, "&&"); }
     | EXP OR EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | PARA EXP PARC { $$ = $2; }
+    | LLAVA EXP_LIST LLAVC { $$ = new array_exp(0,0,$2); }
     | CALL_EXP { $$ = $1; }
     | PRIMITIVE { $$ = $1; }
 ;
