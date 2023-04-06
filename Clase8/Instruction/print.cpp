@@ -9,8 +9,20 @@ print::print(int line, int col, expression *valor)
 
 void print::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    std::cout << "execute\n";
-    Valor->ejecutar(env, tree, gen);
+    value result = Valor->ejecutar(env, tree, gen);
+    switch (result.TipoExpresion) {
+    case INTEGER:
+        gen->AddPrintf("d", "(int)"+ result.Value);
+        gen->AddPrintf("c", "10");
+        gen->AddBr();
+        break;
+    case STRING:
+        //llamar a generar printstring
+        gen->GeneratePrintString();
+        //agregar codigo en el main
+
+        break;
+    }
 }
 
 std::string print::ArrayToString(QVector<symbol> Array)

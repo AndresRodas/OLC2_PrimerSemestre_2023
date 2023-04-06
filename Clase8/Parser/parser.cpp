@@ -1327,7 +1327,7 @@ namespace yy {
 
   case 4: // LIST_FUNC: LIST_FUNC FUNCTION
 #line 142 "parser.y"
-        { 
+        {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
@@ -1370,7 +1370,7 @@ namespace yy {
 
   case 9: // FUNC_LIST: TYPES ID
 #line 169 "parser.y"
-        {   
+        {
             yylhs.value.as < map_struct_dec* > () = new map_struct_dec();
             yylhs.value.as < map_struct_dec* > ()->newMap(yystack_[0].value.as < std::string > (), yystack_[1].value.as < TipoDato > ());
         }
@@ -1387,7 +1387,7 @@ namespace yy {
 
   case 11: // LIST_INST: LIST_INST INSTRUCTION
 #line 182 "parser.y"
-        { 
+        {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
@@ -1487,7 +1487,7 @@ namespace yy {
 
   case 26: // ELSEIF_LIST: ELSEIF_LIST ELSEIF
 #line 223 "parser.y"
-        { 
+        {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
@@ -1540,7 +1540,7 @@ namespace yy {
 
   case 33: // DEC_LIST: TYPES ID ';'
 #line 253 "parser.y"
-        {   
+        {
             yylhs.value.as < map_struct_dec* > () = new map_struct_dec();
             yylhs.value.as < map_struct_dec* > ()->newMap(yystack_[1].value.as < std::string > (), yystack_[2].value.as < TipoDato > ());
         }
@@ -1710,7 +1710,7 @@ namespace yy {
 
   case 59: // PRIMITIVE: STRING
 #line 308 "parser.y"
-        { 
+        {
             std::string str1 = yystack_[0].value.as < std::string > ().erase(0,1);
             std::string str2 = str1.erase(str1.length()-1,1);
             yylhs.value.as < expression* > () = new primitive(0,0,STRING,str2,0,false);
@@ -2241,6 +2241,6 @@ namespace yy {
 /* función de error */
 void yy::Parser::error(const yy::location& l, const std::string& m)
 {
-	std::cerr << l << ": " << m << std::endl;
+        std::cerr << l << ": " << m << std::endl;
 }
 

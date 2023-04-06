@@ -10,7 +10,7 @@ public:
     expression *Array;
     expression *Index;
     array_access(int,int, expression*, expression*);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // ARRAY_ACCESS_HPP

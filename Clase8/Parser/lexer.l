@@ -2,7 +2,7 @@
 /* opcciones para encapsulamiento */
 
 %option reentrant noyywrap nounput batch noinput
-%option debug 
+%option debug
 /*%option outfile="lexer.cpp" */
 /* %option header-file="lexer.hpp"*/
 %{

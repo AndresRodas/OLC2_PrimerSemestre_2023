@@ -9,7 +9,7 @@ public:
     int Col;
     std::string Id;
     access(int line, int col, std::string id);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // ACCESS_HPP

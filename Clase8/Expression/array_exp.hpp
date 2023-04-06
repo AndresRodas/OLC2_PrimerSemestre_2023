@@ -11,7 +11,7 @@ public:
     list_expression *ExpList;
     QVector<symbol> ArrTemp;
     array_exp(int, int, list_expression*);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // ARRAY_EXP_HPP

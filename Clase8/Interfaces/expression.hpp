@@ -4,11 +4,12 @@
 #include "Environment/generator_code.hpp"
 #include "Environment/symbol.hpp"
 #include "Environment/environment.hpp"
+#include "Environment/value.hpp"
 
 class expression
 {
 public:
-    virtual symbol ejecutar(environment *env, ast *tree, generator_code *gen) = 0;
+    virtual value ejecutar(environment *env, ast *tree, generator_code *gen) = 0;
 };
 
 #endif // EXPRESSION_HPP

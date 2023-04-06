@@ -12,7 +12,7 @@ public:
     std::string Operator;
 
     operation(int line, int col, expression *op_izq, expression *op_der, std::string operador);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // OPERATION_HPP

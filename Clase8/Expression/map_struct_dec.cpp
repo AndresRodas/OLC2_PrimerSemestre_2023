@@ -5,10 +5,10 @@ map_struct_dec::map_struct_dec()
 
 }
 
-symbol map_struct_dec::ejecutar(environment *env, ast *tree, generator_code *gen)
+value map_struct_dec::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    symbol sym (0,0,"",NULO,nullptr);
-    return sym;
+    value val("", false, NULO);
+    return val;
 }
 
 void map_struct_dec::newMap(std::string id, TipoDato tipo)

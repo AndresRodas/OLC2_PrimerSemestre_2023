@@ -10,5 +10,5 @@ func_main::func_main(int line, int col, std::string tipo, list_instruction *list
 
 void func_main::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    std::cout << "execute\n";
+    ListaInstr->ejecutar(env, tree, gen);
 }

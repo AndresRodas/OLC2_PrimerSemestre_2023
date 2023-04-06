@@ -48,36 +48,36 @@
 #line 33 "parser.y"
 
     /* cabeceras iniciales */
-    #include <iostream> 
-    #include <string> 
+    #include <iostream>
+    #include <string>
     #include <vector>
     #include "parserctx.hpp"
 
     /* expresiones */
-    #include "../Clase4/Expression/primitive.hpp"
-    #include "../Clase4/Expression/access.hpp"
-    #include "../Clase4/Expression/array_access.hpp"
-    #include "../Clase4/Expression/struct_access.hpp"
-    #include "../Clase4/Expression/operation.hpp"
-    #include "../Clase4/Environment/type.h"
-    #include "../Clase4/Interfaces/expression.hpp"
-    #include "../Clase4/Expression/map_struct_dec.hpp"
-    #include "../Clase4/Expression/list_expression.hpp"
-    #include "../Clase4/Expression/call_exp.hpp"
-    #include "../Clase4/Expression/array_exp.hpp"
-    
+    #include "../Clase8/Expression/primitive.hpp"
+    #include "../Clase8/Expression/access.hpp"
+    #include "../Clase8/Expression/array_access.hpp"
+    #include "../Clase8/Expression/struct_access.hpp"
+    #include "../Clase8/Expression/operation.hpp"
+    #include "../Clase8/Environment/type.h"
+    #include "../Clase8/Interfaces/expression.hpp"
+    #include "../Clase8/Expression/map_struct_dec.hpp"
+    #include "../Clase8/Expression/list_expression.hpp"
+    #include "../Clase8/Expression/call_exp.hpp"
+    #include "../Clase8/Expression/array_exp.hpp"
+
     /* instrucciones */
-    #include "../Clase4/Interfaces/instruction.hpp"
-    #include "../Clase4/Instruction/print.hpp"
-    #include "../Clase4/Instruction/list_instruction.hpp"
-    #include "../Clase4/Instruction/func_main.hpp"
-    #include "../Clase4/Instruction/func_if.hpp"
-    #include "../Clase4/Instruction/declaration.hpp"
-    #include "../Clase4/Instruction/dec_struct.hpp"
-    #include "../Clase4/Instruction/create_struct.hpp"
-    #include "../Clase4/Instruction/function.hpp"
-    #include "../Clase4/Instruction/call_inst.hpp"
-    #include "../Clase4/Instruction/inst_return.hpp"
+    #include "../Clase8/Interfaces/instruction.hpp"
+    #include "../Clase8/Instruction/print.hpp"
+    #include "../Clase8/Instruction/list_instruction.hpp"
+    #include "../Clase8/Instruction/func_main.hpp"
+    #include "../Clase8/Instruction/func_if.hpp"
+    #include "../Clase8/Instruction/declaration.hpp"
+    #include "../Clase8/Instruction/dec_struct.hpp"
+    #include "../Clase8/Instruction/create_struct.hpp"
+    #include "../Clase8/Instruction/function.hpp"
+    #include "../Clase8/Instruction/call_inst.hpp"
+    #include "../Clase8/Instruction/inst_return.hpp"
 
 #line 83 "parser.hpp"
 

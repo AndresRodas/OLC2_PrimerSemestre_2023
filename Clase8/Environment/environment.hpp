@@ -15,6 +15,7 @@ public:
     map<std::string, map<std::string, TipoDato>> TablaStructs;
     map<std::string, func_symbol> TablaFunctions;
     std::string Id;
+    int Size;
 
     environment(environment *anterior, std::string id);
     void SaveVariable(symbol sym, std::string id, ast *tree);

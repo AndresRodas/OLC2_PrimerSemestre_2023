@@ -13,7 +13,7 @@ public:
     QVector<std::string> TrueLvl;
     QVector<std::string> FalseLvl;
 
-    value();
+    value(std::string value, bool istemp, TipoDato tipo);
 };
 
 #endif // VALUE_HPP

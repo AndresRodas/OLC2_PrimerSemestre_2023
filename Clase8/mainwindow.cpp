@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Environment/ast.hpp"
 #include "Environment/environment.hpp"
@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_clicked()
 {
     QMessageBox *msg = new QMessageBox();
     QMessageBox *msg3 = new QMessageBox();
@@ -49,7 +49,7 @@ void MainWindow::on_pushButton_2_clicked()
         //despliega el mensaje
         msg->setText(QString::fromStdString(analizador.Salida));
         msg->exec();
-        ui->textEdit_2->setText(QString::fromStdString(Root->ConsoleOut));
+        ui->textEdit_2->setText(QString::fromStdString(GeneratorC3D->FinalCode));
     }
     else
     {
@@ -58,6 +58,5 @@ void MainWindow::on_pushButton_2_clicked()
         msg->exec();
         ui->textEdit_2->setText(QString::fromStdString(Root->ErrorOut));
     }
-
 }
 

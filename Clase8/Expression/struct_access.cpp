@@ -8,8 +8,8 @@ struct_access::struct_access(int line,int col, expression* structexp, std::strin
     Id = id;
 }
 
-symbol struct_access::ejecutar(environment *env, ast *tree, generator_code *gen)
+value struct_access::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    symbol sym (Line,Col,"",NULO,nullptr);
-    return sym;
+    value val("", false, NULO);
+    return val;
 }

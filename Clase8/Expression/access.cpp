@@ -7,8 +7,8 @@ access::access(int line, int col, std::string id)
     Id = id;
 }
 
-symbol access::ejecutar(environment *env, ast *tree, generator_code *gen)
+value access::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    symbol sym (Line,Col,"",NULO,nullptr);
-    return sym;
+    value val("", false, NULO);
+    return val;
 }

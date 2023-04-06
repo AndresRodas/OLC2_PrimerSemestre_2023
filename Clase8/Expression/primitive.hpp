@@ -13,7 +13,7 @@ public:
     bool boolVal;
 
     primitive(int, int, TipoDato, std::string, int, bool);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // PRIMITIVE_HPP

@@ -11,7 +11,7 @@ public:
     std::string Id;
 
     struct_access(int,int, expression*, std::string);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // STRUCT_ACCESS_HPP

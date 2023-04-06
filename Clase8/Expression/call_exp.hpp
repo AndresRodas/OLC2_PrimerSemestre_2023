@@ -12,7 +12,7 @@ public:
     list_expression *ExpList;
 
     call_exp(int, int, std::string, list_expression*);
-    symbol ejecutar(environment *env, ast *tree, generator_code *gen) override;
+    value ejecutar(environment *env, ast *tree, generator_code *gen) override;
 };
 
 #endif // CALL_EXP_HPP
