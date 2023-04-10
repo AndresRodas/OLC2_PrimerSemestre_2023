@@ -41,6 +41,7 @@
     #include "../Clase8/Expression/primitive.hpp"
     #include "../Clase8/Expression/access.hpp"
     #include "../Clase8/Expression/array_access.hpp"
+    #include "../Clase8/Expression/array_exp.hpp"
     #include "../Clase8/Expression/struct_access.hpp"
     #include "../Clase8/Expression/operation.hpp"
     #include "../Clase8/Environment/type.h"
@@ -48,7 +49,6 @@
     #include "../Clase8/Expression/map_struct_dec.hpp"
     #include "../Clase8/Expression/list_expression.hpp"
     #include "../Clase8/Expression/call_exp.hpp"
-    #include "../Clase8/Expression/array_exp.hpp"
 
     /* instrucciones */
     #include "../Clase8/Interfaces/instruction.hpp"
@@ -190,7 +190,7 @@ LIST_INST : LIST_INST INSTRUCTION
         }
 ;
 
-INSTRUCTION : PRINT ';' { $$ = $1; }
+        INSTRUCTION : PRINT ';' { $$ = $1; }
             | DECLARATION ';' { $$ = $1; }
             | IF { $$ = $1; }
             | STRUCT_DECLARATION { $$ = $1; }
@@ -295,8 +295,8 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
     | EXP OR EXP { $$ = new operation(0, 0, $1, $3, "||"); }
     | PARA EXP PARC { $$ = $2; }
     | LLAVA EXP_LIST LLAVC { $$ = new array_exp(0,0,$2); }
-    | CALL_EXP { $$ = $1; }
     | PRIMITIVE { $$ = $1; }
+    | CALL_EXP { $$ = $1; }
 ;
 
 PRIMITIVE : NUMERO

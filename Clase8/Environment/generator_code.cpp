@@ -16,11 +16,9 @@ generator_code::generator_code()
 // Generar un nuevo temporal
 std::string generator_code::newTemp()
 {
-    std::cout << TempList.size();
     std::string temp = "t"+std::to_string(Temporal);
     Temporal += 1;
     TempList.push_back(temp);
-    std::cout << TempList.size();
     return temp;
 }
 // Genera una nueva etiqueta
@@ -67,6 +65,20 @@ void generator_code::AddExpression(std::string target, std::string left, std::st
     else
     {
         FuncCode.append(target + " = " + left + " " + op + " " + right + ";\n");
+    }
+
+}
+
+// Agregando una etiqueta
+void generator_code::AddLabel(std::string label)
+{
+    if(MainCode)
+    {
+        Code.append(label + ":\n");
+    }
+    else
+    {
+        FuncCode.append(label + ":\n");
     }
 
 }
@@ -168,7 +180,7 @@ void generator_code::GeneratePrintString()
 void generator_code::GenerateFinalCode()
 {
     //creando cabecera
-    FinalCode += "//****************** Clase 9 ******************\n\n";
+    FinalCode += "//****************** Clase 10 ******************\n\n";
     FinalCode += "#include <stdio.h>\n";
     FinalCode += "float stack[100000];\n";
     FinalCode += "float heap[100000];\n";

@@ -36,7 +36,6 @@ void environment::SaveFunc(func_symbol funcSym, std::string id, ast *tree)
 {
     if (TablaFunctions.find(id) == TablaFunctions.end())
     {
-        std::cout << "guardando: "<<id;
         TablaFunctions[id] = funcSym;
     }
     else

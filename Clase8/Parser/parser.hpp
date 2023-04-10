@@ -57,6 +57,7 @@
     #include "../Clase8/Expression/primitive.hpp"
     #include "../Clase8/Expression/access.hpp"
     #include "../Clase8/Expression/array_access.hpp"
+    #include "../Clase8/Expression/array_exp.hpp"
     #include "../Clase8/Expression/struct_access.hpp"
     #include "../Clase8/Expression/operation.hpp"
     #include "../Clase8/Environment/type.h"
@@ -64,7 +65,6 @@
     #include "../Clase8/Expression/map_struct_dec.hpp"
     #include "../Clase8/Expression/list_expression.hpp"
     #include "../Clase8/Expression/call_exp.hpp"
-    #include "../Clase8/Expression/array_exp.hpp"
 
     /* instrucciones */
     #include "../Clase8/Interfaces/instruction.hpp"

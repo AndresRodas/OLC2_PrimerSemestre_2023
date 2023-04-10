@@ -1405,7 +1405,7 @@ namespace yy {
 
   case 13: // INSTRUCTION: PRINT ';'
 #line 193 "parser.y"
-                        { yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
+                                { std::cout << "entra a instruc print"; yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
 #line 1410 "parser.cpp"
     break;
 
@@ -1687,15 +1687,15 @@ namespace yy {
 #line 1688 "parser.cpp"
     break;
 
-  case 56: // EXP: CALL_EXP
+  case 56: // EXP: PRIMITIVE
 #line 298 "parser.y"
-               { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
+                { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
 #line 1694 "parser.cpp"
     break;
 
-  case 57: // EXP: PRIMITIVE
+  case 57: // EXP: CALL_EXP
 #line 299 "parser.y"
-                { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
+               { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
 #line 1700 "parser.cpp"
     break;
 
@@ -2007,7 +2007,7 @@ namespace yy {
        0,     0,     0,     0,     0,     0,     0,     9,     0,     0,
        0,     0,    21,     0,    12,     0,     0,     0,    15,    16,
       17,     0,    18,     0,     0,     0,     0,     0,    58,    66,
-      59,     0,     0,    62,    63,     0,    57,    60,    61,    56,
+      59,     0,     0,    62,    63,     0,    56,    60,    61,    57,
        0,    20,    10,    11,    19,    13,    14,     0,     7,     0,
        8,     0,     0,    36,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,

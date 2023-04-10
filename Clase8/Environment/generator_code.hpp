@@ -20,6 +20,7 @@ public:
     std::string newLabel();
     void AddIf(std::string left, std::string right, std::string op, std::string label);
     void AddGoto(std::string label);
+    void AddLabel(std::string label);
     void AddExpression(std::string target, std::string left, std::string right, std::string op);
     void AddAssign(std::string target, std::string val);
     void AddComment(std::string val);
