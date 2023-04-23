@@ -1,4 +1,5 @@
 #include "print.hpp"
+#include <QDebug>
 
 print::print(int line, int col, expression *valor)
 {
@@ -9,19 +10,47 @@ print::print(int line, int col, expression *valor)
 
 void print::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
+    qDebug() << "ejecutando print";
+    gen->AddComment("imprimiendo");
     value result = Valor->ejecutar(env, tree, gen);
-    switch (result.TipoExpresion) {
-    case INTEGER:
+
+    if(result.TipoExpresion == INTEGER)
+    {
+        qDebug() << "es int";
+        qDebug() << "valor a imprimir: ";
+        qDebug() << QString::fromStdString(result.Value);
         gen->AddPrintf("d", "(int)"+ result.Value);
         gen->AddPrintf("c", "10");
         gen->AddBr();
-        break;
-    case STRING:
+    }
+    else if(result.TipoExpresion == STRING)
+    {
         //llamar a generar printstring
         gen->GeneratePrintString();
         //agregar codigo en el main
-        break;
-    case BOOL:
+        std::string NewTemp1 = gen->newTemp();
+        std::string NewTemp2 = gen->newTemp();
+        int size = env->Size;
+        gen->AddComment("nuevo temporal en pos vacia");
+        gen->AddExpression(NewTemp1, "P", std::to_string(size), "+");
+        gen->AddComment("se deja espacio de retorno");
+        gen->AddExpression(NewTemp1, NewTemp1, "1", "+");
+        gen->AddComment("se coloca string en parametro que se manda");
+        gen->AddSetStack("(int)"+ NewTemp1, result.Value);
+        gen->AddComment("cambio de entorno");
+        gen->AddExpression("P", "P", std::to_string(size), "+");
+        gen->AddComment("Llamada");
+        gen->AddCall("olc3d_printString");
+        gen->AddComment("obtencion retorno");
+        gen->AddGetStack("(int)"+NewTemp2, "P");
+        gen->AddComment("regreso del entorno");
+        gen->AddExpression("P", "P", std::to_string(size), "-");
+        gen->AddComment("salto de linea");
+        gen->AddPrintf("c", "10");
+        gen->AddBr();
+    }
+    else if(result.TipoExpresion == BOOL)
+    {
         std::string newLabel = gen->newLabel();
         //add true labels
         for(int i=0; i < result.TrueLvl.size(); i++)
@@ -46,85 +75,86 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         gen->AddLabel(newLabel);
         gen->AddPrintf("c", "10");
         gen->AddBr();
-        break;
     }
+    qDebug() << "se ejecuto print";
+
 }
 
-std::string print::ArrayToString(QVector<symbol> Array)
-{
-    std::string strBuffer = "[";
-    int contIndex = 0;
-    for(int i=0; i < Array.size(); ++i){
-        contIndex++;
-        if(Array[i].Tipo == ARRAY)
-        {
-            if(contIndex < Array.size())
-            {
-                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value)) + ",";
-            }
-            else
-            {
-                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value));
-            }
+//std::string print::ArrayToString(QVector<symbol> Array)
+//{
+//    std::string strBuffer = "[";
+//    int contIndex = 0;
+//    for(int i=0; i < Array.size(); ++i){
+//        contIndex++;
+//        if(Array[i].Tipo == ARRAY)
+//        {
+//            if(contIndex < Array.size())
+//            {
+//                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value)) + ",";
+//            }
+//            else
+//            {
+//                strBuffer += ArrayToString(*static_cast<QVector<symbol>*>(Array[i].Value));
+//            }
 
-        }
-        else
-        {
-            if(Array[i].Tipo == STRING)
-            {
-                if(contIndex < Array.size())
-                {
-                    strBuffer += *static_cast<std::string*>(Array[i].Value) + ",";
-                }
-                else
-                {
-                    strBuffer += *static_cast<std::string*>(Array[i].Value);
-                }
+//        }
+//        else
+//        {
+//            if(Array[i].Tipo == STRING)
+//            {
+//                if(contIndex < Array.size())
+//                {
+//                    strBuffer += *static_cast<std::string*>(Array[i].Value) + ",";
+//                }
+//                else
+//                {
+//                    strBuffer += *static_cast<std::string*>(Array[i].Value);
+//                }
 
-            }
-            else if(Array[i].Tipo == INTEGER)
-            {
-                if(contIndex < Array.size())
-                {
-                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value)) + ",";
-                }
-                else
-                {
-                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value));
-                }
+//            }
+//            else if(Array[i].Tipo == INTEGER)
+//            {
+//                if(contIndex < Array.size())
+//                {
+//                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value)) + ",";
+//                }
+//                else
+//                {
+//                    strBuffer += std::to_string(*static_cast<int*>(Array[i].Value));
+//                }
 
-            }
-            else if(Array[i].Tipo == BOOL)
-            {
-                if(contIndex < Array.size())
-                {
-                    if(*static_cast<bool*>(Array[i].Value))
-                    {
-                        strBuffer += "true,";
-                    }
-                    else
-                    {
-                        strBuffer += "false,";
-                    }
-                }
-                else
-                {
-                    if(*static_cast<bool*>(Array[i].Value))
-                    {
-                        strBuffer += "true";
-                    }
-                    else
-                    {
-                        strBuffer += "false";
-                    }
-                }
+//            }
+//            else if(Array[i].Tipo == BOOL)
+//            {
+//                if(contIndex < Array.size())
+//                {
+//                    if(*static_cast<bool*>(Array[i].Value))
+//                    {
+//                        strBuffer += "true,";
+//                    }
+//                    else
+//                    {
+//                        strBuffer += "false,";
+//                    }
+//                }
+//                else
+//                {
+//                    if(*static_cast<bool*>(Array[i].Value))
+//                    {
+//                        strBuffer += "true";
+//                    }
+//                    else
+//                    {
+//                        strBuffer += "false";
+//                    }
+//                }
 
-            }
-        }
-    }
-    strBuffer += "]\n";
-    return strBuffer;
-}
+//            }
+//        }
+//    }
+//    strBuffer += "]\n";
+//    return strBuffer;
+//}
 
 
 

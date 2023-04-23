@@ -24,7 +24,10 @@ public:
     void AddExpression(std::string target, std::string left, std::string right, std::string op);
     void AddAssign(std::string target, std::string val);
     void AddComment(std::string val);
+    void AddCall(std::string target);
     void AddSetHeap(std::string index, std::string value);
+    void AddSetStack(std::string index, std::string value);
+    void AddGetStack(std::string index, std::string target);
     void AddBr();
     void AddPrintf(std::string typePrint, std::string value);
     void GeneratePrintString();

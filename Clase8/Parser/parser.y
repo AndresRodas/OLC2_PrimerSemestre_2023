@@ -128,6 +128,7 @@ START : MAIN
         ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $1;
+        std::cout << "\n****main exitoso*****\n";
     }
     | LIST_FUNC MAIN
     {
@@ -187,6 +188,7 @@ LIST_INST : LIST_INST INSTRUCTION
         {
             $$ = new list_instruction();
             $$->newInst($1);
+            std::cout << "\n****inst list exitoso*****\n";
         }
 ;
 
@@ -203,7 +205,7 @@ RETURN : RRETURN EXP { $$ = new inst_return(0,0,$2); }
     | RRETURN { $$ = new inst_return(0,0,nullptr); }
 ;
 
-PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); }
+PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); std::cout << "\n****print exitoso*****\n"; }
 ;
 
 DECLARATION : TYPES ID '=' EXP { $$ = new declaration(0,0,$1,$2,$4); }
@@ -302,6 +304,10 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
 PRIMITIVE : NUMERO
         {
             int num = stoi($1);
+            primitive *p1 = new primitive(0,0,INTEGER,"",num,false);
+            primitive *p2 = new primitive(0,0,INTEGER,"",num,false);
+            //$$ = new operation(0, 0, p1, p2, "+");
+            std::cout << "\n****num "<< num << "*****\n" << std::to_string(num);
             $$ = new primitive(0,0,INTEGER,"",num,false);
         }
         | STRING

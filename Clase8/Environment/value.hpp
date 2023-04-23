@@ -12,7 +12,7 @@ public:
     TipoDato TipoExpresion;
     QVector<std::string> TrueLvl;
     QVector<std::string> FalseLvl;
-
+    value();
     value(std::string value, bool istemp, TipoDato tipo);
 };
 

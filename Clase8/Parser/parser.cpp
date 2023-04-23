@@ -1310,482 +1310,488 @@ namespace yy {
         ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         yylhs.value.as < func_main* > () = yystack_[0].value.as < func_main* > ();
+        std::cout << "\n****main exitoso*****\n";
     }
-#line 1315 "parser.cpp"
+#line 1316 "parser.cpp"
     break;
 
   case 3: // START: LIST_FUNC MAIN
-#line 133 "parser.y"
+#line 134 "parser.y"
     {
         ctx.Main = yystack_[0].value.as < func_main* > ();
         ctx.Functions = yystack_[1].value.as < list_instruction* > ();
         ctx.Salida = "!Ejecución realizada con éxito!";
         yylhs.value.as < func_main* > () = yystack_[0].value.as < func_main* > ();
     }
-#line 1326 "parser.cpp"
+#line 1327 "parser.cpp"
     break;
 
   case 4: // LIST_FUNC: LIST_FUNC FUNCTION
-#line 142 "parser.y"
+#line 143 "parser.y"
         {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
-#line 1335 "parser.cpp"
+#line 1336 "parser.cpp"
     break;
 
   case 5: // LIST_FUNC: FUNCTION
-#line 147 "parser.y"
+#line 148 "parser.y"
         {
             yylhs.value.as < list_instruction* > () = new list_instruction();
             yylhs.value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
         }
-#line 1344 "parser.cpp"
+#line 1345 "parser.cpp"
     break;
 
   case 6: // FUNCTION: TYPES ID PARA FUNC_LIST PARC LLAVA LIST_INST LLAVC
-#line 154 "parser.y"
+#line 155 "parser.y"
         {
             yylhs.value.as < instruction* > () = new function(0,0,yystack_[7].value.as < TipoDato > (),yystack_[6].value.as < std::string > (),yystack_[4].value.as < map_struct_dec* > (),yystack_[1].value.as < list_instruction* > ());
         }
-#line 1352 "parser.cpp"
+#line 1353 "parser.cpp"
     break;
 
   case 7: // FUNCTION: TYPES ID PARA PARC LLAVA LIST_INST LLAVC
-#line 158 "parser.y"
+#line 159 "parser.y"
         {
             yylhs.value.as < instruction* > () = new function(0,0,yystack_[6].value.as < TipoDato > (),yystack_[5].value.as < std::string > (),nullptr,yystack_[1].value.as < list_instruction* > ());
         }
-#line 1360 "parser.cpp"
+#line 1361 "parser.cpp"
     break;
 
   case 8: // FUNC_LIST: FUNC_LIST ',' TYPES ID
-#line 164 "parser.y"
+#line 165 "parser.y"
         {
             yystack_[3].value.as < map_struct_dec* > ()->newMap(yystack_[0].value.as < std::string > (),yystack_[1].value.as < TipoDato > ());
             yylhs.value.as < map_struct_dec* > () = yystack_[3].value.as < map_struct_dec* > ();
         }
-#line 1369 "parser.cpp"
+#line 1370 "parser.cpp"
     break;
 
   case 9: // FUNC_LIST: TYPES ID
-#line 169 "parser.y"
+#line 170 "parser.y"
         {
             yylhs.value.as < map_struct_dec* > () = new map_struct_dec();
             yylhs.value.as < map_struct_dec* > ()->newMap(yystack_[0].value.as < std::string > (), yystack_[1].value.as < TipoDato > ());
         }
-#line 1378 "parser.cpp"
+#line 1379 "parser.cpp"
     break;
 
   case 10: // MAIN: VOID RMAIN PARA PARC LLAVA LIST_INST LLAVC
-#line 176 "parser.y"
+#line 177 "parser.y"
 {
     yylhs.value.as < func_main* > () = new func_main(0, 0, yystack_[6].value.as < std::string > (), yystack_[1].value.as < list_instruction* > ());
 }
-#line 1386 "parser.cpp"
+#line 1387 "parser.cpp"
     break;
 
   case 11: // LIST_INST: LIST_INST INSTRUCTION
-#line 182 "parser.y"
+#line 183 "parser.y"
         {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
-#line 1395 "parser.cpp"
+#line 1396 "parser.cpp"
     break;
 
   case 12: // LIST_INST: INSTRUCTION
-#line 187 "parser.y"
+#line 188 "parser.y"
         {
             yylhs.value.as < list_instruction* > () = new list_instruction();
             yylhs.value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
+            std::cout << "\n****inst list exitoso*****\n";
         }
-#line 1404 "parser.cpp"
+#line 1406 "parser.cpp"
     break;
 
   case 13: // INSTRUCTION: PRINT ';'
-#line 193 "parser.y"
-                                { std::cout << "entra a instruc print"; yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
-#line 1410 "parser.cpp"
+#line 195 "parser.y"
+                                { yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
+#line 1412 "parser.cpp"
     break;
 
   case 14: // INSTRUCTION: DECLARATION ';'
-#line 194 "parser.y"
+#line 196 "parser.y"
                               { yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
-#line 1416 "parser.cpp"
+#line 1418 "parser.cpp"
     break;
 
   case 15: // INSTRUCTION: IF
-#line 195 "parser.y"
+#line 197 "parser.y"
                  { yylhs.value.as < instruction* > () = yystack_[0].value.as < instruction* > (); }
-#line 1422 "parser.cpp"
+#line 1424 "parser.cpp"
     break;
 
   case 16: // INSTRUCTION: STRUCT_DECLARATION
-#line 196 "parser.y"
+#line 198 "parser.y"
                                  { yylhs.value.as < instruction* > () = yystack_[0].value.as < instruction* > (); }
-#line 1428 "parser.cpp"
+#line 1430 "parser.cpp"
     break;
 
   case 17: // INSTRUCTION: STRUCT_CREATION
-#line 197 "parser.y"
+#line 199 "parser.y"
                               { yylhs.value.as < instruction* > () = yystack_[0].value.as < instruction* > (); }
-#line 1434 "parser.cpp"
+#line 1436 "parser.cpp"
     break;
 
   case 18: // INSTRUCTION: CALL_INST
-#line 198 "parser.y"
+#line 200 "parser.y"
                         { yylhs.value.as < instruction* > () = yystack_[0].value.as < instruction* > (); }
-#line 1440 "parser.cpp"
+#line 1442 "parser.cpp"
     break;
 
   case 19: // INSTRUCTION: RETURN ';'
-#line 199 "parser.y"
+#line 201 "parser.y"
                          { yylhs.value.as < instruction* > () = yystack_[1].value.as < instruction* > (); }
-#line 1446 "parser.cpp"
+#line 1448 "parser.cpp"
     break;
 
   case 20: // RETURN: RRETURN EXP
-#line 202 "parser.y"
+#line 204 "parser.y"
                      { yylhs.value.as < instruction* > () = new inst_return(0,0,yystack_[0].value.as < expression* > ()); }
-#line 1452 "parser.cpp"
+#line 1454 "parser.cpp"
     break;
 
   case 21: // RETURN: RRETURN
-#line 203 "parser.y"
+#line 205 "parser.y"
               { yylhs.value.as < instruction* > () = new inst_return(0,0,nullptr); }
-#line 1458 "parser.cpp"
+#line 1460 "parser.cpp"
     break;
 
   case 22: // PRINT: PRINTF PARA EXP PARC
-#line 206 "parser.y"
-                             { yylhs.value.as < instruction* > () = new print(0,0,yystack_[1].value.as < expression* > ()); }
-#line 1464 "parser.cpp"
+#line 208 "parser.y"
+                             { yylhs.value.as < instruction* > () = new print(0,0,yystack_[1].value.as < expression* > ()); std::cout << "\n****print exitoso*****\n"; }
+#line 1466 "parser.cpp"
     break;
 
   case 23: // DECLARATION: TYPES ID '=' EXP
-#line 209 "parser.y"
+#line 211 "parser.y"
                                { yylhs.value.as < instruction* > () = new declaration(0,0,yystack_[3].value.as < TipoDato > (),yystack_[2].value.as < std::string > (),yystack_[0].value.as < expression* > ()); }
-#line 1470 "parser.cpp"
+#line 1472 "parser.cpp"
     break;
 
   case 24: // IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
-#line 213 "parser.y"
+#line 215 "parser.y"
     {
         yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[5].value.as < expression* > (),yystack_[3].value.as < list_instruction* > (),yystack_[1].value.as < list_instruction* > (),yystack_[0].value.as < list_instruction* > ());
     }
-#line 1478 "parser.cpp"
+#line 1480 "parser.cpp"
     break;
 
   case 25: // IF: RIF EXP LLAVA LIST_INST LLAVC ELSE
-#line 217 "parser.y"
+#line 219 "parser.y"
     {
         yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[4].value.as < expression* > (),yystack_[2].value.as < list_instruction* > (),nullptr,yystack_[0].value.as < list_instruction* > ());
     }
-#line 1486 "parser.cpp"
+#line 1488 "parser.cpp"
     break;
 
   case 26: // ELSEIF_LIST: ELSEIF_LIST ELSEIF
-#line 223 "parser.y"
+#line 225 "parser.y"
         {
             yystack_[1].value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
             yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > ();
         }
-#line 1495 "parser.cpp"
+#line 1497 "parser.cpp"
     break;
 
   case 27: // ELSEIF_LIST: ELSEIF
-#line 228 "parser.y"
+#line 230 "parser.y"
         {
             yylhs.value.as < list_instruction* > () = new list_instruction();
             yylhs.value.as < list_instruction* > ()->newInst(yystack_[0].value.as < instruction* > ());
         }
-#line 1504 "parser.cpp"
+#line 1506 "parser.cpp"
     break;
 
   case 28: // ELSEIF: RELSE RIF EXP LLAVA LIST_INST LLAVC
-#line 235 "parser.y"
+#line 237 "parser.y"
         {
             yylhs.value.as < instruction* > () = new func_if(0,0,yystack_[3].value.as < expression* > (),yystack_[1].value.as < list_instruction* > (), nullptr, nullptr);
         }
-#line 1512 "parser.cpp"
+#line 1514 "parser.cpp"
     break;
 
   case 29: // ELSE: RELSE LLAVA LIST_INST LLAVC
-#line 240 "parser.y"
+#line 242 "parser.y"
                                    { yylhs.value.as < list_instruction* > () = yystack_[1].value.as < list_instruction* > (); }
-#line 1518 "parser.cpp"
+#line 1520 "parser.cpp"
     break;
 
   case 30: // ELSE: %empty
-#line 241 "parser.y"
+#line 243 "parser.y"
              { }
-#line 1524 "parser.cpp"
+#line 1526 "parser.cpp"
     break;
 
   case 31: // STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST LLAVC
-#line 244 "parser.y"
+#line 246 "parser.y"
                                                     {yylhs.value.as < instruction* > () = new dec_struct(0,0,yystack_[1].value.as < map_struct_dec* > (),yystack_[3].value.as < std::string > ()); }
-#line 1530 "parser.cpp"
+#line 1532 "parser.cpp"
     break;
 
   case 32: // DEC_LIST: DEC_LIST TYPES ID ';'
-#line 248 "parser.y"
+#line 250 "parser.y"
         {
             yystack_[3].value.as < map_struct_dec* > ()->newMap(yystack_[1].value.as < std::string > (),yystack_[2].value.as < TipoDato > ());
             yylhs.value.as < map_struct_dec* > () = yystack_[3].value.as < map_struct_dec* > ();
         }
-#line 1539 "parser.cpp"
+#line 1541 "parser.cpp"
     break;
 
   case 33: // DEC_LIST: TYPES ID ';'
-#line 253 "parser.y"
+#line 255 "parser.y"
         {
             yylhs.value.as < map_struct_dec* > () = new map_struct_dec();
             yylhs.value.as < map_struct_dec* > ()->newMap(yystack_[1].value.as < std::string > (), yystack_[2].value.as < TipoDato > ());
         }
-#line 1548 "parser.cpp"
+#line 1550 "parser.cpp"
     break;
 
   case 34: // STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST LLAVC
-#line 260 "parser.y"
+#line 262 "parser.y"
                 {
                     yylhs.value.as < instruction* > () = new create_struct(0,0,yystack_[5].value.as < std::string > (),yystack_[4].value.as < std::string > (),yystack_[1].value.as < list_expression* > ());
                 }
-#line 1556 "parser.cpp"
+#line 1558 "parser.cpp"
     break;
 
   case 35: // EXP_LIST: EXP_LIST ',' EXP
-#line 266 "parser.y"
+#line 268 "parser.y"
         {
             yystack_[2].value.as < list_expression* > ()->newExp(yystack_[0].value.as < expression* > ());
             yylhs.value.as < list_expression* > () = yystack_[2].value.as < list_expression* > ();
         }
-#line 1565 "parser.cpp"
+#line 1567 "parser.cpp"
     break;
 
   case 36: // EXP_LIST: EXP
-#line 271 "parser.y"
+#line 273 "parser.y"
         {
             yylhs.value.as < list_expression* > () = new list_expression();
             yylhs.value.as < list_expression* > ()->newExp(yystack_[0].value.as < expression* > ());
         }
-#line 1574 "parser.cpp"
+#line 1576 "parser.cpp"
     break;
 
   case 37: // TYPES: INT
-#line 277 "parser.y"
+#line 279 "parser.y"
             { yylhs.value.as < TipoDato > () = INTEGER; }
-#line 1580 "parser.cpp"
+#line 1582 "parser.cpp"
     break;
 
   case 38: // TYPES: TSTRING
-#line 278 "parser.y"
+#line 280 "parser.y"
               { yylhs.value.as < TipoDato > () = STRING; }
-#line 1586 "parser.cpp"
+#line 1588 "parser.cpp"
     break;
 
   case 39: // TYPES: BOOLEAN
-#line 279 "parser.y"
+#line 281 "parser.y"
               { yylhs.value.as < TipoDato > () = BOOL; }
-#line 1592 "parser.cpp"
+#line 1594 "parser.cpp"
     break;
 
   case 40: // TYPES: VOID
-#line 280 "parser.y"
+#line 282 "parser.y"
            { yylhs.value.as < TipoDato > () = NULO; }
-#line 1598 "parser.cpp"
+#line 1600 "parser.cpp"
     break;
 
   case 41: // TYPES: ARRAY
-#line 281 "parser.y"
+#line 283 "parser.y"
             { yylhs.value.as < TipoDato > () = ARRAY; }
-#line 1604 "parser.cpp"
+#line 1606 "parser.cpp"
     break;
 
   case 42: // EXP: EXP SUMA EXP
-#line 284 "parser.y"
+#line 286 "parser.y"
                    { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "+"); }
-#line 1610 "parser.cpp"
+#line 1612 "parser.cpp"
     break;
 
   case 43: // EXP: EXP MENOS EXP
-#line 285 "parser.y"
+#line 287 "parser.y"
                     { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "-"); }
-#line 1616 "parser.cpp"
+#line 1618 "parser.cpp"
     break;
 
   case 44: // EXP: EXP POR EXP
-#line 286 "parser.y"
+#line 288 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "*"); }
-#line 1622 "parser.cpp"
+#line 1624 "parser.cpp"
     break;
 
   case 45: // EXP: EXP DIV EXP
-#line 287 "parser.y"
+#line 289 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "/"); }
-#line 1628 "parser.cpp"
+#line 1630 "parser.cpp"
     break;
 
   case 46: // EXP: EXP MEN EXP
-#line 288 "parser.y"
+#line 290 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "<"); }
-#line 1634 "parser.cpp"
+#line 1636 "parser.cpp"
     break;
 
   case 47: // EXP: EXP MAY EXP
-#line 289 "parser.y"
+#line 291 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), ">"); }
-#line 1640 "parser.cpp"
+#line 1642 "parser.cpp"
     break;
 
   case 48: // EXP: EXP MEN_IG EXP
-#line 290 "parser.y"
+#line 292 "parser.y"
                      { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "<="); }
-#line 1646 "parser.cpp"
+#line 1648 "parser.cpp"
     break;
 
   case 49: // EXP: EXP MAY_IG EXP
-#line 291 "parser.y"
+#line 293 "parser.y"
                      { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), ">="); }
-#line 1652 "parser.cpp"
+#line 1654 "parser.cpp"
     break;
 
   case 50: // EXP: EXP DIF EXP
-#line 292 "parser.y"
+#line 294 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "!="); }
-#line 1658 "parser.cpp"
+#line 1660 "parser.cpp"
     break;
 
   case 51: // EXP: EXP IG EXP
-#line 293 "parser.y"
+#line 295 "parser.y"
                  { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "=="); }
-#line 1664 "parser.cpp"
+#line 1666 "parser.cpp"
     break;
 
   case 52: // EXP: EXP AND EXP
-#line 294 "parser.y"
+#line 296 "parser.y"
                   { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "&&"); }
-#line 1670 "parser.cpp"
+#line 1672 "parser.cpp"
     break;
 
   case 53: // EXP: EXP OR EXP
-#line 295 "parser.y"
+#line 297 "parser.y"
                  { yylhs.value.as < expression* > () = new operation(0, 0, yystack_[2].value.as < expression* > (), yystack_[0].value.as < expression* > (), "||"); }
-#line 1676 "parser.cpp"
+#line 1678 "parser.cpp"
     break;
 
   case 54: // EXP: PARA EXP PARC
-#line 296 "parser.y"
+#line 298 "parser.y"
                     { yylhs.value.as < expression* > () = yystack_[1].value.as < expression* > (); }
-#line 1682 "parser.cpp"
+#line 1684 "parser.cpp"
     break;
 
   case 55: // EXP: LLAVA EXP_LIST LLAVC
-#line 297 "parser.y"
+#line 299 "parser.y"
                            { yylhs.value.as < expression* > () = new array_exp(0,0,yystack_[1].value.as < list_expression* > ()); }
-#line 1688 "parser.cpp"
+#line 1690 "parser.cpp"
     break;
 
   case 56: // EXP: PRIMITIVE
-#line 298 "parser.y"
+#line 300 "parser.y"
                 { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
-#line 1694 "parser.cpp"
+#line 1696 "parser.cpp"
     break;
 
   case 57: // EXP: CALL_EXP
-#line 299 "parser.y"
+#line 301 "parser.y"
                { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
-#line 1700 "parser.cpp"
+#line 1702 "parser.cpp"
     break;
 
   case 58: // PRIMITIVE: NUMERO
-#line 303 "parser.y"
+#line 305 "parser.y"
         {
             int num = stoi(yystack_[0].value.as < std::string > ());
+            primitive *p1 = new primitive(0,0,INTEGER,"",num,false);
+            primitive *p2 = new primitive(0,0,INTEGER,"",num,false);
+            //$$ = new operation(0, 0, p1, p2, "+");
+            std::cout << "\n****num "<< num << "*****\n" << std::to_string(num);
             yylhs.value.as < expression* > () = new primitive(0,0,INTEGER,"",num,false);
         }
-#line 1709 "parser.cpp"
+#line 1715 "parser.cpp"
     break;
 
   case 59: // PRIMITIVE: STRING
-#line 308 "parser.y"
+#line 314 "parser.y"
         {
             std::string str1 = yystack_[0].value.as < std::string > ().erase(0,1);
             std::string str2 = str1.erase(str1.length()-1,1);
             yylhs.value.as < expression* > () = new primitive(0,0,STRING,str2,0,false);
         }
-#line 1719 "parser.cpp"
-    break;
-
-  case 60: // PRIMITIVE: BOOL
-#line 313 "parser.y"
-               { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
 #line 1725 "parser.cpp"
     break;
 
-  case 61: // PRIMITIVE: LIST_ARR
-#line 314 "parser.y"
-                   { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
+  case 60: // PRIMITIVE: BOOL
+#line 319 "parser.y"
+               { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
 #line 1731 "parser.cpp"
     break;
 
-  case 62: // BOOL: RTRUE
-#line 317 "parser.y"
-             { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,true); }
+  case 61: // PRIMITIVE: LIST_ARR
+#line 320 "parser.y"
+                   { yylhs.value.as < expression* > () = yystack_[0].value.as < expression* > (); }
 #line 1737 "parser.cpp"
     break;
 
-  case 63: // BOOL: RFALSE
-#line 318 "parser.y"
-             { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,false); }
+  case 62: // BOOL: RTRUE
+#line 323 "parser.y"
+             { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,true); }
 #line 1743 "parser.cpp"
     break;
 
-  case 64: // LIST_ARR: LIST_ARR CORA EXP CORC
-#line 321 "parser.y"
-                                  { yylhs.value.as < expression* > () = new array_access(0,0,yystack_[3].value.as < expression* > (),yystack_[1].value.as < expression* > ()); }
+  case 63: // BOOL: RFALSE
+#line 324 "parser.y"
+             { yylhs.value.as < expression* > () = new primitive(0,0,BOOL,"",0,false); }
 #line 1749 "parser.cpp"
     break;
 
-  case 65: // LIST_ARR: LIST_ARR '.' ID
-#line 322 "parser.y"
-                          { yylhs.value.as < expression* > () = new struct_access(0,0,yystack_[2].value.as < expression* > (),yystack_[0].value.as < std::string > ()); }
+  case 64: // LIST_ARR: LIST_ARR CORA EXP CORC
+#line 327 "parser.y"
+                                  { yylhs.value.as < expression* > () = new array_access(0,0,yystack_[3].value.as < expression* > (),yystack_[1].value.as < expression* > ()); }
 #line 1755 "parser.cpp"
     break;
 
-  case 66: // LIST_ARR: ID
-#line 323 "parser.y"
-             {yylhs.value.as < expression* > () = new access(0,0,yystack_[0].value.as < std::string > ()); }
+  case 65: // LIST_ARR: LIST_ARR '.' ID
+#line 328 "parser.y"
+                          { yylhs.value.as < expression* > () = new struct_access(0,0,yystack_[2].value.as < expression* > (),yystack_[0].value.as < std::string > ()); }
 #line 1761 "parser.cpp"
     break;
 
-  case 67: // CALL_EXP: ID PARA EXP_LIST PARC
-#line 326 "parser.y"
-                                 { yylhs.value.as < expression* > () = new call_exp(0,0,yystack_[3].value.as < std::string > (),yystack_[1].value.as < list_expression* > ()); }
+  case 66: // LIST_ARR: ID
+#line 329 "parser.y"
+             {yylhs.value.as < expression* > () = new access(0,0,yystack_[0].value.as < std::string > ()); }
 #line 1767 "parser.cpp"
     break;
 
-  case 68: // CALL_EXP: ID PARA PARC
-#line 327 "parser.y"
-                       { yylhs.value.as < expression* > () = new call_exp(0,0,yystack_[2].value.as < std::string > (),nullptr); }
+  case 67: // CALL_EXP: ID PARA EXP_LIST PARC
+#line 332 "parser.y"
+                                 { yylhs.value.as < expression* > () = new call_exp(0,0,yystack_[3].value.as < std::string > (),yystack_[1].value.as < list_expression* > ()); }
 #line 1773 "parser.cpp"
     break;
 
-  case 69: // CALL_INST: ID PARA EXP_LIST PARC ';'
-#line 330 "parser.y"
-                                      { yylhs.value.as < instruction* > () = new call_inst(0,0,yystack_[4].value.as < std::string > (),yystack_[2].value.as < list_expression* > ());}
+  case 68: // CALL_EXP: ID PARA PARC
+#line 333 "parser.y"
+                       { yylhs.value.as < expression* > () = new call_exp(0,0,yystack_[2].value.as < std::string > (),nullptr); }
 #line 1779 "parser.cpp"
     break;
 
-  case 70: // CALL_INST: ID PARA PARC ';'
-#line 331 "parser.y"
-                           { yylhs.value.as < instruction* > () = new call_inst(0,0,yystack_[3].value.as < std::string > (),nullptr); }
+  case 69: // CALL_INST: ID PARA EXP_LIST PARC ';'
+#line 336 "parser.y"
+                                      { yylhs.value.as < instruction* > () = new call_inst(0,0,yystack_[4].value.as < std::string > (),yystack_[2].value.as < list_expression* > ());}
 #line 1785 "parser.cpp"
     break;
 
+  case 70: // CALL_INST: ID PARA PARC ';'
+#line 337 "parser.y"
+                           { yylhs.value.as < instruction* > () = new call_inst(0,0,yystack_[3].value.as < std::string > (),nullptr); }
+#line 1791 "parser.cpp"
+    break;
 
-#line 1789 "parser.cpp"
+
+#line 1795 "parser.cpp"
 
             default:
               break;
@@ -2194,14 +2200,14 @@ namespace yy {
   const short
   Parser::yyrline_[] =
   {
-       0,   125,   125,   132,   141,   146,   153,   157,   163,   168,
-     175,   181,   186,   193,   194,   195,   196,   197,   198,   199,
-     202,   203,   206,   209,   212,   216,   222,   227,   234,   240,
-     241,   244,   247,   252,   259,   265,   270,   277,   278,   279,
-     280,   281,   284,   285,   286,   287,   288,   289,   290,   291,
-     292,   293,   294,   295,   296,   297,   298,   299,   302,   307,
-     313,   314,   317,   318,   321,   322,   323,   326,   327,   330,
-     331
+       0,   125,   125,   133,   142,   147,   154,   158,   164,   169,
+     176,   182,   187,   195,   196,   197,   198,   199,   200,   201,
+     204,   205,   208,   211,   214,   218,   224,   229,   236,   242,
+     243,   246,   249,   254,   261,   267,   272,   279,   280,   281,
+     282,   283,   286,   287,   288,   289,   290,   291,   292,   293,
+     294,   295,   296,   297,   298,   299,   300,   301,   304,   313,
+     319,   320,   323,   324,   327,   328,   329,   332,   333,   336,
+     337
   };
 
   void
@@ -2233,9 +2239,9 @@ namespace yy {
 
 
 } // yy
-#line 2237 "parser.cpp"
+#line 2243 "parser.cpp"
 
-#line 334 "parser.y"
+#line 340 "parser.y"
 
 
 /* función de error */

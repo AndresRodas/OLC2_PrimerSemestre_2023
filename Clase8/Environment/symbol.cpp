@@ -4,10 +4,11 @@ symbol::symbol()
 
 }
 
-symbol::symbol(int line, int col, std::string id, TipoDato tipo, void* value){
+symbol::symbol(int line, int col, std::string id, TipoDato tipo, int posicion)
+{
     Line = line;
     Col = col;
     Id = id;
     Tipo = tipo;
-    Value = value;
+    Posicion = posicion;
 }
