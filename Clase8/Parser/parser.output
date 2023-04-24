@@ -21,205 +21,218 @@ Grammar
 
    12 INSTRUCTION: PRINT ';'
    13            | DECLARATION ';'
-   14            | IF
-   15            | STRUCT_DECLARATION
-   16            | STRUCT_CREATION
-   17            | CALL_INST
-   18            | RETURN ';'
+   14            | ASSIGNMENT ';'
+   15            | IF
+   16            | WHILE
+   17            | STRUCT_DECLARATION
+   18            | STRUCT_CREATION
+   19            | CALL_INST
+   20            | RETURN ';'
 
-   19 RETURN: RRETURN EXP
-   20       | RRETURN
+   21 RETURN: RRETURN EXP
+   22       | RRETURN
 
-   21 PRINT: PRINTF PARA EXP PARC
+   23 PRINT: PRINTF PARA EXP PARC
 
-   22 DECLARATION: TYPES ID '=' EXP
+   24 DECLARATION: TYPES ID '=' EXP
 
-   23 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
-   24   | RIF EXP LLAVA LIST_INST LLAVC ELSE
+   25 ASSIGNMENT: ID '=' EXP
 
-   25 ELSEIF_LIST: ELSEIF_LIST ELSEIF
-   26            | ELSEIF
+   26 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
+   27   | RIF EXP LLAVA LIST_INST LLAVC ELSE
 
-   27 ELSEIF: RELSE RIF EXP LLAVA LIST_INST LLAVC
+   28 ELSEIF_LIST: ELSEIF_LIST ELSEIF
+   29            | ELSEIF
 
-   28 ELSE: RELSE LLAVA LIST_INST LLAVC
-   29     | %empty
+   30 ELSEIF: RELSE RIF EXP LLAVA LIST_INST LLAVC
 
-   30 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST LLAVC
+   31 ELSE: RELSE LLAVA LIST_INST LLAVC
+   32     | %empty
 
-   31 DEC_LIST: DEC_LIST TYPES ID ';'
-   32         | TYPES ID ';'
+   33 WHILE: RWHILE EXP LLAVA LIST_INST LLAVC
 
-   33 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST LLAVC
+   34 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST LLAVC
 
-   34 EXP_LIST: EXP_LIST ',' EXP
-   35         | EXP
+   35 DEC_LIST: DEC_LIST TYPES ID ';'
+   36         | TYPES ID ';'
 
-   36 TYPES: INT
-   37      | TSTRING
-   38      | BOOLEAN
-   39      | VOID
-   40      | ARRAY
+   37 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST LLAVC
 
-   41 EXP: EXP SUMA EXP
-   42    | EXP MENOS EXP
-   43    | EXP POR EXP
-   44    | EXP DIV EXP
-   45    | EXP MEN EXP
-   46    | EXP MAY EXP
-   47    | EXP MEN_IG EXP
-   48    | EXP MAY_IG EXP
-   49    | EXP DIF EXP
-   50    | EXP IG EXP
-   51    | EXP AND EXP
-   52    | EXP OR EXP
-   53    | PARA EXP PARC
-   54    | LLAVA EXP_LIST LLAVC
-   55    | PRIMITIVE
-   56    | CALL_EXP
+   38 EXP_LIST: EXP_LIST ',' EXP
+   39         | EXP
 
-   57 PRIMITIVE: NUMERO
-   58          | STRING
-   59          | BOOL
-   60          | LIST_ARR
+   40 TYPES: INT
+   41      | TSTRING
+   42      | BOOLEAN
+   43      | VOID
+   44      | ARRAY
 
-   61 BOOL: RTRUE
-   62     | RFALSE
+   45 EXP: EXP SUMA EXP
+   46    | EXP MENOS EXP
+   47    | EXP POR EXP
+   48    | EXP DIV EXP
+   49    | EXP MEN EXP
+   50    | EXP MAY EXP
+   51    | EXP MEN_IG EXP
+   52    | EXP MAY_IG EXP
+   53    | EXP DIF EXP
+   54    | EXP IG EXP
+   55    | EXP AND EXP
+   56    | EXP OR EXP
+   57    | PARA EXP PARC
+   58    | LLAVA EXP_LIST LLAVC
+   59    | PRIMITIVE
+   60    | CALL_EXP
 
-   63 LIST_ARR: LIST_ARR CORA EXP CORC
-   64         | LIST_ARR '.' ID
-   65         | ID
+   61 PRIMITIVE: NUMERO
+   62          | STRING
+   63          | BOOL
+   64          | LIST_ARR
 
-   66 CALL_EXP: ID PARA EXP_LIST PARC
-   67         | ID PARA PARC
+   65 BOOL: RTRUE
+   66     | RFALSE
 
-   68 CALL_INST: ID PARA EXP_LIST PARC ';'
-   69          | ID PARA PARC ';'
+   67 LIST_ARR: LIST_ARR CORA EXP CORC
+   68         | LIST_ARR '.' ID
+   69         | ID
+
+   70 CALL_EXP: ID PARA EXP_LIST PARC
+   71         | ID PARA PARC
+
+   72 CALL_INST: ID PARA EXP_LIST PARC ';'
+   73          | ID PARA PARC ';'
 
 
 Terminals, with rules where they appear
 
     END (0) 0
-    ',' (44) 7 34
-    '.' (46) 64
-    ';' (59) 12 13 18 31 32 68 69
-    '=' (61) 22 33
+    ',' (44) 7 38
+    '.' (46) 68
+    ';' (59) 12 13 14 20 35 36 72 73
+    '=' (61) 24 25 37
     error (256)
-    NUMERO <std::string> (258) 57
-    ID <std::string> (259) 5 6 7 8 22 30 31 32 33 64 65 66 67 68 69
-    STRING <std::string> (260) 58
-    SUMA <std::string> (261) 41
-    MENOS <std::string> (262) 42
-    POR <std::string> (263) 43
-    DIV <std::string> (264) 44
-    PRINTF <std::string> (265) 21
-    RIF <std::string> (266) 23 24 27
-    RELSE <std::string> (267) 27 28
-    VOID <std::string> (268) 9 39
-    INT <std::string> (269) 36
-    TSTRING <std::string> (270) 37
-    BOOLEAN <std::string> (271) 38
-    PARA <std::string> (272) 5 6 9 21 53 66 67 68 69
-    PARC <std::string> (273) 5 6 9 21 53 66 67 68 69
+    NUMERO <std::string> (258) 61
+    ID <std::string> (259) 5 6 7 8 24 25 34 35 36 37 68 69 70 71 72 73
+    STRING <std::string> (260) 62
+    SUMA <std::string> (261) 45
+    MENOS <std::string> (262) 46
+    POR <std::string> (263) 47
+    DIV <std::string> (264) 48
+    PRINTF <std::string> (265) 23
+    RIF <std::string> (266) 26 27 30
+    RELSE <std::string> (267) 30 31
+    VOID <std::string> (268) 9 43
+    INT <std::string> (269) 40
+    TSTRING <std::string> (270) 41
+    BOOLEAN <std::string> (271) 42
+    PARA <std::string> (272) 5 6 9 23 57 70 71 72 73
+    PARC <std::string> (273) 5 6 9 23 57 70 71 72 73
     RMAIN <std::string> (274) 9
-    LLAVA <std::string> (275) 5 6 9 23 24 27 28 30 33 54
-    LLAVC <std::string> (276) 5 6 9 23 24 27 28 30 33 54
-    RTRUE <std::string> (277) 61
-    RFALSE <std::string> (278) 62
-    CORA <std::string> (279) 63
-    CORC <std::string> (280) 63
-    MAY <std::string> (281) 46
-    MEN <std::string> (282) 45
-    MAY_IG <std::string> (283) 48
-    MEN_IG <std::string> (284) 47
-    DIF <std::string> (285) 49
-    IG <std::string> (286) 50
-    AND <std::string> (287) 51
-    OR <std::string> (288) 52
-    STRUCT <std::string> (289) 30 33
-    RRETURN <std::string> (290) 19 20
-    ARRAY <std::string> (291) 40
+    LLAVA <std::string> (275) 5 6 9 26 27 30 31 33 34 37 58
+    LLAVC <std::string> (276) 5 6 9 26 27 30 31 33 34 37 58
+    RTRUE <std::string> (277) 65
+    RFALSE <std::string> (278) 66
+    CORA <std::string> (279) 67
+    CORC <std::string> (280) 67
+    MAY <std::string> (281) 50
+    MEN <std::string> (282) 49
+    MAY_IG <std::string> (283) 52
+    MEN_IG <std::string> (284) 51
+    DIF <std::string> (285) 53
+    IG <std::string> (286) 54
+    AND <std::string> (287) 55
+    OR <std::string> (288) 56
+    STRUCT <std::string> (289) 34 37
+    RRETURN <std::string> (290) 21 22
+    ARRAY <std::string> (291) 44
+    RWHILE <std::string> (292) 33
 
 
 Nonterminals, with rules where they appear
 
-    $accept (41)
+    $accept (42)
         on left: 0
-    START <func_main*> (42)
+    START <func_main*> (43)
         on left: 1 2
         on right: 0
-    LIST_FUNC <list_instruction*> (43)
+    LIST_FUNC <list_instruction*> (44)
         on left: 3 4
         on right: 2 3
-    FUNCTION <instruction*> (44)
+    FUNCTION <instruction*> (45)
         on left: 5 6
         on right: 3 4
-    FUNC_LIST <map_struct_dec*> (45)
+    FUNC_LIST <map_struct_dec*> (46)
         on left: 7 8
         on right: 5 7
-    MAIN <func_main*> (46)
+    MAIN <func_main*> (47)
         on left: 9
         on right: 1 2
-    LIST_INST <list_instruction*> (47)
+    LIST_INST <list_instruction*> (48)
         on left: 10 11
-        on right: 5 6 9 10 23 24 27 28
-    INSTRUCTION <instruction*> (48)
-        on left: 12 13 14 15 16 17 18
+        on right: 5 6 9 10 26 27 30 31 33
+    INSTRUCTION <instruction*> (49)
+        on left: 12 13 14 15 16 17 18 19 20
         on right: 10 11
-    RETURN <instruction*> (49)
-        on left: 19 20
-        on right: 18
-    PRINT <instruction*> (50)
-        on left: 21
+    RETURN <instruction*> (50)
+        on left: 21 22
+        on right: 20
+    PRINT <instruction*> (51)
+        on left: 23
         on right: 12
-    DECLARATION <instruction*> (51)
-        on left: 22
+    DECLARATION <instruction*> (52)
+        on left: 24
         on right: 13
-    IF <instruction*> (52)
-        on left: 23 24
+    ASSIGNMENT <instruction*> (53)
+        on left: 25
         on right: 14
-    ELSEIF_LIST <list_instruction*> (53)
-        on left: 25 26
-        on right: 23 25
-    ELSEIF <instruction*> (54)
-        on left: 27
-        on right: 25 26
-    ELSE <list_instruction*> (55)
-        on left: 28 29
-        on right: 23 24
-    STRUCT_DECLARATION <instruction*> (56)
-        on left: 30
+    IF <instruction*> (54)
+        on left: 26 27
         on right: 15
-    DEC_LIST <map_struct_dec*> (57)
+    ELSEIF_LIST <list_instruction*> (55)
+        on left: 28 29
+        on right: 26 28
+    ELSEIF <instruction*> (56)
+        on left: 30
+        on right: 28 29
+    ELSE <list_instruction*> (57)
         on left: 31 32
-        on right: 30 31
-    STRUCT_CREATION <instruction*> (58)
+        on right: 26 27
+    WHILE <instruction*> (58)
         on left: 33
         on right: 16
-    EXP_LIST <list_expression*> (59)
-        on left: 34 35
-        on right: 33 34 54 66 68
-    TYPES <TipoDato> (60)
-        on left: 36 37 38 39 40
-        on right: 5 6 7 8 22 31 32
-    EXP <expression*> (61)
-        on left: 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
-        on right: 19 21 22 23 24 27 34 35 41 42 43 44 45 46 47 48 49 50 51 52 53 63
-    PRIMITIVE <expression*> (62)
-        on left: 57 58 59 60
-        on right: 55
-    BOOL <expression*> (63)
-        on left: 61 62
-        on right: 59
-    LIST_ARR <expression*> (64)
-        on left: 63 64 65
-        on right: 60 63 64
-    CALL_EXP <expression*> (65)
-        on left: 66 67
-        on right: 56
-    CALL_INST <instruction*> (66)
-        on left: 68 69
+    STRUCT_DECLARATION <instruction*> (59)
+        on left: 34
         on right: 17
+    DEC_LIST <map_struct_dec*> (60)
+        on left: 35 36
+        on right: 34 35
+    STRUCT_CREATION <instruction*> (61)
+        on left: 37
+        on right: 18
+    EXP_LIST <list_expression*> (62)
+        on left: 38 39
+        on right: 37 38 58 70 72
+    TYPES <TipoDato> (63)
+        on left: 40 41 42 43 44
+        on right: 5 6 7 8 24 35 36
+    EXP <expression*> (64)
+        on left: 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
+        on right: 21 23 24 25 26 27 30 33 38 39 45 46 47 48 49 50 51 52 53 54 55 56 57 67
+    PRIMITIVE <expression*> (65)
+        on left: 61 62 63 64
+        on right: 59
+    BOOL <expression*> (66)
+        on left: 65 66
+        on right: 63
+    LIST_ARR <expression*> (67)
+        on left: 67 68 69
+        on right: 64 67 68
+    CALL_EXP <expression*> (68)
+        on left: 70 71
+        on right: 60
+    CALL_INST <instruction*> (69)
+        on left: 72 73
+        on right: 19
 
 
 State 0
@@ -242,39 +255,39 @@ State 0
 State 1
 
     9 MAIN: VOID . RMAIN PARA PARC LLAVA LIST_INST LLAVC
-   39 TYPES: VOID .
+   43 TYPES: VOID .
 
     RMAIN  shift, and go to state 11
 
-    $default  reduce using rule 39 (TYPES)
+    $default  reduce using rule 43 (TYPES)
 
 
 State 2
 
-   36 TYPES: INT .
+   40 TYPES: INT .
 
-    $default  reduce using rule 36 (TYPES)
+    $default  reduce using rule 40 (TYPES)
 
 
 State 3
 
-   37 TYPES: TSTRING .
+   41 TYPES: TSTRING .
 
-    $default  reduce using rule 37 (TYPES)
+    $default  reduce using rule 41 (TYPES)
 
 
 State 4
 
-   38 TYPES: BOOLEAN .
+   42 TYPES: BOOLEAN .
 
-    $default  reduce using rule 38 (TYPES)
+    $default  reduce using rule 42 (TYPES)
 
 
 State 5
 
-   40 TYPES: ARRAY .
+   44 TYPES: ARRAY .
 
-    $default  reduce using rule 40 (TYPES)
+    $default  reduce using rule 44 (TYPES)
 
 
 State 6
@@ -390,9 +403,9 @@ State 18
 
 State 19
 
-   39 TYPES: VOID .
+   43 TYPES: VOID .
 
-    $default  reduce using rule 39 (TYPES)
+    $default  reduce using rule 43 (TYPES)
 
 
 State 20
@@ -432,17 +445,20 @@ State 23
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    LIST_INST           go to state 33
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    LIST_INST           go to state 34
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 24
@@ -459,24 +475,27 @@ State 24
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    LIST_INST           go to state 43
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    LIST_INST           go to state 46
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 25
 
     5 FUNCTION: TYPES ID PARA FUNC_LIST PARC . LLAVA LIST_INST LLAVC
 
-    LLAVA  shift, and go to state 44
+    LLAVA  shift, and go to state 47
 
 
 State 26
@@ -489,7 +508,7 @@ State 26
     BOOLEAN  shift, and go to state 4
     ARRAY    shift, and go to state 5
 
-    TYPES  go to state 45
+    TYPES  go to state 48
 
 
 State 27
@@ -501,70 +520,91 @@ State 27
 
 State 28
 
-   68 CALL_INST: ID . PARA EXP_LIST PARC ';'
-   69          | ID . PARA PARC ';'
+   25 ASSIGNMENT: ID . '=' EXP
+   72 CALL_INST: ID . PARA EXP_LIST PARC ';'
+   73          | ID . PARA PARC ';'
 
-    PARA  shift, and go to state 46
+    PARA  shift, and go to state 49
+    '='   shift, and go to state 50
 
 
 State 29
 
-   21 PRINT: PRINTF . PARA EXP PARC
+   23 PRINT: PRINTF . PARA EXP PARC
 
-    PARA  shift, and go to state 47
+    PARA  shift, and go to state 51
 
 
 State 30
 
-   23 IF: RIF . EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
-   24   | RIF . EXP LLAVA LIST_INST LLAVC ELSE
+   26 IF: RIF . EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
+   27   | RIF . EXP LLAVA LIST_INST LLAVC ELSE
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    EXP        go to state 55
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    EXP        go to state 59
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 31
 
-   30 STRUCT_DECLARATION: STRUCT . ID LLAVA DEC_LIST LLAVC
-   33 STRUCT_CREATION: STRUCT . ID ID '=' LLAVA EXP_LIST LLAVC
+   34 STRUCT_DECLARATION: STRUCT . ID LLAVA DEC_LIST LLAVC
+   37 STRUCT_CREATION: STRUCT . ID ID '=' LLAVA EXP_LIST LLAVC
 
-    ID  shift, and go to state 60
+    ID  shift, and go to state 64
 
 
 State 32
 
-   19 RETURN: RRETURN . EXP
-   20       | RRETURN .
+   21 RETURN: RRETURN . EXP
+   22       | RRETURN .
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    $default  reduce using rule 20 (RETURN)
+    $default  reduce using rule 22 (RETURN)
 
-    EXP        go to state 61
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    EXP        go to state 65
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 33
+
+   33 WHILE: RWHILE . EXP LLAVA LIST_INST LLAVC
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 66
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 34
 
     9 MAIN: VOID RMAIN PARA PARC LLAVA LIST_INST . LLAVC
    10 LIST_INST: LIST_INST . INSTRUCTION
@@ -576,86 +616,103 @@ State 33
     INT      shift, and go to state 2
     TSTRING  shift, and go to state 3
     BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 62
+    LLAVC    shift, and go to state 67
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
-State 34
+State 35
 
    11 LIST_INST: INSTRUCTION .
 
     $default  reduce using rule 11 (LIST_INST)
 
 
-State 35
-
-   18 INSTRUCTION: RETURN . ';'
-
-    ';'  shift, and go to state 64
-
-
 State 36
 
-   12 INSTRUCTION: PRINT . ';'
+   20 INSTRUCTION: RETURN . ';'
 
-    ';'  shift, and go to state 65
+    ';'  shift, and go to state 69
 
 
 State 37
 
-   13 INSTRUCTION: DECLARATION . ';'
+   12 INSTRUCTION: PRINT . ';'
 
-    ';'  shift, and go to state 66
+    ';'  shift, and go to state 70
 
 
 State 38
 
-   14 INSTRUCTION: IF .
+   13 INSTRUCTION: DECLARATION . ';'
 
-    $default  reduce using rule 14 (INSTRUCTION)
+    ';'  shift, and go to state 71
 
 
 State 39
 
-   15 INSTRUCTION: STRUCT_DECLARATION .
+   14 INSTRUCTION: ASSIGNMENT . ';'
 
-    $default  reduce using rule 15 (INSTRUCTION)
+    ';'  shift, and go to state 72
 
 
 State 40
 
-   16 INSTRUCTION: STRUCT_CREATION .
+   15 INSTRUCTION: IF .
 
-    $default  reduce using rule 16 (INSTRUCTION)
+    $default  reduce using rule 15 (INSTRUCTION)
 
 
 State 41
 
-   22 DECLARATION: TYPES . ID '=' EXP
+   16 INSTRUCTION: WHILE .
 
-    ID  shift, and go to state 67
+    $default  reduce using rule 16 (INSTRUCTION)
 
 
 State 42
 
-   17 INSTRUCTION: CALL_INST .
+   17 INSTRUCTION: STRUCT_DECLARATION .
 
     $default  reduce using rule 17 (INSTRUCTION)
 
 
 State 43
+
+   18 INSTRUCTION: STRUCT_CREATION .
+
+    $default  reduce using rule 18 (INSTRUCTION)
+
+
+State 44
+
+   24 DECLARATION: TYPES . ID '=' EXP
+
+    ID  shift, and go to state 73
+
+
+State 45
+
+   19 INSTRUCTION: CALL_INST .
+
+    $default  reduce using rule 19 (INSTRUCTION)
+
+
+State 46
 
     6 FUNCTION: TYPES ID PARA PARC LLAVA LIST_INST . LLAVC
    10 LIST_INST: LIST_INST . INSTRUCTION
@@ -667,23 +724,26 @@ State 43
     INT      shift, and go to state 2
     TSTRING  shift, and go to state 3
     BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 68
+    LLAVC    shift, and go to state 74
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
-State 44
+State 47
 
     5 FUNCTION: TYPES ID PARA FUNC_LIST PARC LLAVA . LIST_INST LLAVC
 
@@ -697,301 +757,361 @@ State 44
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    LIST_INST           go to state 69
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
-
-
-State 45
-
-    7 FUNC_LIST: FUNC_LIST ',' TYPES . ID
-
-    ID  shift, and go to state 70
-
-
-State 46
-
-   68 CALL_INST: ID PARA . EXP_LIST PARC ';'
-   69          | ID PARA . PARC ';'
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    PARC    shift, and go to state 71
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP_LIST   go to state 72
-    EXP        go to state 73
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 47
-
-   21 PRINT: PRINTF PARA . EXP PARC
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 74
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    LIST_INST           go to state 75
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 48
 
-   57 PRIMITIVE: NUMERO .
+    7 FUNC_LIST: FUNC_LIST ',' TYPES . ID
 
-    $default  reduce using rule 57 (PRIMITIVE)
+    ID  shift, and go to state 76
 
 
 State 49
 
-   65 LIST_ARR: ID .
-   66 CALL_EXP: ID . PARA EXP_LIST PARC
-   67         | ID . PARA PARC
+   72 CALL_INST: ID PARA . EXP_LIST PARC ';'
+   73          | ID PARA . PARC ';'
 
-    PARA  shift, and go to state 75
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    PARC    shift, and go to state 77
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    $default  reduce using rule 65 (LIST_ARR)
+    EXP_LIST   go to state 78
+    EXP        go to state 79
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 50
 
-   58 PRIMITIVE: STRING .
+   25 ASSIGNMENT: ID '=' . EXP
 
-    $default  reduce using rule 58 (PRIMITIVE)
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 80
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 51
 
-   53 EXP: PARA . EXP PARC
+   23 PRINT: PRINTF PARA . EXP PARC
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    EXP        go to state 76
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    EXP        go to state 81
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 52
 
-   54 EXP: LLAVA . EXP_LIST LLAVC
+   61 PRIMITIVE: NUMERO .
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP_LIST   go to state 77
-    EXP        go to state 73
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    $default  reduce using rule 61 (PRIMITIVE)
 
 
 State 53
 
-   61 BOOL: RTRUE .
+   69 LIST_ARR: ID .
+   70 CALL_EXP: ID . PARA EXP_LIST PARC
+   71         | ID . PARA PARC
 
-    $default  reduce using rule 61 (BOOL)
+    PARA  shift, and go to state 82
+
+    $default  reduce using rule 69 (LIST_ARR)
 
 
 State 54
 
-   62 BOOL: RFALSE .
+   62 PRIMITIVE: STRING .
 
-    $default  reduce using rule 62 (BOOL)
+    $default  reduce using rule 62 (PRIMITIVE)
 
 
 State 55
 
-   23 IF: RIF EXP . LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
-   24   | RIF EXP . LLAVA LIST_INST LLAVC ELSE
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   57 EXP: PARA . EXP PARC
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    LLAVA   shift, and go to state 82
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 83
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 56
 
-   55 EXP: PRIMITIVE .
+   58 EXP: LLAVA . EXP_LIST LLAVC
 
-    $default  reduce using rule 55 (EXP)
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP_LIST   go to state 84
+    EXP        go to state 79
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 57
 
-   59 PRIMITIVE: BOOL .
+   65 BOOL: RTRUE .
 
-    $default  reduce using rule 59 (PRIMITIVE)
+    $default  reduce using rule 65 (BOOL)
 
 
 State 58
 
-   60 PRIMITIVE: LIST_ARR .
-   63 LIST_ARR: LIST_ARR . CORA EXP CORC
-   64         | LIST_ARR . '.' ID
+   66 BOOL: RFALSE .
 
-    CORA  shift, and go to state 91
-    '.'   shift, and go to state 92
-
-    $default  reduce using rule 60 (PRIMITIVE)
+    $default  reduce using rule 66 (BOOL)
 
 
 State 59
 
-   56 EXP: CALL_EXP .
+   26 IF: RIF EXP . LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
+   27   | RIF EXP . LLAVA LIST_INST LLAVC ELSE
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    $default  reduce using rule 56 (EXP)
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    LLAVA   shift, and go to state 89
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
 
 State 60
 
-   30 STRUCT_DECLARATION: STRUCT ID . LLAVA DEC_LIST LLAVC
-   33 STRUCT_CREATION: STRUCT ID . ID '=' LLAVA EXP_LIST LLAVC
+   59 EXP: PRIMITIVE .
 
-    ID     shift, and go to state 93
-    LLAVA  shift, and go to state 94
+    $default  reduce using rule 59 (EXP)
 
 
 State 61
 
-   19 RETURN: RRETURN EXP .
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   63 PRIMITIVE: BOOL .
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
-
-    $default  reduce using rule 19 (RETURN)
+    $default  reduce using rule 63 (PRIMITIVE)
 
 
 State 62
+
+   64 PRIMITIVE: LIST_ARR .
+   67 LIST_ARR: LIST_ARR . CORA EXP CORC
+   68         | LIST_ARR . '.' ID
+
+    CORA  shift, and go to state 98
+    '.'   shift, and go to state 99
+
+    $default  reduce using rule 64 (PRIMITIVE)
+
+
+State 63
+
+   60 EXP: CALL_EXP .
+
+    $default  reduce using rule 60 (EXP)
+
+
+State 64
+
+   34 STRUCT_DECLARATION: STRUCT ID . LLAVA DEC_LIST LLAVC
+   37 STRUCT_CREATION: STRUCT ID . ID '=' LLAVA EXP_LIST LLAVC
+
+    ID     shift, and go to state 100
+    LLAVA  shift, and go to state 101
+
+
+State 65
+
+   21 RETURN: RRETURN EXP .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
+
+    $default  reduce using rule 21 (RETURN)
+
+
+State 66
+
+   33 WHILE: RWHILE EXP . LLAVA LIST_INST LLAVC
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    LLAVA   shift, and go to state 102
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
+
+
+State 67
 
     9 MAIN: VOID RMAIN PARA PARC LLAVA LIST_INST LLAVC .
 
     $default  reduce using rule 9 (MAIN)
 
 
-State 63
+State 68
 
    10 LIST_INST: LIST_INST INSTRUCTION .
 
     $default  reduce using rule 10 (LIST_INST)
 
 
-State 64
+State 69
 
-   18 INSTRUCTION: RETURN ';' .
+   20 INSTRUCTION: RETURN ';' .
 
-    $default  reduce using rule 18 (INSTRUCTION)
+    $default  reduce using rule 20 (INSTRUCTION)
 
 
-State 65
+State 70
 
    12 INSTRUCTION: PRINT ';' .
 
     $default  reduce using rule 12 (INSTRUCTION)
 
 
-State 66
+State 71
 
    13 INSTRUCTION: DECLARATION ';' .
 
     $default  reduce using rule 13 (INSTRUCTION)
 
 
-State 67
+State 72
 
-   22 DECLARATION: TYPES ID . '=' EXP
+   14 INSTRUCTION: ASSIGNMENT ';' .
 
-    '='  shift, and go to state 95
+    $default  reduce using rule 14 (INSTRUCTION)
 
 
-State 68
+State 73
+
+   24 DECLARATION: TYPES ID . '=' EXP
+
+    '='  shift, and go to state 103
+
+
+State 74
 
     6 FUNCTION: TYPES ID PARA PARC LLAVA LIST_INST LLAVC .
 
     $default  reduce using rule 6 (FUNCTION)
 
 
-State 69
+State 75
 
     5 FUNCTION: TYPES ID PARA FUNC_LIST PARC LLAVA LIST_INST . LLAVC
    10 LIST_INST: LIST_INST . INSTRUCTION
@@ -1003,250 +1123,285 @@ State 69
     INT      shift, and go to state 2
     TSTRING  shift, and go to state 3
     BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 96
+    LLAVC    shift, and go to state 104
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
-State 70
+State 76
 
     7 FUNC_LIST: FUNC_LIST ',' TYPES ID .
 
     $default  reduce using rule 7 (FUNC_LIST)
 
 
-State 71
-
-   69 CALL_INST: ID PARA PARC . ';'
-
-    ';'  shift, and go to state 97
-
-
-State 72
-
-   34 EXP_LIST: EXP_LIST . ',' EXP
-   68 CALL_INST: ID PARA EXP_LIST . PARC ';'
-
-    PARC  shift, and go to state 98
-    ','   shift, and go to state 99
-
-
-State 73
-
-   35 EXP_LIST: EXP .
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
-
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
-
-    $default  reduce using rule 35 (EXP_LIST)
-
-
-State 74
-
-   21 PRINT: PRINTF PARA EXP . PARC
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
-
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    PARC    shift, and go to state 100
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
-
-
-State 75
-
-   66 CALL_EXP: ID PARA . EXP_LIST PARC
-   67         | ID PARA . PARC
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    PARC    shift, and go to state 101
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP_LIST   go to state 102
-    EXP        go to state 73
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 76
-
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
-   53    | PARA EXP . PARC
-
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    PARC    shift, and go to state 103
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
-
-
 State 77
 
-   34 EXP_LIST: EXP_LIST . ',' EXP
-   54 EXP: LLAVA EXP_LIST . LLAVC
+   73 CALL_INST: ID PARA PARC . ';'
 
-    LLAVC  shift, and go to state 104
-    ','    shift, and go to state 99
+    ';'  shift, and go to state 105
 
 
 State 78
 
-   41 EXP: EXP SUMA . EXP
+   38 EXP_LIST: EXP_LIST . ',' EXP
+   72 CALL_INST: ID PARA EXP_LIST . PARC ';'
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 105
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    PARC  shift, and go to state 106
+    ','   shift, and go to state 107
 
 
 State 79
 
-   42 EXP: EXP MENOS . EXP
+   39 EXP_LIST: EXP .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
-    EXP        go to state 106
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    $default  reduce using rule 39 (EXP_LIST)
 
 
 State 80
 
-   43 EXP: EXP POR . EXP
+   25 ASSIGNMENT: ID '=' EXP .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
-    EXP        go to state 107
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    $default  reduce using rule 25 (ASSIGNMENT)
 
 
 State 81
 
-   44 EXP: EXP DIV . EXP
+   23 PRINT: PRINTF PARA EXP . PARC
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 108
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    PARC    shift, and go to state 108
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
 
 State 82
 
-   23 IF: RIF EXP LLAVA . LIST_INST LLAVC ELSEIF_LIST ELSE
-   24   | RIF EXP LLAVA . LIST_INST LLAVC ELSE
+   70 CALL_EXP: ID PARA . EXP_LIST PARC
+   71         | ID PARA . PARC
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    PARC    shift, and go to state 109
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP_LIST   go to state 110
+    EXP        go to state 79
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 83
+
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+   57    | PARA EXP . PARC
+
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    PARC    shift, and go to state 111
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
+
+
+State 84
+
+   38 EXP_LIST: EXP_LIST . ',' EXP
+   58 EXP: LLAVA EXP_LIST . LLAVC
+
+    LLAVC  shift, and go to state 112
+    ','    shift, and go to state 107
+
+
+State 85
+
+   45 EXP: EXP SUMA . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 113
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 86
+
+   46 EXP: EXP MENOS . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 114
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 87
+
+   47 EXP: EXP POR . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 115
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 88
+
+   48 EXP: EXP DIV . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 116
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 89
+
+   26 IF: RIF EXP LLAVA . LIST_INST LLAVC ELSEIF_LIST ELSE
+   27   | RIF EXP LLAVA . LIST_INST LLAVC ELSE
 
     ID       shift, and go to state 28
     PRINTF   shift, and go to state 29
@@ -1258,207 +1413,210 @@ State 82
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    LIST_INST           go to state 109
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
-
-
-State 83
-
-   46 EXP: EXP MAY . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 110
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 84
-
-   45 EXP: EXP MEN . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 111
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 85
-
-   48 EXP: EXP MAY_IG . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 112
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 86
-
-   47 EXP: EXP MEN_IG . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 113
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 87
-
-   49 EXP: EXP DIF . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 114
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 88
-
-   50 EXP: EXP IG . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 115
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 89
-
-   51 EXP: EXP AND . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 116
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    LIST_INST           go to state 117
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 90
 
-   52 EXP: EXP OR . EXP
+   50 EXP: EXP MAY . EXP
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    EXP        go to state 117
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    EXP        go to state 118
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 91
 
-   63 LIST_ARR: LIST_ARR CORA . EXP CORC
+   49 EXP: EXP MEN . EXP
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
 
-    EXP        go to state 118
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    EXP        go to state 119
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 92
 
-   64 LIST_ARR: LIST_ARR '.' . ID
+   52 EXP: EXP MAY_IG . EXP
 
-    ID  shift, and go to state 119
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 120
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 93
 
-   33 STRUCT_CREATION: STRUCT ID ID . '=' LLAVA EXP_LIST LLAVC
+   51 EXP: EXP MEN_IG . EXP
 
-    '='  shift, and go to state 120
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 121
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 94
 
-   30 STRUCT_DECLARATION: STRUCT ID LLAVA . DEC_LIST LLAVC
+   53 EXP: EXP DIF . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 122
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 95
+
+   54 EXP: EXP IG . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 123
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 96
+
+   55 EXP: EXP AND . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 124
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 97
+
+   56 EXP: EXP OR . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 125
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 98
+
+   67 LIST_ARR: LIST_ARR CORA . EXP CORC
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 126
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 99
+
+   68 LIST_ARR: LIST_ARR '.' . ID
+
+    ID  shift, and go to state 127
+
+
+State 100
+
+   37 STRUCT_CREATION: STRUCT ID ID . '=' LLAVA EXP_LIST LLAVC
+
+    '='  shift, and go to state 128
+
+
+State 101
+
+   34 STRUCT_DECLARATION: STRUCT ID LLAVA . DEC_LIST LLAVC
 
     VOID     shift, and go to state 19
     INT      shift, and go to state 2
@@ -1466,866 +1624,788 @@ State 94
     BOOLEAN  shift, and go to state 4
     ARRAY    shift, and go to state 5
 
-    DEC_LIST  go to state 121
-    TYPES     go to state 122
+    DEC_LIST  go to state 129
+    TYPES     go to state 130
 
 
-State 95
+State 102
 
-   22 DECLARATION: TYPES ID '=' . EXP
+   33 WHILE: RWHILE EXP LLAVA . LIST_INST LLAVC
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    EXP        go to state 123
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    LIST_INST           go to state 131
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
-State 96
+State 103
+
+   24 DECLARATION: TYPES ID '=' . EXP
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 132
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 104
 
     5 FUNCTION: TYPES ID PARA FUNC_LIST PARC LLAVA LIST_INST LLAVC .
 
     $default  reduce using rule 5 (FUNCTION)
 
 
-State 97
-
-   69 CALL_INST: ID PARA PARC ';' .
-
-    $default  reduce using rule 69 (CALL_INST)
-
-
-State 98
-
-   68 CALL_INST: ID PARA EXP_LIST PARC . ';'
-
-    ';'  shift, and go to state 124
-
-
-State 99
-
-   34 EXP_LIST: EXP_LIST ',' . EXP
-
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 125
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
-
-
-State 100
-
-   21 PRINT: PRINTF PARA EXP PARC .
-
-    $default  reduce using rule 21 (PRINT)
-
-
-State 101
-
-   67 CALL_EXP: ID PARA PARC .
-
-    $default  reduce using rule 67 (CALL_EXP)
-
-
-State 102
-
-   34 EXP_LIST: EXP_LIST . ',' EXP
-   66 CALL_EXP: ID PARA EXP_LIST . PARC
-
-    PARC  shift, and go to state 126
-    ','   shift, and go to state 99
-
-
-State 103
-
-   53 EXP: PARA EXP PARC .
-
-    $default  reduce using rule 53 (EXP)
-
-
-State 104
-
-   54 EXP: LLAVA EXP_LIST LLAVC .
-
-    $default  reduce using rule 54 (EXP)
-
-
 State 105
 
-   41 EXP: EXP . SUMA EXP
-   41    | EXP SUMA EXP .
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   73 CALL_INST: ID PARA PARC ';' .
 
-    POR  shift, and go to state 80
-    DIV  shift, and go to state 81
-
-    $default  reduce using rule 41 (EXP)
+    $default  reduce using rule 73 (CALL_INST)
 
 
 State 106
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   42    | EXP MENOS EXP .
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   72 CALL_INST: ID PARA EXP_LIST PARC . ';'
 
-    POR  shift, and go to state 80
-    DIV  shift, and go to state 81
-
-    $default  reduce using rule 42 (EXP)
+    ';'  shift, and go to state 133
 
 
 State 107
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   43    | EXP POR EXP .
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   38 EXP_LIST: EXP_LIST ',' . EXP
 
-    $default  reduce using rule 43 (EXP)
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 134
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 108
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   44    | EXP DIV EXP .
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   23 PRINT: PRINTF PARA EXP PARC .
 
-    $default  reduce using rule 44 (EXP)
+    $default  reduce using rule 23 (PRINT)
 
 
 State 109
 
-   10 LIST_INST: LIST_INST . INSTRUCTION
-   23 IF: RIF EXP LLAVA LIST_INST . LLAVC ELSEIF_LIST ELSE
-   24   | RIF EXP LLAVA LIST_INST . LLAVC ELSE
+   71 CALL_EXP: ID PARA PARC .
 
-    ID       shift, and go to state 28
-    PRINTF   shift, and go to state 29
-    RIF      shift, and go to state 30
-    VOID     shift, and go to state 19
-    INT      shift, and go to state 2
-    TSTRING  shift, and go to state 3
-    BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 127
-    STRUCT   shift, and go to state 31
-    RRETURN  shift, and go to state 32
-    ARRAY    shift, and go to state 5
-
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    $default  reduce using rule 71 (CALL_EXP)
 
 
 State 110
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   46    | EXP MAY EXP .
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   38 EXP_LIST: EXP_LIST . ',' EXP
+   70 CALL_EXP: ID PARA EXP_LIST . PARC
 
-    SUMA   shift, and go to state 78
-    MENOS  shift, and go to state 79
-    POR    shift, and go to state 80
-    DIV    shift, and go to state 81
-
-    $default  reduce using rule 46 (EXP)
+    PARC  shift, and go to state 135
+    ','   shift, and go to state 107
 
 
 State 111
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   45    | EXP MEN EXP .
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   57 EXP: PARA EXP PARC .
 
-    SUMA   shift, and go to state 78
-    MENOS  shift, and go to state 79
-    POR    shift, and go to state 80
-    DIV    shift, and go to state 81
-
-    $default  reduce using rule 45 (EXP)
+    $default  reduce using rule 57 (EXP)
 
 
 State 112
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   48    | EXP MAY_IG EXP .
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   58 EXP: LLAVA EXP_LIST LLAVC .
 
-    SUMA   shift, and go to state 78
-    MENOS  shift, and go to state 79
-    POR    shift, and go to state 80
-    DIV    shift, and go to state 81
-
-    $default  reduce using rule 48 (EXP)
+    $default  reduce using rule 58 (EXP)
 
 
 State 113
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   47    | EXP MEN_IG EXP .
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   45    | EXP SUMA EXP .
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA   shift, and go to state 78
-    MENOS  shift, and go to state 79
-    POR    shift, and go to state 80
-    DIV    shift, and go to state 81
+    POR  shift, and go to state 87
+    DIV  shift, and go to state 88
 
-    $default  reduce using rule 47 (EXP)
+    $default  reduce using rule 45 (EXP)
 
 
 State 114
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   49    | EXP DIF EXP .
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   46    | EXP MENOS EXP .
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
+    POR  shift, and go to state 87
+    DIV  shift, and go to state 88
 
-    $default  reduce using rule 49 (EXP)
+    $default  reduce using rule 46 (EXP)
 
 
 State 115
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   50    | EXP IG EXP .
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   47    | EXP POR EXP .
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-
-    $default  reduce using rule 50 (EXP)
+    $default  reduce using rule 47 (EXP)
 
 
 State 116
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   51    | EXP AND EXP .
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   48    | EXP DIV EXP .
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-
-    $default  reduce using rule 51 (EXP)
+    $default  reduce using rule 48 (EXP)
 
 
 State 117
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
-   52    | EXP OR EXP .
+   10 LIST_INST: LIST_INST . INSTRUCTION
+   26 IF: RIF EXP LLAVA LIST_INST . LLAVC ELSEIF_LIST ELSE
+   27   | RIF EXP LLAVA LIST_INST . LLAVC ELSE
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    LLAVC    shift, and go to state 136
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    $default  reduce using rule 52 (EXP)
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 118
 
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
-   63 LIST_ARR: LIST_ARR CORA EXP . CORC
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   50    | EXP MAY EXP .
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    CORC    shift, and go to state 128
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
+    SUMA   shift, and go to state 85
+    MENOS  shift, and go to state 86
+    POR    shift, and go to state 87
+    DIV    shift, and go to state 88
+
+    $default  reduce using rule 50 (EXP)
 
 
 State 119
 
-   64 LIST_ARR: LIST_ARR '.' ID .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   49    | EXP MEN EXP .
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    $default  reduce using rule 64 (LIST_ARR)
+    SUMA   shift, and go to state 85
+    MENOS  shift, and go to state 86
+    POR    shift, and go to state 87
+    DIV    shift, and go to state 88
+
+    $default  reduce using rule 49 (EXP)
 
 
 State 120
 
-   33 STRUCT_CREATION: STRUCT ID ID '=' . LLAVA EXP_LIST LLAVC
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   52    | EXP MAY_IG EXP .
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    LLAVA  shift, and go to state 129
+    SUMA   shift, and go to state 85
+    MENOS  shift, and go to state 86
+    POR    shift, and go to state 87
+    DIV    shift, and go to state 88
+
+    $default  reduce using rule 52 (EXP)
 
 
 State 121
 
-   30 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST . LLAVC
-   31 DEC_LIST: DEC_LIST . TYPES ID ';'
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   51    | EXP MEN_IG EXP .
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    VOID     shift, and go to state 19
-    INT      shift, and go to state 2
-    TSTRING  shift, and go to state 3
-    BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 130
-    ARRAY    shift, and go to state 5
+    SUMA   shift, and go to state 85
+    MENOS  shift, and go to state 86
+    POR    shift, and go to state 87
+    DIV    shift, and go to state 88
 
-    TYPES  go to state 131
+    $default  reduce using rule 51 (EXP)
 
 
 State 122
 
-   32 DEC_LIST: TYPES . ID ';'
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   53    | EXP DIF EXP .
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    ID  shift, and go to state 132
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+
+    $default  reduce using rule 53 (EXP)
 
 
 State 123
 
-   22 DECLARATION: TYPES ID '=' EXP .
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   54    | EXP IG EXP .
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
 
-    $default  reduce using rule 22 (DECLARATION)
+    $default  reduce using rule 54 (EXP)
 
 
 State 124
 
-   68 CALL_INST: ID PARA EXP_LIST PARC ';' .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   55    | EXP AND EXP .
+   56    | EXP . OR EXP
 
-    $default  reduce using rule 68 (CALL_INST)
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+
+    $default  reduce using rule 55 (EXP)
 
 
 State 125
 
-   34 EXP_LIST: EXP_LIST ',' EXP .
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+   56    | EXP OR EXP .
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
 
-    $default  reduce using rule 34 (EXP_LIST)
+    $default  reduce using rule 56 (EXP)
 
 
 State 126
 
-   66 CALL_EXP: ID PARA EXP_LIST PARC .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+   67 LIST_ARR: LIST_ARR CORA EXP . CORC
 
-    $default  reduce using rule 66 (CALL_EXP)
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    CORC    shift, and go to state 137
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
 
 State 127
 
-   23 IF: RIF EXP LLAVA LIST_INST LLAVC . ELSEIF_LIST ELSE
-   24   | RIF EXP LLAVA LIST_INST LLAVC . ELSE
+   68 LIST_ARR: LIST_ARR '.' ID .
 
-    RELSE  shift, and go to state 133
-
-    $default  reduce using rule 29 (ELSE)
-
-    ELSEIF_LIST  go to state 134
-    ELSEIF       go to state 135
-    ELSE         go to state 136
+    $default  reduce using rule 68 (LIST_ARR)
 
 
 State 128
 
-   63 LIST_ARR: LIST_ARR CORA EXP CORC .
+   37 STRUCT_CREATION: STRUCT ID ID '=' . LLAVA EXP_LIST LLAVC
 
-    $default  reduce using rule 63 (LIST_ARR)
+    LLAVA  shift, and go to state 138
 
 
 State 129
 
-   33 STRUCT_CREATION: STRUCT ID ID '=' LLAVA . EXP_LIST LLAVC
+   34 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST . LLAVC
+   35 DEC_LIST: DEC_LIST . TYPES ID ';'
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    LLAVC    shift, and go to state 139
+    ARRAY    shift, and go to state 5
 
-    EXP_LIST   go to state 137
-    EXP        go to state 73
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    TYPES  go to state 140
 
 
 State 130
 
-   30 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST LLAVC .
+   36 DEC_LIST: TYPES . ID ';'
 
-    $default  reduce using rule 30 (STRUCT_DECLARATION)
+    ID  shift, and go to state 141
 
 
 State 131
 
-   31 DEC_LIST: DEC_LIST TYPES . ID ';'
+   10 LIST_INST: LIST_INST . INSTRUCTION
+   33 WHILE: RWHILE EXP LLAVA LIST_INST . LLAVC
 
-    ID  shift, and go to state 138
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    LLAVC    shift, and go to state 142
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
+
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
 State 132
 
-   32 DEC_LIST: TYPES ID . ';'
+   24 DECLARATION: TYPES ID '=' EXP .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    ';'  shift, and go to state 139
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
+
+    $default  reduce using rule 24 (DECLARATION)
 
 
 State 133
 
-   27 ELSEIF: RELSE . RIF EXP LLAVA LIST_INST LLAVC
-   28 ELSE: RELSE . LLAVA LIST_INST LLAVC
+   72 CALL_INST: ID PARA EXP_LIST PARC ';' .
 
-    RIF    shift, and go to state 140
-    LLAVA  shift, and go to state 141
+    $default  reduce using rule 72 (CALL_INST)
 
 
 State 134
 
-   23 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST . ELSE
-   25 ELSEIF_LIST: ELSEIF_LIST . ELSEIF
+   38 EXP_LIST: EXP_LIST ',' EXP .
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
 
-    RELSE  shift, and go to state 133
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
 
-    $default  reduce using rule 29 (ELSE)
-
-    ELSEIF  go to state 142
-    ELSE    go to state 143
+    $default  reduce using rule 38 (EXP_LIST)
 
 
 State 135
 
-   26 ELSEIF_LIST: ELSEIF .
+   70 CALL_EXP: ID PARA EXP_LIST PARC .
 
-    $default  reduce using rule 26 (ELSEIF_LIST)
+    $default  reduce using rule 70 (CALL_EXP)
 
 
 State 136
 
-   24 IF: RIF EXP LLAVA LIST_INST LLAVC ELSE .
+   26 IF: RIF EXP LLAVA LIST_INST LLAVC . ELSEIF_LIST ELSE
+   27   | RIF EXP LLAVA LIST_INST LLAVC . ELSE
 
-    $default  reduce using rule 24 (IF)
+    RELSE  shift, and go to state 143
+
+    $default  reduce using rule 32 (ELSE)
+
+    ELSEIF_LIST  go to state 144
+    ELSEIF       go to state 145
+    ELSE         go to state 146
 
 
 State 137
 
-   33 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST . LLAVC
-   34 EXP_LIST: EXP_LIST . ',' EXP
+   67 LIST_ARR: LIST_ARR CORA EXP CORC .
 
-    LLAVC  shift, and go to state 144
-    ','    shift, and go to state 99
+    $default  reduce using rule 67 (LIST_ARR)
 
 
 State 138
 
-   31 DEC_LIST: DEC_LIST TYPES ID . ';'
+   37 STRUCT_CREATION: STRUCT ID ID '=' LLAVA . EXP_LIST LLAVC
 
-    ';'  shift, and go to state 145
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP_LIST   go to state 147
+    EXP        go to state 79
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
 
 
 State 139
 
-   32 DEC_LIST: TYPES ID ';' .
+   34 STRUCT_DECLARATION: STRUCT ID LLAVA DEC_LIST LLAVC .
 
-    $default  reduce using rule 32 (DEC_LIST)
+    $default  reduce using rule 34 (STRUCT_DECLARATION)
 
 
 State 140
 
-   27 ELSEIF: RELSE RIF . EXP LLAVA LIST_INST LLAVC
+   35 DEC_LIST: DEC_LIST TYPES . ID ';'
 
-    NUMERO  shift, and go to state 48
-    ID      shift, and go to state 49
-    STRING  shift, and go to state 50
-    PARA    shift, and go to state 51
-    LLAVA   shift, and go to state 52
-    RTRUE   shift, and go to state 53
-    RFALSE  shift, and go to state 54
-
-    EXP        go to state 146
-    PRIMITIVE  go to state 56
-    BOOL       go to state 57
-    LIST_ARR   go to state 58
-    CALL_EXP   go to state 59
+    ID  shift, and go to state 148
 
 
 State 141
 
-   28 ELSE: RELSE LLAVA . LIST_INST LLAVC
+   36 DEC_LIST: TYPES ID . ';'
 
-    ID       shift, and go to state 28
-    PRINTF   shift, and go to state 29
-    RIF      shift, and go to state 30
-    VOID     shift, and go to state 19
-    INT      shift, and go to state 2
-    TSTRING  shift, and go to state 3
-    BOOLEAN  shift, and go to state 4
-    STRUCT   shift, and go to state 31
-    RRETURN  shift, and go to state 32
-    ARRAY    shift, and go to state 5
-
-    LIST_INST           go to state 147
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    ';'  shift, and go to state 149
 
 
 State 142
 
-   25 ELSEIF_LIST: ELSEIF_LIST ELSEIF .
+   33 WHILE: RWHILE EXP LLAVA LIST_INST LLAVC .
 
-    $default  reduce using rule 25 (ELSEIF_LIST)
+    $default  reduce using rule 33 (WHILE)
 
 
 State 143
 
-   23 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE .
+   30 ELSEIF: RELSE . RIF EXP LLAVA LIST_INST LLAVC
+   31 ELSE: RELSE . LLAVA LIST_INST LLAVC
 
-    $default  reduce using rule 23 (IF)
+    RIF    shift, and go to state 150
+    LLAVA  shift, and go to state 151
 
 
 State 144
 
-   33 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST LLAVC .
+   26 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST . ELSE
+   28 ELSEIF_LIST: ELSEIF_LIST . ELSEIF
 
-    $default  reduce using rule 33 (STRUCT_CREATION)
+    RELSE  shift, and go to state 143
+
+    $default  reduce using rule 32 (ELSE)
+
+    ELSEIF  go to state 152
+    ELSE    go to state 153
 
 
 State 145
 
-   31 DEC_LIST: DEC_LIST TYPES ID ';' .
+   29 ELSEIF_LIST: ELSEIF .
 
-    $default  reduce using rule 31 (DEC_LIST)
+    $default  reduce using rule 29 (ELSEIF_LIST)
 
 
 State 146
 
-   27 ELSEIF: RELSE RIF EXP . LLAVA LIST_INST LLAVC
-   41 EXP: EXP . SUMA EXP
-   42    | EXP . MENOS EXP
-   43    | EXP . POR EXP
-   44    | EXP . DIV EXP
-   45    | EXP . MEN EXP
-   46    | EXP . MAY EXP
-   47    | EXP . MEN_IG EXP
-   48    | EXP . MAY_IG EXP
-   49    | EXP . DIF EXP
-   50    | EXP . IG EXP
-   51    | EXP . AND EXP
-   52    | EXP . OR EXP
+   27 IF: RIF EXP LLAVA LIST_INST LLAVC ELSE .
 
-    SUMA    shift, and go to state 78
-    MENOS   shift, and go to state 79
-    POR     shift, and go to state 80
-    DIV     shift, and go to state 81
-    LLAVA   shift, and go to state 148
-    MAY     shift, and go to state 83
-    MEN     shift, and go to state 84
-    MAY_IG  shift, and go to state 85
-    MEN_IG  shift, and go to state 86
-    DIF     shift, and go to state 87
-    IG      shift, and go to state 88
-    AND     shift, and go to state 89
-    OR      shift, and go to state 90
+    $default  reduce using rule 27 (IF)
 
 
 State 147
 
-   10 LIST_INST: LIST_INST . INSTRUCTION
-   28 ELSE: RELSE LLAVA LIST_INST . LLAVC
+   37 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST . LLAVC
+   38 EXP_LIST: EXP_LIST . ',' EXP
 
-    ID       shift, and go to state 28
-    PRINTF   shift, and go to state 29
-    RIF      shift, and go to state 30
-    VOID     shift, and go to state 19
-    INT      shift, and go to state 2
-    TSTRING  shift, and go to state 3
-    BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 149
-    STRUCT   shift, and go to state 31
-    RRETURN  shift, and go to state 32
-    ARRAY    shift, and go to state 5
-
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    LLAVC  shift, and go to state 154
+    ','    shift, and go to state 107
 
 
 State 148
 
-   27 ELSEIF: RELSE RIF EXP LLAVA . LIST_INST LLAVC
+   35 DEC_LIST: DEC_LIST TYPES ID . ';'
 
-    ID       shift, and go to state 28
-    PRINTF   shift, and go to state 29
-    RIF      shift, and go to state 30
-    VOID     shift, and go to state 19
-    INT      shift, and go to state 2
-    TSTRING  shift, and go to state 3
-    BOOLEAN  shift, and go to state 4
-    STRUCT   shift, and go to state 31
-    RRETURN  shift, and go to state 32
-    ARRAY    shift, and go to state 5
-
-    LIST_INST           go to state 150
-    INSTRUCTION         go to state 34
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    ';'  shift, and go to state 155
 
 
 State 149
 
-   28 ELSE: RELSE LLAVA LIST_INST LLAVC .
+   36 DEC_LIST: TYPES ID ';' .
 
-    $default  reduce using rule 28 (ELSE)
+    $default  reduce using rule 36 (DEC_LIST)
 
 
 State 150
 
-   10 LIST_INST: LIST_INST . INSTRUCTION
-   27 ELSEIF: RELSE RIF EXP LLAVA LIST_INST . LLAVC
+   30 ELSEIF: RELSE RIF . EXP LLAVA LIST_INST LLAVC
+
+    NUMERO  shift, and go to state 52
+    ID      shift, and go to state 53
+    STRING  shift, and go to state 54
+    PARA    shift, and go to state 55
+    LLAVA   shift, and go to state 56
+    RTRUE   shift, and go to state 57
+    RFALSE  shift, and go to state 58
+
+    EXP        go to state 156
+    PRIMITIVE  go to state 60
+    BOOL       go to state 61
+    LIST_ARR   go to state 62
+    CALL_EXP   go to state 63
+
+
+State 151
+
+   31 ELSE: RELSE LLAVA . LIST_INST LLAVC
 
     ID       shift, and go to state 28
     PRINTF   shift, and go to state 29
@@ -2334,24 +2414,185 @@ State 150
     INT      shift, and go to state 2
     TSTRING  shift, and go to state 3
     BOOLEAN  shift, and go to state 4
-    LLAVC    shift, and go to state 151
     STRUCT   shift, and go to state 31
     RRETURN  shift, and go to state 32
     ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
 
-    INSTRUCTION         go to state 63
-    RETURN              go to state 35
-    PRINT               go to state 36
-    DECLARATION         go to state 37
-    IF                  go to state 38
-    STRUCT_DECLARATION  go to state 39
-    STRUCT_CREATION     go to state 40
-    TYPES               go to state 41
-    CALL_INST           go to state 42
+    LIST_INST           go to state 157
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
 
 
-State 151
+State 152
 
-   27 ELSEIF: RELSE RIF EXP LLAVA LIST_INST LLAVC .
+   28 ELSEIF_LIST: ELSEIF_LIST ELSEIF .
 
-    $default  reduce using rule 27 (ELSEIF)
+    $default  reduce using rule 28 (ELSEIF_LIST)
+
+
+State 153
+
+   26 IF: RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE .
+
+    $default  reduce using rule 26 (IF)
+
+
+State 154
+
+   37 STRUCT_CREATION: STRUCT ID ID '=' LLAVA EXP_LIST LLAVC .
+
+    $default  reduce using rule 37 (STRUCT_CREATION)
+
+
+State 155
+
+   35 DEC_LIST: DEC_LIST TYPES ID ';' .
+
+    $default  reduce using rule 35 (DEC_LIST)
+
+
+State 156
+
+   30 ELSEIF: RELSE RIF EXP . LLAVA LIST_INST LLAVC
+   45 EXP: EXP . SUMA EXP
+   46    | EXP . MENOS EXP
+   47    | EXP . POR EXP
+   48    | EXP . DIV EXP
+   49    | EXP . MEN EXP
+   50    | EXP . MAY EXP
+   51    | EXP . MEN_IG EXP
+   52    | EXP . MAY_IG EXP
+   53    | EXP . DIF EXP
+   54    | EXP . IG EXP
+   55    | EXP . AND EXP
+   56    | EXP . OR EXP
+
+    SUMA    shift, and go to state 85
+    MENOS   shift, and go to state 86
+    POR     shift, and go to state 87
+    DIV     shift, and go to state 88
+    LLAVA   shift, and go to state 158
+    MAY     shift, and go to state 90
+    MEN     shift, and go to state 91
+    MAY_IG  shift, and go to state 92
+    MEN_IG  shift, and go to state 93
+    DIF     shift, and go to state 94
+    IG      shift, and go to state 95
+    AND     shift, and go to state 96
+    OR      shift, and go to state 97
+
+
+State 157
+
+   10 LIST_INST: LIST_INST . INSTRUCTION
+   31 ELSE: RELSE LLAVA LIST_INST . LLAVC
+
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    LLAVC    shift, and go to state 159
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
+
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
+
+
+State 158
+
+   30 ELSEIF: RELSE RIF EXP LLAVA . LIST_INST LLAVC
+
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
+
+    LIST_INST           go to state 160
+    INSTRUCTION         go to state 35
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
+
+
+State 159
+
+   31 ELSE: RELSE LLAVA LIST_INST LLAVC .
+
+    $default  reduce using rule 31 (ELSE)
+
+
+State 160
+
+   10 LIST_INST: LIST_INST . INSTRUCTION
+   30 ELSEIF: RELSE RIF EXP LLAVA LIST_INST . LLAVC
+
+    ID       shift, and go to state 28
+    PRINTF   shift, and go to state 29
+    RIF      shift, and go to state 30
+    VOID     shift, and go to state 19
+    INT      shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    BOOLEAN  shift, and go to state 4
+    LLAVC    shift, and go to state 161
+    STRUCT   shift, and go to state 31
+    RRETURN  shift, and go to state 32
+    ARRAY    shift, and go to state 5
+    RWHILE   shift, and go to state 33
+
+    INSTRUCTION         go to state 68
+    RETURN              go to state 36
+    PRINT               go to state 37
+    DECLARATION         go to state 38
+    ASSIGNMENT          go to state 39
+    IF                  go to state 40
+    WHILE               go to state 41
+    STRUCT_DECLARATION  go to state 42
+    STRUCT_CREATION     go to state 43
+    TYPES               go to state 44
+    CALL_INST           go to state 45
+
+
+State 161
+
+   30 ELSEIF: RELSE RIF EXP LLAVA LIST_INST LLAVC .
+
+    $default  reduce using rule 30 (ELSEIF)

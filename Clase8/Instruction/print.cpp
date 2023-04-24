@@ -1,5 +1,4 @@
 #include "print.hpp"
-#include <QDebug>
 
 print::print(int line, int col, expression *valor)
 {
@@ -10,21 +9,18 @@ print::print(int line, int col, expression *valor)
 
 void print::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    qDebug() << "ejecutando print";
-    gen->AddComment("imprimiendo");
     value result = Valor->ejecutar(env, tree, gen);
 
     if(result.TipoExpresion == INTEGER)
     {
-        qDebug() << "es int";
-        qDebug() << "valor a imprimir: ";
-        qDebug() << QString::fromStdString(result.Value);
+        gen->AddComment("************imprimiendo numero************");
         gen->AddPrintf("d", "(int)"+ result.Value);
         gen->AddPrintf("c", "10");
         gen->AddBr();
     }
     else if(result.TipoExpresion == STRING)
     {
+        gen->AddComment("************imprimiendo string************");
         //llamar a generar printstring
         gen->GeneratePrintString();
         //agregar codigo en el main
@@ -42,7 +38,7 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         gen->AddComment("Llamada");
         gen->AddCall("olc3d_printString");
         gen->AddComment("obtencion retorno");
-        gen->AddGetStack("(int)"+NewTemp2, "P");
+        gen->AddGetStack(NewTemp2, "(int)P");
         gen->AddComment("regreso del entorno");
         gen->AddExpression("P", "P", std::to_string(size), "-");
         gen->AddComment("salto de linea");
@@ -51,7 +47,13 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
     }
     else if(result.TipoExpresion == BOOL)
     {
+        gen->AddComment("************imprimiendo bool************");
         std::string newLabel = gen->newLabel();
+        std::string newFalseLabel = gen->newLabel();
+        if(result.IsTemp)
+        {
+            gen->AddIf(result.Value, "1", "!=", newFalseLabel);
+        }
         //add true labels
         for(int i=0; i < result.TrueLvl.size(); i++)
         {
@@ -67,6 +69,7 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         {
             gen->AddLabel(result.FalseLvl[j]);
         }
+        gen->AddLabel(newFalseLabel);
         gen->AddPrintf("c", "(char)102");
         gen->AddPrintf("c", "(char)97");
         gen->AddPrintf("c", "(char)108");
@@ -76,8 +79,6 @@ void print::ejecutar(environment *env, ast *tree, generator_code *gen)
         gen->AddPrintf("c", "10");
         gen->AddBr();
     }
-    qDebug() << "se ejecuto print";
-
 }
 
 //std::string print::ArrayToString(QVector<symbol> Array)

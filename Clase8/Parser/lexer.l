@@ -99,6 +99,7 @@ ID  {LETRAS}({DIGITO}|{LETRAS}|"_")*
 "false"    return Parser::symbol_type( token::RFALSE, loc );
 "if"    return Parser::symbol_type( token::RIF, loc );
 "else"    return Parser::symbol_type( token::RELSE, loc );
+"while"    return Parser::symbol_type( token::RWHILE, loc );
 "struct"    return Parser::symbol_type( token::STRUCT, loc );
 "return"    return Parser::symbol_type( token::RRETURN, loc );
 "array"    return Parser::symbol_type( token::ARRAY, loc );

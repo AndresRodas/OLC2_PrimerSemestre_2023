@@ -27,6 +27,7 @@ public:
     void AddCall(std::string target);
     void AddSetHeap(std::string index, std::string value);
     void AddSetStack(std::string index, std::string value);
+    void AddGetHeap(std::string target, std::string index);
     void AddGetStack(std::string index, std::string target);
     void AddBr();
     void AddPrintf(std::string typePrint, std::string value);

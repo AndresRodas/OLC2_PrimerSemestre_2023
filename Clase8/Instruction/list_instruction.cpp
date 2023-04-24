@@ -1,6 +1,5 @@
 #include "list_instruction.hpp"
 #include "Instruction/inst_return.hpp"
-#include <QDebug>
 
 list_instruction::list_instruction()
 {
@@ -9,9 +8,6 @@ list_instruction::list_instruction()
 
 void list_instruction::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
-    qDebug() << "ejecuta lista instrucciones del main";
-    qDebug() << ListInst.size();
-
     for (int i = 0; i < this->ListInst.size(); i ++)
     {
         this->ListInst[i]->ejecutar(env, tree, gen);
@@ -27,8 +23,6 @@ void list_instruction::ejecutar(environment *env, ast *tree, generator_code *gen
             return;
         }
     }
-    qDebug() << "se ejecutó la lista de instrucciones de main";
-
 }
 
 void list_instruction::newInst(instruction *inst)

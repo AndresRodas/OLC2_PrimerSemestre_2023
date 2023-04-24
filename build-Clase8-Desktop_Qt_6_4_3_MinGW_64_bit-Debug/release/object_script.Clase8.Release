@@ -13,12 +13,14 @@ release/map_struct_dec.o
 release/operation.o
 release/primitive.o
 release/struct_access.o
+release/assignment.o
 release/call_inst.o
 release/create_struct.o
 release/dec_struct.o
 release/declaration.o
 release/func_if.o
 release/func_main.o
+release/func_while.o
 release/function.o
 release/inst_return.o
 release/list_instruction.o

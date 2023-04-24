@@ -78,8 +78,10 @@
     #include "../Clase8/Instruction/function.hpp"
     #include "../Clase8/Instruction/call_inst.hpp"
     #include "../Clase8/Instruction/inst_return.hpp"
+    #include "../Clase8/Instruction/func_while.hpp"
+    #include "../Clase8/Instruction/assignment.hpp"
 
-#line 83 "parser.hpp"
+#line 85 "parser.hpp"
 
 
 # include <cstdlib> // std::abort
@@ -208,7 +210,7 @@
 #endif
 
 namespace yy {
-#line 212 "parser.hpp"
+#line 214 "parser.hpp"
 
 
 
@@ -418,8 +420,10 @@ namespace yy {
       // RETURN
       // PRINT
       // DECLARATION
+      // ASSIGNMENT
       // IF
       // ELSEIF
+      // WHILE
       // STRUCT_DECLARATION
       // STRUCT_CREATION
       // CALL_INST
@@ -472,6 +476,7 @@ namespace yy {
       // STRUCT
       // RRETURN
       // ARRAY
+      // RWHILE
       char dummy8[sizeof (std::string)];
     };
 
@@ -554,7 +559,8 @@ namespace yy {
     OR = 288,                      // OR
     STRUCT = 289,                  // STRUCT
     RRETURN = 290,                 // RRETURN
-    ARRAY = 291                    // ARRAY
+    ARRAY = 291,                   // ARRAY
+    RWHILE = 292                   // RWHILE
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -571,7 +577,7 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 41, ///< Number of tokens.
+        YYNTOKENS = 42, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // END
         S_YYerror = 1,                           // error
@@ -610,36 +616,39 @@ namespace yy {
         S_STRUCT = 34,                           // STRUCT
         S_RRETURN = 35,                          // RRETURN
         S_ARRAY = 36,                            // ARRAY
-        S_37_ = 37,                              // ';'
-        S_38_ = 38,                              // '='
-        S_39_ = 39,                              // '.'
-        S_40_ = 40,                              // ','
-        S_YYACCEPT = 41,                         // $accept
-        S_START = 42,                            // START
-        S_LIST_FUNC = 43,                        // LIST_FUNC
-        S_FUNCTION = 44,                         // FUNCTION
-        S_FUNC_LIST = 45,                        // FUNC_LIST
-        S_MAIN = 46,                             // MAIN
-        S_LIST_INST = 47,                        // LIST_INST
-        S_INSTRUCTION = 48,                      // INSTRUCTION
-        S_RETURN = 49,                           // RETURN
-        S_PRINT = 50,                            // PRINT
-        S_DECLARATION = 51,                      // DECLARATION
-        S_IF = 52,                               // IF
-        S_ELSEIF_LIST = 53,                      // ELSEIF_LIST
-        S_ELSEIF = 54,                           // ELSEIF
-        S_ELSE = 55,                             // ELSE
-        S_STRUCT_DECLARATION = 56,               // STRUCT_DECLARATION
-        S_DEC_LIST = 57,                         // DEC_LIST
-        S_STRUCT_CREATION = 58,                  // STRUCT_CREATION
-        S_EXP_LIST = 59,                         // EXP_LIST
-        S_TYPES = 60,                            // TYPES
-        S_EXP = 61,                              // EXP
-        S_PRIMITIVE = 62,                        // PRIMITIVE
-        S_BOOL = 63,                             // BOOL
-        S_LIST_ARR = 64,                         // LIST_ARR
-        S_CALL_EXP = 65,                         // CALL_EXP
-        S_CALL_INST = 66                         // CALL_INST
+        S_RWHILE = 37,                           // RWHILE
+        S_38_ = 38,                              // ';'
+        S_39_ = 39,                              // '='
+        S_40_ = 40,                              // '.'
+        S_41_ = 41,                              // ','
+        S_YYACCEPT = 42,                         // $accept
+        S_START = 43,                            // START
+        S_LIST_FUNC = 44,                        // LIST_FUNC
+        S_FUNCTION = 45,                         // FUNCTION
+        S_FUNC_LIST = 46,                        // FUNC_LIST
+        S_MAIN = 47,                             // MAIN
+        S_LIST_INST = 48,                        // LIST_INST
+        S_INSTRUCTION = 49,                      // INSTRUCTION
+        S_RETURN = 50,                           // RETURN
+        S_PRINT = 51,                            // PRINT
+        S_DECLARATION = 52,                      // DECLARATION
+        S_ASSIGNMENT = 53,                       // ASSIGNMENT
+        S_IF = 54,                               // IF
+        S_ELSEIF_LIST = 55,                      // ELSEIF_LIST
+        S_ELSEIF = 56,                           // ELSEIF
+        S_ELSE = 57,                             // ELSE
+        S_WHILE = 58,                            // WHILE
+        S_STRUCT_DECLARATION = 59,               // STRUCT_DECLARATION
+        S_DEC_LIST = 60,                         // DEC_LIST
+        S_STRUCT_CREATION = 61,                  // STRUCT_CREATION
+        S_EXP_LIST = 62,                         // EXP_LIST
+        S_TYPES = 63,                            // TYPES
+        S_EXP = 64,                              // EXP
+        S_PRIMITIVE = 65,                        // PRIMITIVE
+        S_BOOL = 66,                             // BOOL
+        S_LIST_ARR = 67,                         // LIST_ARR
+        S_CALL_EXP = 68,                         // CALL_EXP
+        S_CALL_INST = 69                         // CALL_INST
       };
     };
 
@@ -698,8 +707,10 @@ namespace yy {
       case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_ASSIGNMENT: // ASSIGNMENT
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
       case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
       case symbol_kind::S_CALL_INST: // CALL_INST
@@ -756,6 +767,7 @@ namespace yy {
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
       case symbol_kind::S_ARRAY: // ARRAY
+      case symbol_kind::S_RWHILE: // RWHILE
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -938,8 +950,10 @@ switch (yykind)
       case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_ASSIGNMENT: // ASSIGNMENT
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
       case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
       case symbol_kind::S_CALL_INST: // CALL_INST
@@ -996,6 +1010,7 @@ switch (yykind)
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
       case symbol_kind::S_ARRAY: // ARRAY
+      case symbol_kind::S_RWHILE: // RWHILE
         value.template destroy< std::string > ();
         break;
 
@@ -1710,6 +1725,21 @@ switch (yykind)
         return symbol_type (token::ARRAY, v, l);
       }
 #endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RWHILE (std::string v, location_type l)
+      {
+        return symbol_type (token::RWHILE, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RWHILE (const std::string& v, const location_type& l)
+      {
+        return symbol_type (token::RWHILE, v, l);
+      }
+#endif
 
 
   private:
@@ -2014,8 +2044,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 370,     ///< Last index in yytable_.
-      yynnts_ = 26,  ///< Number of nonterminal symbols.
+      yylast_ = 459,     ///< Last index in yytable_.
+      yynnts_ = 28,  ///< Number of nonterminal symbols.
       yyfinal_ = 12 ///< Termination state number.
     };
 
@@ -2041,9 +2071,9 @@ switch (yykind)
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    40,     2,    39,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    37,
-       2,    38,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    41,     2,    40,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    38,
+       2,    39,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -2066,10 +2096,10 @@ switch (yykind)
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36
+      35,    36,    37
     };
     // Last valid token kind.
-    const int code_max = 291;
+    const int code_max = 292;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -2110,8 +2140,10 @@ switch (yykind)
       case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_ASSIGNMENT: // ASSIGNMENT
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
       case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
       case symbol_kind::S_CALL_INST: // CALL_INST
@@ -2168,6 +2200,7 @@ switch (yykind)
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
       case symbol_kind::S_ARRAY: // ARRAY
+      case symbol_kind::S_RWHILE: // RWHILE
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -2222,8 +2255,10 @@ switch (yykind)
       case symbol_kind::S_RETURN: // RETURN
       case symbol_kind::S_PRINT: // PRINT
       case symbol_kind::S_DECLARATION: // DECLARATION
+      case symbol_kind::S_ASSIGNMENT: // ASSIGNMENT
       case symbol_kind::S_IF: // IF
       case symbol_kind::S_ELSEIF: // ELSEIF
+      case symbol_kind::S_WHILE: // WHILE
       case symbol_kind::S_STRUCT_DECLARATION: // STRUCT_DECLARATION
       case symbol_kind::S_STRUCT_CREATION: // STRUCT_CREATION
       case symbol_kind::S_CALL_INST: // CALL_INST
@@ -2280,6 +2315,7 @@ switch (yykind)
       case symbol_kind::S_STRUCT: // STRUCT
       case symbol_kind::S_RRETURN: // RRETURN
       case symbol_kind::S_ARRAY: // ARRAY
+      case symbol_kind::S_RWHILE: // RWHILE
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -2345,7 +2381,7 @@ switch (yykind)
   }
 
 } // yy
-#line 2349 "parser.hpp"
+#line 2385 "parser.hpp"
 
 
 

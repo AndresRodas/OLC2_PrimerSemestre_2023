@@ -17,12 +17,12 @@ value access::ejecutar(environment *env, ast *tree, generator_code *gen)
 
     if(gen->MainCode)
     {
-        gen->AddGetStack(std::to_string(retSym.Posicion),newTemp2);
+        gen->AddGetStack(newTemp2, std::to_string(retSym.Posicion));
     }
     else
     {
         gen->AddExpression(newTemp1, "P", std::to_string(retSym.Posicion), "+");
-        gen->AddGetStack("(int)"+newTemp1, newTemp2);
+        gen->AddGetStack(newTemp2, "(int)"+newTemp1);
     }
 
     val = value(newTemp2, true, retSym.Tipo);

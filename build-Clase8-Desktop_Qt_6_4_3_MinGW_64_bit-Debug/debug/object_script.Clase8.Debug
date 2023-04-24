@@ -13,12 +13,14 @@ debug/map_struct_dec.o
 debug/operation.o
 debug/primitive.o
 debug/struct_access.o
+debug/assignment.o
 debug/call_inst.o
 debug/create_struct.o
 debug/dec_struct.o
 debug/declaration.o
 debug/func_if.o
 debug/func_main.o
+debug/func_while.o
 debug/function.o
 debug/inst_return.o
 debug/list_instruction.o

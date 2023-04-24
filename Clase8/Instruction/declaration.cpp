@@ -16,7 +16,6 @@ void declaration::ejecutar(environment *env, ast *tree, generator_code *gen)
     val = Valor->ejecutar(env, tree, gen);
     gen->AddComment("agregando declaración de variable");
     newVar = env->SaveVariable(Id, Tipo, tree);
-
     if(val.TipoExpresion == BOOL)
     {
         //si no es temporal (valor booleano)

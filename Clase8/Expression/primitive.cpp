@@ -1,5 +1,4 @@
 #include "primitive.hpp"
-#include <QDebug>
 
 primitive::primitive(int line, int col, TipoDato tipo, std::string strval, int numval, bool boolval){
     Line = line;
@@ -12,24 +11,18 @@ primitive::primitive(int line, int col, TipoDato tipo, std::string strval, int n
 
 value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
 {
-    qDebug() << "ejecutando primitivo";
-    std::cout << "\n****primitivo ejecutar *****\n";
     value val;
 
     if(Tipo == INTEGER)
     {
-       qDebug() << "Es entero";
        val = value(std::to_string(numVal),false,Tipo);
     }
     else if(Tipo == FLOAT)
     {
-       qDebug() << "es float";
-
        val = value(std::to_string(numVal),false,Tipo);
     }
     else if(Tipo == STRING)
     {
-       qDebug() << "es string";
        //nuevo temporal
        std::string newTemp = gen->newTemp();
        //igualar a Heap Pointer
@@ -49,8 +42,6 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
     }
     else if(Tipo == BOOL)
     {
-       qDebug() << "es un bul";
-
        gen->AddComment("Primitivo bool");
        std::string trueLabel = gen->newLabel();
        std::string falseLabel = gen->newLabel();
@@ -62,9 +53,9 @@ value primitive::ejecutar(environment *env, ast* tree, generator_code *gen)
        {
            gen->AddGoto(falseLabel);
        }
+       val = value("",false, Tipo);
        val.TrueLvl.append(trueLabel);
        val.FalseLvl.append(falseLabel);
     }
-    qDebug() << "Se ejecutó el primitivo";
     return val;
 }

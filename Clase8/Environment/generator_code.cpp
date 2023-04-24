@@ -1,6 +1,5 @@
 #include "generator_code.hpp"
 #include <iostream>
-#include <QDebug>
 
 generator_code::generator_code()
 {
@@ -150,8 +149,20 @@ void generator_code::AddSetStack(std::string index, std::string value) {
     }
 }
 
+//get heap
+void generator_code::AddGetHeap(std::string target, std::string index) {
+    if (MainCode)
+    {
+        Code.append(target + " = heap[" + index + "];\n");
+    }
+    else
+    {
+        FuncCode.append(target + " = heap[" + index + "];\n");
+    }
+}
+
 //get stack
-void generator_code::AddGetStack(std::string index, std::string target) {
+void generator_code::AddGetStack(std::string target, std::string index) {
     if (MainCode)
     {
         Code.append(target + " = stack[" + index + "];\n");
@@ -218,17 +229,14 @@ void generator_code::GeneratePrintString()
 //agregar headers
 void generator_code::GenerateFinalCode()
 {
-    qDebug() << "inicia genfinalcode";
     //creando cabecera
-    FinalCode += "//****************** Clase 10 ******************\n\n";
+    FinalCode += "//****************** Clase 11 ******************\n\n";
     FinalCode += "#include <stdio.h>\n";
     FinalCode += "float stack[100000];\n";
     FinalCode += "float heap[100000];\n";
     FinalCode += "float P;\n";
     FinalCode += "float H;\n";
     //agregando temporales
-    qDebug() << "agrega temporales, tamaño:";
-    qDebug() << TempList.size();
     if (TempList.size() > 0)
     {
         std::string tmpDec = "float "+TempList[0];
@@ -239,22 +247,18 @@ void generator_code::GenerateFinalCode()
         FinalCode += tmpDec;
     }
     //agregando funciones
-    qDebug() << "agrega funciones";
     for(int i=0; i<FuncCode.size(); i++){
         FinalCode += FuncCode[i];
     }
     //agregando funciones nativas
-    qDebug() << "agrega nativas";
     for(int i=0; i<Natives.size(); i++){
         FinalCode += Natives[i];
     }
     //agregando main()
-    qDebug() << "agrega main";
     FinalCode += "int main()\n{\n";
     for(int i=0; i<Code.size(); i++){
         FinalCode += "\t";
         FinalCode += Code[i];
     }
     FinalCode += "\treturn 0;\n}";
-    qDebug() << "finaliza la funcion FFFF";
 }

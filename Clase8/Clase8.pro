@@ -24,12 +24,14 @@ SOURCES += \
     Expression/operation.cpp \
     Expression/primitive.cpp \
     Expression/struct_access.cpp \
+    Instruction/assignment.cpp \
     Instruction/call_inst.cpp \
     Instruction/create_struct.cpp \
     Instruction/dec_struct.cpp \
     Instruction/declaration.cpp \
     Instruction/func_if.cpp \
     Instruction/func_main.cpp \
+    Instruction/func_while.cpp \
     Instruction/function.cpp \
     Instruction/inst_return.cpp \
     Instruction/list_instruction.cpp \
@@ -58,12 +60,14 @@ HEADERS += \
     Expression/operation.hpp \
     Expression/primitive.hpp \
     Expression/struct_access.hpp \
+    Instruction/assignment.hpp \
     Instruction/call_inst.hpp \
     Instruction/create_struct.hpp \
     Instruction/dec_struct.hpp \
     Instruction/declaration.hpp \
     Instruction/func_if.hpp \
     Instruction/func_main.hpp \
+    Instruction/func_while.hpp \
     Instruction/function.hpp \
     Instruction/inst_return.hpp \
     Instruction/list_instruction.hpp \

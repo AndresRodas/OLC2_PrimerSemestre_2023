@@ -62,6 +62,8 @@
     #include "../Clase8/Instruction/function.hpp"
     #include "../Clase8/Instruction/call_inst.hpp"
     #include "../Clase8/Instruction/inst_return.hpp"
+    #include "../Clase8/Instruction/func_while.hpp"
+    #include "../Clase8/Instruction/assignment.hpp"
 }
 
 /* enlace con la función del retorno de simbolos */
@@ -73,7 +75,7 @@
 /*tokens*/
 %token <std::string> NUMERO ID STRING SUMA MENOS POR DIV PRINTF RIF RELSE
 %token <std::string> VOID INT TSTRING BOOLEAN PARA PARC RMAIN LLAVA LLAVC RTRUE RFALSE CORA CORC
-%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT RRETURN ARRAY
+%token <std::string> MAY MEN MAY_IG MEN_IG DIF IG AND OR STRUCT RRETURN ARRAY RWHILE
 %token ';' '=' '.' ','
 
 /* precedencia de operadores */
@@ -110,6 +112,8 @@
 %type<instruction*> FUNCTION;
 %type<instruction*> CALL_INST;
 %type<instruction*> RETURN;
+%type<instruction*> WHILE;
+%type<instruction*> ASSIGNMENT;
 %type<TipoDato> TYPES;
 %type<map_struct_dec*> DEC_LIST;
 %type<map_struct_dec*> FUNC_LIST;
@@ -128,7 +132,6 @@ START : MAIN
         ctx.Functions = nullptr;
         ctx.Salida = "!Ejecución realizada con éxito!";
         $$ = $1;
-        std::cout << "\n****main exitoso*****\n";
     }
     | LIST_FUNC MAIN
     {
@@ -188,27 +191,31 @@ LIST_INST : LIST_INST INSTRUCTION
         {
             $$ = new list_instruction();
             $$->newInst($1);
-            std::cout << "\n****inst list exitoso*****\n";
         }
 ;
 
-        INSTRUCTION : PRINT ';' { $$ = $1; }
-            | DECLARATION ';' { $$ = $1; }
-            | IF { $$ = $1; }
-            | STRUCT_DECLARATION { $$ = $1; }
-            | STRUCT_CREATION { $$ = $1; }
-            | CALL_INST { $$ = $1; }
-            | RETURN ';' { $$ = $1; }
+INSTRUCTION : PRINT ';' { $$ = $1; }
+    | DECLARATION ';' { $$ = $1; }
+    | ASSIGNMENT ';' { $$ = $1; }
+    | IF { $$ = $1; }
+    | WHILE { $$ = $1; }
+    | STRUCT_DECLARATION { $$ = $1; }
+    | STRUCT_CREATION { $$ = $1; }
+    | CALL_INST { $$ = $1; }
+    | RETURN ';' { $$ = $1; }
 ;
 
 RETURN : RRETURN EXP { $$ = new inst_return(0,0,$2); }
     | RRETURN { $$ = new inst_return(0,0,nullptr); }
 ;
 
-PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); std::cout << "\n****print exitoso*****\n"; }
+PRINT : PRINTF PARA EXP PARC { $$ = new print(0,0,$3); }
 ;
 
 DECLARATION : TYPES ID '=' EXP { $$ = new declaration(0,0,$1,$2,$4); }
+;
+
+ASSIGNMENT : ID '=' EXP { $$ = new assignment(0, 0, $1, $3); }
 ;
 
 IF : RIF EXP LLAVA LIST_INST LLAVC ELSEIF_LIST ELSE
@@ -241,6 +248,9 @@ ELSEIF : RELSE RIF EXP LLAVA LIST_INST LLAVC
 
 ELSE : RELSE LLAVA LIST_INST LLAVC { $$ = $3; }
     | %empty { }
+;
+
+WHILE : RWHILE EXP LLAVA LIST_INST LLAVC { $$ = new func_while(0, 0, $2, $4); }
 ;
 
 STRUCT_DECLARATION : STRUCT ID LLAVA DEC_LIST LLAVC {$$ = new dec_struct(0,0,$4,$2); }
@@ -304,10 +314,6 @@ EXP : EXP SUMA EXP { $$ = new operation(0, 0, $1, $3, "+"); }
 PRIMITIVE : NUMERO
         {
             int num = stoi($1);
-            primitive *p1 = new primitive(0,0,INTEGER,"",num,false);
-            primitive *p2 = new primitive(0,0,INTEGER,"",num,false);
-            //$$ = new operation(0, 0, p1, p2, "+");
-            std::cout << "\n****num "<< num << "*****\n" << std::to_string(num);
             $$ = new primitive(0,0,INTEGER,"",num,false);
         }
         | STRING

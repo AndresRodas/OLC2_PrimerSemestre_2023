@@ -2,7 +2,6 @@
 #include "Parser/location.hh"
 #include "Parser/parser.hpp"
 #include "Parser/lex.yy.c"
-#include <QDebug>
 
 namespace OCL2Calc {
 ParserCtx::ParserCtx()
@@ -23,8 +22,6 @@ ParserCtx::~ParserCtx(){
 }
 
 std::string ParserCtx::Analizar(std::string entrada){
-    qDebug() << "se inicia el analisis";
-
     // cargamos la entrada
     yy_scan_string(entrada .c_str(), lexer );
     // se muestra el debug
@@ -32,8 +29,6 @@ std::string ParserCtx::Analizar(std::string entrada){
     //se analiza
     this->Parser->parse();
     return "";
-    qDebug() << "finaliza el analisis";
-
 }
 
 }
