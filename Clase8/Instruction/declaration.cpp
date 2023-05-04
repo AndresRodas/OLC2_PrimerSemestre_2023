@@ -12,7 +12,6 @@ void declaration::ejecutar(environment *env, ast *tree, generator_code *gen)
 {
     value val;
     symbol newVar;
-
     val = Valor->ejecutar(env, tree, gen);
     gen->AddComment("agregando declaración de variable");
     newVar = env->SaveVariable(Id, Tipo, tree);
